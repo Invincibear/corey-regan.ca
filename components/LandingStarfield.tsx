@@ -50,7 +50,7 @@ export default function LandingStarfield() {
                 <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
               </div>
               <div className="w-120 text-left">
-                <span className="text-6xl font-bold">Engineer</span>
+                <span className="text-6xl font-bold shimmer">Engineer</span>
               </div>
             </div>
           </h2>

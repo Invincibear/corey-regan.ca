@@ -36,6 +36,11 @@
         --ring: 215 20.2% 65.1%;
 
         --radius: 0.5rem;
+
+        --shine-color1: rgba(255,255,255,0);
+        --shine-color2: rgba(255,255,255,0.6);
+        --shine-color3: rgba(128,186,232,0);
+        --shine-color4: rgba(125,185,232,0);
     }
 
     .dark {
@@ -80,4 +85,27 @@
         @apply bg-background text-foreground;
         font-feature-settings: "rlig" 1, "calt" 1;
     }
+}
+
+
+/* https://codepen.io/joshuapekera/pen/xGjMMq */
+.shimmer {
+    padding: 0 140px 0 0;  /* required for pseudo-exponential easing effect */
+
+    text-align: center;
+    color: rgba(255, 255, 255, 0.1);
+    background: -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+    background: -moz-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+    background: gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+    background-size: 125px 100%;
+    -webkit-background-clip: text;  /* Safari fix */
+    background-clip: text;
+    animation: shimmer 2s linear infinite;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-color: #222;
+}
+@keyframes shimmer {
+      0% { background-position: top left; }
+    100% { background-position: top right; }
 }
