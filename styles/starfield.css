@@ -1,0 +1,27 @@
+#starfield {
+    transform: translateZ(0);
+}
+
+#starfield-canvas {
+    position:         absolute;
+    top:              0;
+    left:             0;
+    transform-origin: center;
+}
+
+.gradient-text-title {
+    @apply bg-clip-text font-extrabold tracking-tight text-transparent;
+    @apply bg-gradient-to-br from-zinc-300 via-zinc-400 to-zinc-500;
+}
+
+h1.hero-heading-rich-text {
+    color: white;
+}
+
+.hero-heading-rich-text strong {
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(115deg,#76b8ff 22.45%,#f086f2 45%,#fac37b 73%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-weight: 500
+}
