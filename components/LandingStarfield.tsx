@@ -13,8 +13,9 @@ export default function LandingStarfield() {
   useEffect(() => {
     const typed = new Typed(typedWordsRef.current, {
       strings:       ['Site Reliability', 'DevOps', 'Full-stack', 'Cloud Infra'],
-      typeSpeed:     75,
-      backDelay:     1250,
+      typeSpeed:     90,
+      backSpeed:     50,
+      backDelay:     1350,
       loop:          true,
       loopCount:     Infinity,
       showCursor:    true,
