@@ -1,0 +1,24 @@
+/* https://codepen.io/joshuapekera/pen/xGjMMq */
+@keyframes shimmer {
+    0% { background-position: top left; }
+    100% { background-position: top right; }
+}
+
+.shimmer {
+    animation:  shimmer 2s linear infinite;
+    color:      rgba(255, 255, 255, 0.1);
+    padding:    0 140px 0 0;  /* required for pseudo-exponential easing effect */
+    text-align: center;
+
+    background: -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+    background: -moz-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+    background: gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+
+    background-size:     125px 100%;
+    background-repeat:   no-repeat;
+    background-position: 0 0;
+    background-color:    #222;
+
+    background-clip:         text;
+    -webkit-background-clip: text;  /* Safari fix */
+}

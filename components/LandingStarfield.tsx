@@ -5,6 +5,7 @@ import { useRef, useEffect } from "react"
 import Typed                 from "typed.js"
 
 import "@/styles/starfield.css"
+import "@/styles/shimmer.css"
 
 
 export default function LandingStarfield() {

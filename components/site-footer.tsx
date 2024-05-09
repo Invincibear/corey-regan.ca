@@ -1,10 +1,16 @@
 import { siteConfig } from "@/config/site"
 import { Icons }      from "@/components/icons"
+import Link           from "next/link";
 
 export function SiteFooter() {
   return (
     <footer>
       <div className="mb-6 mt-14 flex flex-col items-center">
+        <p className="mb-4 text-lg font-bold text-center">
+          <Link href={siteConfig.blogUrl}>
+            Check out my IT blog!
+          </Link>
+        </p>
         <div className="mb-3 flex space-x-4">
           {/*          <a target="_blank" rel="noreferrer" href={`mailto:${siteConfig.links.email}`}>
            <span className="sr-only">Mail</span>

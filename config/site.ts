@@ -8,6 +8,7 @@ const handles = {
 export const siteConfig = {
   author:      "Corey Regan",
   avatar:      "/images/avatars/corey.png",
+  blogUrl:     "https://corey-regan.ca/blog",
   description: "A showcase of the skills I've picked up over the years",
   name:        "Corey Regan's Portfolio",
   url:         "https://corey-regan.ca/",
