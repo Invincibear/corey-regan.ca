@@ -4,9 +4,11 @@ import Star                  from "@/lib/starfield"
 import { useRef, useEffect } from "react"
 import invariant             from "tiny-invariant"
 
+
 const COUNT = 800
 const SPEED = 0.1
 
+/* https://github.com/kirkwat/portfolio/blob/main/src/components/landing/starfield.astro */
 function Starfield() {
   const canvasRef    = useRef(null)
   const containerRef = useRef(null)

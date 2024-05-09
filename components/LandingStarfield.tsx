@@ -12,7 +12,7 @@ export default function LandingStarfield() {
 
   useEffect(() => {
     const typed = new Typed(typedWordsRef.current, {
-      strings:       ['Site Reliability', 'DevOps', 'Full-stack', 'Cloud Infra'],
+      strings:       ['Site Reliability', 'DevOps', 'Full-stack', 'AWS', 'Azure'],
       typeSpeed:     90,
       backSpeed:     50,
       backDelay:     1350,
