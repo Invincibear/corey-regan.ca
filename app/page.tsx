@@ -1,7 +1,11 @@
-import LandingStarfield from "@/components/LandingStarfield"
+import CertificationCarousel from "@/components/CertificationCarousel"
+import LandingStarfield      from "@/components/LandingStarfield"
 
 export default function Home() {
   return (
-    <LandingStarfield />
+    <>
+      <LandingStarfield />
+      <CertificationCarousel />
+    </>
   )
 }

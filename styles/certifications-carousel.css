@@ -1,0 +1,45 @@
+@keyframes slide {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
+}
+
+
+.certifications-carousel {
+    overflow:    hidden;
+    padding:     60px 0;
+    background:  white;
+    white-space: nowrap;
+    position:    relative;
+}
+
+.certifications-carousel:before,
+.certifications-carousel:after {
+    position: absolute;
+    top:      0;
+    width:    250px;
+    height:   100%;
+    content:  "";
+    z-index:  2;
+}
+
+.certifications-carousel:before {
+    left:       0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+}
+
+.certifications-carousel:after {
+    right:      0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+}
+
+.certifications-carousel:hover .certifications-slider {
+    animation-play-state: paused;
+}
+
+.certifications-slider {
+    animation: 40s slide infinite linear;
+}
+
+.certifications-slider img {
+    margin: 0 40px;
+}
