@@ -18,7 +18,6 @@ export default function CertificationBadge({
     <div className="certification-badge">
       <Link href={proofUrl} title={title} target="_blank" passHref>
         <Image src={imageSrc} width={badgeSize} height={badgeSize} alt={title} />
-        {/*<p className="text-xs">{title}</p>*/}
       </Link>
     </div>
   )
