@@ -1,4 +1,5 @@
-import { Inter } from "next/font/google"
+import { Inter }      from "next/font/google"
+import { SiteFooter } from "@/components/site-footer"
 
 import type { Metadata } from "next"
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`h-full select-none overflow-x-hidden bg-default text-default text-base ${inter.className}`} data-theme="dark">
         {children}
+        <SiteFooter />
       </body>
     </html>
   )
