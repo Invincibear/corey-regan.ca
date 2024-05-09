@@ -33,9 +33,9 @@ export default function LandingStarfield() {
   }, []);
 
   return (
-    <section id="splash" className="relative min-h-svh h-full bg-black">
+    <section id="splash" className="relative w-full h-screen bg-black">
       <Starfield />
-      <div className="relative flex min-h-svh h-full items-center justify-center overflow-x-hidden">
+      <div className="relative w-full h-screen flex items-center justify-center overflow-x-hidden">
         <div
           id="splash-title"
           className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
