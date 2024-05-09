@@ -35,7 +35,7 @@ export default function LandingStarfield() {
   return (
     <section id="splash" className="relative min-h-svh h-full bg-black">
       <Starfield />
-      <div className="relative flex min-h-svh h-full items-center justify-center">
+      <div className="relative flex min-h-svh h-full items-center justify-center overflow-x-hidden">
         <div
           id="splash-title"
           className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
@@ -46,13 +46,13 @@ export default function LandingStarfield() {
             <br />
             Regan
           </h1>
-          <h2 className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-6xl">
+          <h2 className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-5xl xl:text-6xl">
             <div className="flex justify-center items-baseline">
               <div className="w-120 text-right">
                 <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
               </div>
               <div className="w-120 text-left">
-                <span className="text-6xl font-bold shimmer">Engineer</span>
+                <span className="font-bold shimmer">Engineer</span>
               </div>
             </div>
           </h2>
