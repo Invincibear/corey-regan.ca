@@ -1,0 +1,14 @@
+/*#timeline a {
+    text-decoration: underline;
+}*/
+#timeline * a:hover {
+    color:           var(--color-text);
+    text-decoration: underline;
+}
+
+#timeline h4 {
+    color: var(--color-text-offset);
+}
+#timeline h4 a:hover {
+    color: var(--color-text);
+}

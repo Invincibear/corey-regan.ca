@@ -7,7 +7,7 @@ const config: Config = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    // "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   darkMode: ["class"],
   prefix: "",
@@ -65,6 +65,7 @@ const config: Config = {
       fontFamily: {
         roboto: ["Roboto"],
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        inter: ["Inter"],
       },
       keyframes: {
         "accordion-down": {
