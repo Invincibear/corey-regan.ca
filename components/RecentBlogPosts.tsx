@@ -36,8 +36,8 @@ export default function RecentBlogPosts({ maxPosts = 3}: RecentBlogPostsProps) {
         ) : (
           <p>Nothing to see here yet</p>
         )}
-        <h4 className="mt-20 text-2xl font-bold text-center">
-          <Link href={"/blog/"} title="View more blog posts" className="hover:text-accent-foreground">
+        <h4 className="mt-40 text-2xl font-bold text-center">
+          <Link href={"/blog/"} title="View more blog posts" className="text-foreground hover:text-accent-foreground">
             Click here for more blog posts...
           </Link>
         </h4>
