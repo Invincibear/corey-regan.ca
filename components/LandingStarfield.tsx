@@ -14,7 +14,7 @@ export default function LandingStarfield() {
 
   useEffect(() => {
     const typed = new Typed(typedWordsRef.current, {
-      strings:       ['Site Reliability', 'DevOps', 'Full-Stack', 'AWS Infra', 'Azure Infra'],
+      strings:       ['Site Reliability', 'DevOps', 'Full-Stack', 'Azure', 'AWS'],
       typeSpeed:     90,
       backSpeed:     50,
       backDelay:     1350,
@@ -52,7 +52,7 @@ export default function LandingStarfield() {
             <br />
             Regan
           </motion.h1>
-          <h2 className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-5xl xl:text-6xl">
+          <h2 className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-2xl sm:text-5xl lg:text-6xl">
             <div className="flex justify-center items-baseline">
               <div className="w-120 text-right">
                 <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
