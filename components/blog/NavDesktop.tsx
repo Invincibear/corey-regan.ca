@@ -13,10 +13,10 @@ export function NavDesktop() {
 
   return (
     <nav className="flex items-center space-x-4 lg:space-x-6 text-black">
-{/*      <Link href={BlogConfig.url} className="mr-6 flex items-center space-x-2 hover:text-primary">
-        <PawPrint className="mr-2 size-6" />
+      <Link href={BlogConfig.url} className="mr-6 flex items-center space-x-2 hover:text-primary">
+        <PawPrint className="mr-2 size-6 text-foreground" />
         <span className="font-bold text-accent-foreground">{BlogConfig.name}</span>
-      </Link>*/}
+      </Link>
       <Link
         href={SiteConfig.url}
         className={cn(
