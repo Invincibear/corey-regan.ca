@@ -4,7 +4,7 @@ import Link           from "next/link";
 
 export function SiteFooter() {
   return (
-    <footer>
+    <footer className="mt-40 py-20 bg-white">
       <div className="mb-6 mt-14 flex flex-col items-center">
         <p className="mb-10 text-lg font-bold text-center">
           <Link href={siteConfig.blogUrl}>
