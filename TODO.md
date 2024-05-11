@@ -4,7 +4,7 @@
   - Make blog header prettier
   - Apply theme colors, light theme looks bad
 - Add functionality to work experience tags
-- Theme switcher
+- ~~Theme switcher~~
 - ~~Center starfield text~~
 - ~~Footer looks pretty bare, expand on it~~
 - ~~Fix framer-motion slowness~~

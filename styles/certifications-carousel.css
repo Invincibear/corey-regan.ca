@@ -1,4 +1,4 @@
-@keyframes slide {
+@keyframes carousel {
     from { transform: translateX(0); }
     to   { transform: translateX(-100%); }
 }
@@ -39,7 +39,7 @@
 }
 
 .certifications-slider {
-    animation: 40s slide infinite linear;
+    animation: 40s carousel infinite linear;
 }
 
 .certifications-slider img {

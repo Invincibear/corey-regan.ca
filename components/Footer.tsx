@@ -4,9 +4,9 @@ import { SiteConfig }       from "@/config/site"
 import { PawPrint }         from "lucide-react"
 
 
-export function SiteFooter() {
+export function Footer() {
   return (
-    <footer className="footer mt-40 py-28 px-10 bg-white text-accent-content text-md">
+    <footer className="footer py-28 px-10 bg-white text-accent-content text-md">
       <aside>
         <PawPrint width={50} height={50} />
         <p>

@@ -77,7 +77,7 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   return (
-    <article className="container prose dark:prose-invert py-6 max-w-6xl mx-auto">
+    <article className="container prose dark:prose-invert py-6 max-w-6xl mx-auto mb-40">
       <h1 className="mb-2 text-3xl">{post.title}</h1>
 
       <div className="flex gap-2 mb-2">

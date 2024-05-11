@@ -1,5 +1,5 @@
 import { ThemeProviders } from "@/components/ThemeProviders"
-import { SiteFooter }     from "@/components/SiteFooter"
+import { Footer }         from "@/components/Footer"
 import { SiteConfig }     from "@/config/site"
 import { Inter }          from "next/font/google"
 
@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`h-full select-none overflow-x-hidden bg-default text-default text-base ${inter.className}`} data-theme="dark">
         <ThemeProviders>
           {children}
-          <SiteFooter />
+          <Footer />
         </ThemeProviders>
       </body>
     </html>

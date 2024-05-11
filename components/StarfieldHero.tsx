@@ -34,11 +34,11 @@ export default function StarfieldHero() {
   }, []);
 
   return (
-    <section id="splash" className="relative w-full h-screen bg-black">
+    <section id="hero" className="relative w-full h-screen bg-black">
       <Starfield />
       <div className="relative w-full h-screen flex items-center justify-center overflow-x-hidden">
         <div
-          id="splash-title"
+          id="hero-title"
           className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
           style={{ transform: "translateZ(0)" }}
         >
