@@ -5,7 +5,7 @@ import { Inter }          from "next/font/google"
 
 import type { Metadata } from "next"
 
-import "@/styles/global.css"
+import "@/styles/globals.css"
 import "@/styles/theme.css"
 
 
