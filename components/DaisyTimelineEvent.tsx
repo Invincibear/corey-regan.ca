@@ -4,7 +4,7 @@ import Icon              from "@/components/Icon"
 import { TimelineEvent } from "@/lib/TimelineEvents"
 import Image             from "next/image"
 import Link              from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion }        from "framer-motion"
 
 
 interface DaisyTimelineEventProps {
@@ -12,16 +12,12 @@ interface DaisyTimelineEventProps {
   position:      string
 }
 export default function DaisyTimelineEvent({ timelineEvent, position = "timeline-start md:text-end" }: DaisyTimelineEventProps) {
-  const variants = {
-    hiddenFromLeft:  { opacity: 0, x: "-100%", y: 0 },
-    hiddenFromRight: { opacity: 0, x: " 100%", y: 0 },
-    enter:           { opacity: 1, x: 0,       y: 0 },
-    exitToLeft:      { opacity: 0, x: "-100%", y: 0 },
-    exitToRight:     { opacity: 0, x: " 100%", y: 0 },
-  }
-
   const initial = (position === "timeline-end") ? "hiddenFromRight" : "hiddenFromLeft"
-  const whileInView = (position === "timeline-end") ? "timeline-start md:text-end" : "timeline-end"
+  const variants = {
+    hiddenFromLeft:  { opacity: 0, x: "-100%" },
+    hiddenFromRight: { opacity: 0, x: " 100%" },
+    enter:           { opacity: 1, x: 0 },
+  }
 
   return (
     <motion.li

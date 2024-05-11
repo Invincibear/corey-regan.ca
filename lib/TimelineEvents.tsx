@@ -84,7 +84,7 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2021 - 2022",
     id:          "ies",
     headline:    "Freelancer.com",
-    description: "I was a member of a 3-person team managing the AWS infra serving ~4 billion non-cached requests per week to ~55 million users worldwide. I was responsible for maintaining uptime, remediating outages, maintaining systems upgrades, upgrading a dozen Kubernetes clusters, and deploying robust scalable infrastructure.",
+    description: "I was a member of a three-person team managing the AWS infra serving ~4 billion non-cached requests per week to ~55 million users worldwide. I was responsible for maintaining uptime, remediating outages, maintaining systems upgrades, upgrading a dozen Kubernetes clusters, and deploying robust scalable infrastructure.",
     icon:        "pencil-line",
     logo:        {
       alt:    "Freelancer.com",
@@ -148,15 +148,7 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2018 - 2021",
     id:          "dynamichosting",
     headline:    "Dynamic Hosting",
-    description: (
-      <ul className="list-disc list-inside">
-        Primary engineer of a national web hosting company providing dedicated servers, co-located servers, virtual machines, virtual private servers, and shared web hosting in 3 coast-to-coast datacenters. I also provided L3 helpdesk support as-needed, programming support, and training for our team of junior systems administrators and helpdesk technicians.
-        <li className="my-2">Completely overhauled the entire hardware inventory of the company, including networking, dedicated storage NAS, and compute servers. Retired decade-old hardware and instituted hardware lifecycle policies.</li>
-        <li className="mb-2">Completely migrated entire web hosting infrastructure to modern OSs in our own private cloud, eliminating a decade of technical debt and modernized the tech stack.</li>
-        <li className="mb-2">Completely redesigned our R1Soft backups strategy, applying the 3-2-1 rule of backups (3 copies of data, on 2 different mediums, 1 of them being off-site).</li>
-        <li className="mb-2">Automated software deployments using Ansible, golden images, VM templates. Instituted firmware & software update policies.</li>
-      </ul>
-                 ),
+    description: "As the primary engineer of a national web hosting company providing dedicated servers, co-located servers, virtual machines, virtual private servers, and shared web hosting in 3 coast-to-coast datacenters, I also provided L3 helpdesk support as-needed, programming support, and training for our team of junior systems administrators and helpdesk technicians.",
     icon:        "rss",
     logo:       {
       alt:    "Dynamic Hosting",
@@ -220,7 +212,7 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2013 - 2015",
     id:          "terrabyte",
     headline:    "Tera-byte.com",
-    description: "",
+    description: "Working in the NOC of a datacenter provided colocation, ISP, and web hosting services, I was responsible for maintaining every node of the network from our upstream connection to our POPs to our end-users.",
     icon:        "radio-tower",
     logo:       {
       alt:    "Tera-Byte logo",
@@ -236,7 +228,7 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2008 - 2012",
     id:          "detox",
     headline:    "Detox Game Servers: Programmer & System Administrator",
-    description: "",
+    description: "As a founder of a game server rental company, I was responsible for designing the website, custom order form, automating game server creation, and created a game server control panel for customers to manage their game servers.",
     icon:        "gamepad-2",
 /*    image:       {
       alt:    "",

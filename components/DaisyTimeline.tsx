@@ -21,7 +21,7 @@ export default function DaisyTimeline({ timelineEvents }: TimelineComponentProps
           {timelineEvents.map(timelineEvent => {
             position = (position === "timeline-end") ? "timeline-start md:text-end" : "timeline-end"
 
-            return <DaisyTimelineEvent key={timelineEvent.id} timelineEvent={timelineEvent} position={position}/>
+            return <DaisyTimelineEvent key={timelineEvent.id} timelineEvent={timelineEvent} position={position} />
           })}
         </motion.ul>
       </AnimatePresence>
