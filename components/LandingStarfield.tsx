@@ -1,6 +1,7 @@
 "use client"
 
 import Starfield             from "@/components/Starfield"
+import { motion }            from "framer-motion"
 import { useRef, useEffect } from "react"
 import Typed                 from "typed.js"
 
@@ -37,15 +38,20 @@ export default function LandingStarfield() {
       <Starfield />
       <div className="relative w-full h-screen flex items-center justify-center overflow-x-hidden">
         <div
-          id="splash-title"
-          className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
-          style={{ transform: "translateZ(0)" }}
+          id        = "splash-title"
+          className = "flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
+          style     = {{ transform: "translateZ(0)" }}
         >
-          <h1 className="hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4">
+          <motion.h1
+            initial     = {{ opacity: 0 }}
+            whileInView = {{ opacity: 1 }}
+            transition  = {{ duration: 5 }}
+            className   = "hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
+          >
             Corey
             <br />
             Regan
-          </h1>
+          </motion.h1>
           <h2 className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-5xl xl:text-6xl">
             <div className="flex justify-center items-baseline">
               <div className="w-120 text-right">
