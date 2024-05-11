@@ -17,8 +17,8 @@ export function SiteFooter() {
       </aside>
       <nav>
         <h6 className="footer-title">Social</h6>
-        <div className="grid grid-flow-col gap-4">
-          <SocialIcons />
+        <div className="grid grid-flow-col gap-4 pt-3">
+          <SocialIcons className="transform hover:-translate-y-1" />
         </div>
       </nav>
       <aside>

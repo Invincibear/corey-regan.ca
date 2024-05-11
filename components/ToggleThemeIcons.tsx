@@ -7,36 +7,37 @@ import { useTheme }           from "next-themes"
 
 export function ToggleThemeIcons() {
   const { theme, setTheme } = useTheme()
-  const className = "w-10 px-0"
+  const buttonClassName = "w-10 px-0"
+  const iconClassName = "size-6 transition-all"
   const activeThemeClasses = " bg-accent-foreground text-background"
 
   return (
-    <div className="flex">
+    <div className="flex -ml-2">
       <Button
-        className = {`${className} ${(theme === "system") ? activeThemeClasses : ""}`}
+        className = {`${buttonClassName} ${(theme === "system") ? activeThemeClasses : ""}`}
         onClick   = {() => setTheme("system")}
         title     = "Toggle system's default theme"
         variant   = "ghost"
       >
-        <SunMoon className="size-5 transition-all"/>
+        <SunMoon className={iconClassName} />
         <span className="sr-only">System</span>
       </Button>
       <Button
-        className = {`${className} ${(theme === "dark") ? activeThemeClasses : ""}`}
+        className = {`${buttonClassName} ${(theme === "dark") ? activeThemeClasses : ""}`}
         onClick   = {() => setTheme("dark")}
         title     = "Toggle dark theme"
         variant   = "ghost"
       >
-        <Moon className="size-5 transition-all"/>
+        <Moon className={iconClassName} />
         <span className="sr-only">Dark</span>
       </Button>
       <Button
-        className = {`${className} ${(theme === "light") ? activeThemeClasses : ""}`}
+        className = {`${buttonClassName} ${(theme === "light") ? activeThemeClasses : ""}`}
         onClick   = {() => setTheme("light")}
         title     = "Toggle light theme"
         variant   = "ghost"
       >
-        <Sun className="size-5 transition-all"/>
+        <Sun className={iconClassName} />
         <span className="sr-only">Light</span>
       </Button>
     </div>

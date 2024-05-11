@@ -9,7 +9,7 @@ import "@/styles/starfield.css"
 import "@/styles/shimmer.css"
 
 
-export default function LandingStarfield() {
+export default function StarfieldHero() {
   const typedWordsRef = useRef(null)
 
   useEffect(() => {
