@@ -38,18 +38,19 @@ export default function LandingStarfield() {
       <Starfield />
       <div className="relative w-full h-screen flex items-center justify-center overflow-x-hidden">
         <div
-          id        = "splash-title"
-          className = "flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
-          style     = {{ transform: "translateZ(0)" }}
+          id="splash-title"
+          className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
+          style={{ transform: "translateZ(0)" }}
         >
           <motion.h1
-            initial     = {{ opacity: 0 }}
-            whileInView = {{ opacity: 1 }}
-            transition  = {{ duration: 5 }}
-            className   = "hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 5 }}
+            className="hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
           >
+          {/*<h1 className="hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4">*/}
             Corey
-            <br />
+            <br/>
             Regan
           </motion.h1>
           <h2 className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-2xl sm:text-5xl lg:text-6xl">

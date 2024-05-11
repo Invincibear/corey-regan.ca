@@ -1,10 +1,9 @@
-"use client"
+// "use client"
 
-import Icon              from "@/components/Icon"
 import { TimelineEvent } from "@/lib/TimelineEvents"
 import Image             from "next/image"
 import Link              from "next/link"
-import { motion }        from "framer-motion"
+// import { motion }        from "framer-motion"
 
 
 interface DaisyTimelineEventProps {
@@ -20,7 +19,7 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
   }
 
   return (
-    <motion.li
+/*    <motion.li
       key         = {timelineEvent.id}
       initial     = {initial}
       whileInView = "enter"
@@ -31,9 +30,13 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
         duration: 0.5,
         type:     "linear"
       }}
+    >*/
+    <li
+      key         = {timelineEvent.id}
+      className   = "overflow-hidden"
     >
       <div className="timeline-middle px-4 mb-2">
-        {<Icon name={timelineEvent.icon}/>}
+        {timelineEvent.icon}
       </div>
       <div className={`${position} mb-10 pt-1`}>
         <time className="font-mono italic">
@@ -94,6 +97,6 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
         )}
       </div>
       <hr/>
-    </motion.li>
+    </li>
   )
 }

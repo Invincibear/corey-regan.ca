@@ -1,5 +1,19 @@
-import dynamicIconImports from "lucide-react/dynamicIconImports"
 import { ReactNode }      from "react"
+import {
+  CalendarCheck,
+  CalendarDays,
+  CloudDownload,
+  Gamepad2,
+  Laptop,
+  Landmark,
+  Newspaper,
+  PencilLine,
+  RadioTower,
+  RefreshCcwDot,
+  Rss,
+  ServerCog,
+  TrendingUp,
+} from "lucide-react"
 
 
 type timelineEventImage = {
@@ -14,7 +28,7 @@ export type TimelineEvent = {
   headline:     string | ReactNode
   description:  string | ReactNode
   highlighted?: boolean
-  icon:         keyof typeof dynamicIconImports
+  icon:         ReactNode
   image?:       timelineEventImage
   logo?:        timelineEventImage
   link?:        string
@@ -37,7 +51,7 @@ const TimelineEvents: TimelineEvent[] = [
         <p>It was incredibly rewarding and validating knowing my code passed a financial company&apos;s coding standards, considering the financial industry&apos;s strict regulatory environment.</p>
       </>
                  ),
-    icon:        "landmark",
+    icon:        <Landmark />,
     logo:        {
       alt:    "Paddle",
       src:    "Paddle.svg",
@@ -53,7 +67,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "skytap",
     headline:    "SkyTap",
     description: "I was responsible for writing Terraform code to port on-prem infra and apps to a cloud-native architecture, deployed to Azure using Terraform Cloud.",
-    icon:        "cloud-download",
+    icon:        <CloudDownload />,
     logo:        {
       alt:    "SkyTap provides IBM hardware in Azure",
       src:    "skytap.png",
@@ -69,7 +83,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "syncmycalendars",
     headline:    "SyncMyCalendars.app",
     description: "I architected, programmed, and deployed a SaaS app to selectively synchronize calendar events between Google and O365 calendar accounts and apply filters and transformations to copied events.",
-    icon:        "calendar-check",
+    icon:        <CalendarCheck />,
     image:       {
       alt:    "SyncMyCalendars.app",
       src:    "syncmycalendars.app.png",
@@ -85,7 +99,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "ies",
     headline:    "Freelancer.com",
     description: "I was a member of a three-person team managing the AWS infra serving ~4 billion non-cached requests per week to ~55 million users worldwide. I was responsible for maintaining uptime, remediating outages, maintaining systems upgrades, upgrading a dozen Kubernetes clusters, and deploying robust scalable infrastructure.",
-    icon:        "pencil-line",
+    icon:        <PencilLine />,
     logo:        {
       alt:    "Freelancer.com",
       src:    "freelancer.svg",
@@ -101,7 +115,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "gmetimeline",
     headline:    "GMETimeline.com",
     description: "The 2021 GameStop $GME stock sensation took over and I decided to chronicle events as they unfolded for future journalists to reference. The website consists of JSON data parsed with PHP, served using vanilla JS with CSS3 styling and animations.",
-    icon:        "trending-up",
+    icon:        <TrendingUp />,
     image:       {
       alt:    "GameStop's short squeeze, documented",
       src:    "gmetimeline.com.png",
@@ -117,7 +131,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "warmap",
     headline:    "WarMapCalendar.com",
     description: "Inspired by Sam Oven's War Map Calendar, I turned the basic Excel spreadsheet into a fully-fledged SaaS app.",
-    icon:        "calendar-days",
+    icon:        <CalendarDays />,
     image:       {
       alt:    "The War Map Calendar organizes your life and keeps you goal-oriented",
       src:    "warmapcalendar.com.png",
@@ -133,7 +147,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "redipump",
     headline:    "RediPump.com",
     description: "I designed a Wordpress website and managed its deployment and updates.",
-    icon:        "refresh-ccw-dot",
+    icon:        <RefreshCcwDot />,
     image:       {
       alt:    "RediPump",
       src:    "redipump.com.png",
@@ -149,7 +163,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "dynamichosting",
     headline:    "Dynamic Hosting",
     description: "As the primary engineer of a national web hosting company providing dedicated servers, co-located servers, virtual machines, virtual private servers, and shared web hosting in 3 coast-to-coast datacenters, I also provided L3 helpdesk support as-needed, programming support, and training for our team of junior systems administrators and helpdesk technicians.",
-    icon:        "rss",
+    icon:        <Rss />,
     logo:       {
       alt:    "Dynamic Hosting",
       src:    "dynamichosting-logo.png",
@@ -165,7 +179,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "sundeckssurrey",
     headline:    "SunDecksSurrey.ca: Front-End Engineer",
     description: "",
-    icon:        "home",
+    icon:        <Home />,
     link:        "https://sundeckssurrey.ca",
     role:        "Front-End",
     tags:        ["Wordpress", "Marketing"],
@@ -175,7 +189,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "geared",
     headline:    "Geared Digital Marketing",
     description: "As a founder of Geared, I helped driving school and deck construction companies acquire more customers using digital marketing. I implemented a pay-per-call strategy, connecting prospective buyers with companies for a flat rate per call. With a one in three closing rate, the ROI for companies using my leads was worth the cost.",
-    icon:        "newspaper",
+    icon:        <Newspaper />,
     image:       {
       alt:    "Geared Digital Marketing homepage",
       src:    "geared.ca.png",
@@ -197,7 +211,7 @@ const TimelineEvents: TimelineEvent[] = [
         <p>Engineered company-wide systems imaging solution, automated ~2000 hours of help desk labor, integrated IT & HR systems, modernized various processes & assets, trained peers, documented existing and new systems.</p>
       </>
                  ),
-    icon:        "server-cog",
+    icon:        <ServerCog />,
     logo:       {
       alt:    "IES",
       src:    "ies.png",
@@ -213,7 +227,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "terrabyte",
     headline:    "Tera-byte.com",
     description: "Working in the NOC of a datacenter provided colocation, ISP, and web hosting services, I was responsible for maintaining every node of the network from our upstream connection to our POPs to our end-users.",
-    icon:        "radio-tower",
+    icon:        <RadioTower />,
     logo:       {
       alt:    "Tera-Byte logo",
       src:    "tera-byte.gif",
@@ -229,7 +243,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "detox",
     headline:    "Detox Game Servers: Programmer & Systems Engineer",
     description: "As a founder of a game server rental company, I was responsible for designing the website, custom order form, automating game server creation, and created a game server control panel for customers to manage their game servers.",
-    icon:        "gamepad-2",
+    icon:        <Gamepad2 />,
 /*    image:       {
       alt:    "",
       src:    ".png",
@@ -245,7 +259,7 @@ const TimelineEvents: TimelineEvent[] = [
     id:          "dell",
     headline:    "Dell Canada",
     description: "At Dell I created a French Windows Vista website simulator to help phone support agents direct customers through the new UI. This was used by support agents in France and Canada.",
-    icon:        "laptop",
+    icon:        <Laptop />,
     logo:       {
       alt:    "Windows Vista desktop",
       src:    "dell.svg",

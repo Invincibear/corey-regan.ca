@@ -1,5 +1,6 @@
+import { SiteFooter } from "@/components/site-footer-daisy"
+import { siteConfig } from "@/config/site"
 import { Inter }      from "next/font/google"
-import { SiteFooter } from "@/components/site-footer"
 
 import type { Metadata } from "next"
 
@@ -10,8 +11,8 @@ import "@/styles/theme.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Corey Regan's Portfolio",
-  description: "A collection of my years in IT, from full-stack dev, to DevOps, to SRE",
+  title:       siteConfig.name,
+  description: siteConfig.description,
 }
 
 export default function RootLayout({
