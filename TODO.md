@@ -9,3 +9,4 @@
 - ~~Fix framer-motion slowness~~
 - ~~Replace deprecated brand icons~~
 - ~~Don't pause certifications carousel on mobile~~
+- ~~Consistent spacing between timeline events on mobile~~
