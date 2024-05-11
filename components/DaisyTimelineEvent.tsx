@@ -62,7 +62,7 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
           </div>
         )}
 
-        <div className="text-justify">{timelineEvent.description}</div>
+        <div className="sm:text-justify">{timelineEvent.description}</div>
 
         {timelineEvent.image && (
           <div className={`flex justify-${position === 'timeline-end' ? 'start' : 'end'} mt-4`}>
