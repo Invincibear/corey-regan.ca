@@ -7,8 +7,8 @@ import { SocialLinks }                       from "@/config/links"
 import { SiteConfig }                        from "@/config/site"
 import { Menu, PawPrint }                    from "lucide-react"
 import Link, { LinkProps }                   from "next/link"
-import { useRouter }                         from "next/navigation"
-import { useState }                          from "react"
+import { useRouter }                           from "next/navigation"
+import { HTMLAttributeAnchorTarget, useState } from "react"
 
 
 export function NavMobile() {
@@ -23,7 +23,7 @@ export function NavMobile() {
         </Button>
       </SheetTrigger>
       <SheetContent side="right">
-        <MobileLink onOpenChange={setOpen} href={BlogConfig.url} className="flex items-center">
+        <MobileLink onOpenChange={setOpen} href={BlogConfig.url} className="flex items-center hover:pl-0">
           <PawPrint className="mr-2 size-4" />
           <span className="font-bold">{BlogConfig.name}</span>
         </MobileLink>
@@ -34,21 +34,21 @@ export function NavMobile() {
           <MobileLink onOpenChange={setOpen} href={SiteConfig.url}>
             {SiteConfig.name}
           </MobileLink>
-          <Link target="_blank" rel="noreferrer" href={SocialLinks.github}>
+          <MobileLink target="_blank" rel="noreferrer" href={SocialLinks.github}>
             GitHub
-          </Link>
-          <Link target="_blank" rel="noreferrer" href={SocialLinks.linkedIn}>
+          </MobileLink>
+          <MobileLink target="_blank" rel="noreferrer" href={SocialLinks.linkedIn}>
             LinkedIn
-          </Link>
-          <Link target="_blank" rel="noreferrer" href={SocialLinks.twitter}>
+          </MobileLink>
+          <MobileLink target="_blank" rel="noreferrer" href={SocialLinks.twitter}>
             Twitter
-          </Link>
-          <Link target="_blank" rel="noreferrer" href={SocialLinks.instagram}>
+          </MobileLink>
+          <MobileLink target="_blank" rel="noreferrer" href={SocialLinks.instagram}>
             Instagram
-          </Link>
-          <Link target="_blank" rel="noreferrer" href={SocialLinks.credly}>
+          </MobileLink>
+          <MobileLink target="_blank" rel="noreferrer" href={SocialLinks.credly}>
             Credly
-          </Link>
+          </MobileLink>
         </div>
       </SheetContent>
     </Sheet>
@@ -56,15 +56,19 @@ export function NavMobile() {
 }
 
 interface MobileLinkProps extends LinkProps {
-  children: React.ReactNode
+  children:      React.ReactNode
+  className?:    string
   onOpenChange?: (open: boolean) => void
-  className?: string
+  rel?:          string | undefined
+  target?:       HTMLAttributeAnchorTarget
 }
 function MobileLink({
   href,
-  onOpenChange,
   children,
   className,
+  onOpenChange,
+  rel,
+  target,
   ...props
 }: MobileLinkProps) {
   const router = useRouter()
@@ -75,7 +79,9 @@ function MobileLink({
         router.push(href.toString())
         onOpenChange?.(false)
       }}
-      className={className}
+      className={`hover:text-accent-foreground hover:underline hover:pl-1 ${className}`}
+      rel={rel}
+      target={target}
       {...props}
     >
       {children}
