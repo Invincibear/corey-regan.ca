@@ -11,7 +11,9 @@ interface DaisyTimelineEventProps {
   position:      string
 }
 export default function DaisyTimelineEvent({ timelineEvent, position = "timeline-start md:text-end" }: DaisyTimelineEventProps) {
-  const initial = (position === "timeline-end") ? "hiddenFromRight" : "hiddenFromLeft"
+  const initial = (position === "timeline-end")
+    ? "hiddenFromRight"
+    : "hiddenFromLeft"
   const variants = {
     hiddenFromLeft:  { opacity: 0, x: "-100%" },
     hiddenFromRight: { opacity: 0, x: " 100%" },
@@ -25,16 +27,11 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
       whileInView = "enter"
       variants    = {variants}
       viewport    = {{ once: true }}
-      className   = "overflow-hidden"
       transition  = {{
         duration: 0.5,
         type:     "linear"
       }}
     >
-{/*    <li
-      key         = {timelineEvent.id}
-      className   = "overflow-hidden"
-    >*/}
       <div className="timeline-middle px-4 mb-2">
         {timelineEvent.icon}
       </div>
@@ -91,7 +88,7 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
         </div>
 
         {timelineEvent.link && (
-          <div>
+          <div className="mb-9 md:mb-0">
             <Link href={timelineEvent.link} target="_blank" className="text-xs">{timelineEvent.link}</Link>
           </div>
         )}
