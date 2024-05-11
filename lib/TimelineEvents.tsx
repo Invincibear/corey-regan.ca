@@ -34,7 +34,7 @@ const TimelineEvents: TimelineEvent[] = [
       <>
         <p>While working on <a href="https://syncmycalendars.app/" target="_blank">SyncMyCalendars.app</a>, I decided to implement Paddle, a payment processor that competes with PayPal and Stripe. I took it upon myself to translate the PHP SDK into Python, adopting Pythonic coding practices.</p><br />
         <p>After Paddle noticed it, they purchased the SDK from me to use as their <a href="https://github.com/PaddleHQ/paddle-python-sdk/commit/e97b1d80811be941ede038634790eef7dd83baf1" target="_blank">official SDK</a>.</p><br />
-        <p>It was incredibly rewarding and validating knowing my code passed a financial company's coding standards, considering the financial industry's strict regulatory environment.</p>
+        <p>It was incredibly rewarding and validating knowing my code passed a financial company&apos;s coding standards, considering the financial industry&apos;s strict regulatory environment.</p>
       </>
                  ),
     icon:        "landmark",
