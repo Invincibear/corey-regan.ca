@@ -28,7 +28,7 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "start" }
         </h5>
 
         {timelineEvent.logo && (
-          <div className={`flex justify-${position === 'timeline-end' ? 'start' : 'end'} mt-0`}>
+          <div className={`flex justify-${position === 'timeline-end' ? 'start' : 'end'} my-2`}>
             <Link href={`/timeline/${timelineEvent.logo.src}`}>
               <Image
                 src     = {`/timeline/${timelineEvent.logo.src}`}
