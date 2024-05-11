@@ -1,12 +1,12 @@
 "use client"
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Button }                            from "@/components/ui/button"
-import { BlogConfig }                        from "@/config/blog"
-import { SocialLinks }                       from "@/config/links"
-import { SiteConfig }                        from "@/config/site"
-import { Menu, PawPrint }                    from "lucide-react"
-import Link, { LinkProps }                   from "next/link"
+import { Sheet, SheetContent, SheetTrigger }   from "@/components/ui/sheet"
+import { Button }                              from "@/components/ui/button"
+import { BlogConfig }                          from "@/config/blog"
+import { SocialLinks }                         from "@/config/links"
+import { SiteConfig }                          from "@/config/site"
+import { Menu, PawPrint }                      from "lucide-react"
+import Link, { LinkProps }                     from "next/link"
 import { useRouter }                           from "next/navigation"
 import { HTMLAttributeAnchorTarget, useState } from "react"
 
@@ -79,7 +79,7 @@ function MobileLink({
         router.push(href.toString())
         onOpenChange?.(false)
       }}
-      className={`hover:text-accent-foreground hover:underline hover:pl-1 ${className}`}
+      className={`hover:text-accent-foreground hover:pl-1 ${className}`}
       rel={rel}
       target={target}
       {...props}

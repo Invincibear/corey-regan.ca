@@ -42,7 +42,7 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
         <br/>
 
         <h4 className="text-xl font-black font-inter">
-          {timelineEvent.headline}
+          <span className="text-foreground">{timelineEvent.headline}</span>
         </h4>
         <h5 className="text-lg font-black font-inter">
           {timelineEvent.role}

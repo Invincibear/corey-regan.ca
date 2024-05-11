@@ -1,6 +1,6 @@
 # TODO
 - ~~Combine `corey-regan.ca` and `corey-regan.ca-blog` repos~~
-  - Show recent posts on bottom of landing page
+  - ~~Show recent posts on bottom of landing page~~
   - Make blog header prettier
   - Apply theme colors, light theme looks bad
 - Add functionality to work experience tags

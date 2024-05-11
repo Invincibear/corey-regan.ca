@@ -12,7 +12,10 @@ interface SocialIconsProps {
   className?:     string | undefined
   linkClassName?: string | undefined
 }
-export default function SocialIcons({ className = "size-6", linkClassName }: SocialIconsProps) {
+export default function SocialIcons({
+  className     = "size-6",
+  linkClassName = "hover:text-accent-foreground",
+}: SocialIconsProps) {
   return (
     <>
       <Link target="_blank" rel="noreferrer" href={SocialLinks.github} title="Check out my GitHub repos" className={linkClassName}>

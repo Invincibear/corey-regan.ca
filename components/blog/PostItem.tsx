@@ -23,7 +23,11 @@ export function PostItem({
     <article className="flex flex-col gap-2 border-border border-b py-3">
       <div>
         <h2 className="text-2xl font-bold">
-          <Link href={"/blog/" + slug}>{title}</Link>
+          <Link href={"/blog/" + slug}>
+            <span className="text-foreground">
+              {title}
+            </span>
+          </Link>
         </h2>
       </div>
       <div className="flex gap-2">

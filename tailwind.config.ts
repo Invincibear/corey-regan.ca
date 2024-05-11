@@ -9,6 +9,9 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  daisyui: {
+    themes: ["light", "dark"]
+  },
   darkMode: ["class"],
   prefix: "",
   theme: {
@@ -58,6 +61,7 @@ const config: Config = {
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
+          background: "hsl(var(--accent-background))",
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {

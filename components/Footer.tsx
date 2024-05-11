@@ -1,12 +1,12 @@
-import SocialIcons          from "@/components/SocialIcons"
-import { ToggleThemeIcons } from "@/components/ToggleThemeIcons"
-import { SiteConfig }       from "@/config/site"
+import SocialIcons           from "@/components/SocialIcons"
+import { FooterToggleTheme } from "@/components/FooterToggleTheme"
+import { SiteConfig }        from "@/config/site"
 import { PawPrint }         from "lucide-react"
 
 
 export function Footer() {
   return (
-    <footer className="footer py-28 px-10 bg-white text-accent-content text-md">
+    <footer className="footer py-28 px-10 bg-accent-content text-content text-md">
       <aside>
         <PawPrint width={50} height={50} />
         <p>
@@ -23,7 +23,7 @@ export function Footer() {
       </nav>
       <aside>
         <h6 className="footer-title">Site Theme</h6>
-        <ToggleThemeIcons />
+        <FooterToggleTheme />
       </aside>
     </footer>
   )

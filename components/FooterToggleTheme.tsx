@@ -5,7 +5,7 @@ import { Moon, Sun, SunMoon } from "lucide-react"
 import { useTheme }           from "next-themes"
 
 
-export function ToggleThemeIcons() {
+export function FooterToggleTheme() {
   const { theme, setTheme } = useTheme()
   const buttonClassName = "w-10 px-0"
   const iconClassName = "size-6 transition-all"

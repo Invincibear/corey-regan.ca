@@ -12,8 +12,8 @@ export default function RecentBlogPosts({ maxPosts = 3}: RecentBlogPostsProps) {
   const displayPosts = sortedPosts.slice(0, maxPosts)
 
   return (
-    <section className="pt-40 pb-40 min-w-full bg-accent-content">
-      <h3 className="mb-20 text-5xl font-bold text-center">Recent Blog Posts</h3>
+    <section className="pt-40 pb-40 min-w-full bg-background">
+      <h3 className="mb-20 text-5xl font-bold text-center text-accent-foreground">Recent Blog Posts</h3>
       <div className="max-w-4xl mx-auto">
         {displayPosts?.length > 0 ? (
           <ul className="flex flex-col">
@@ -37,7 +37,7 @@ export default function RecentBlogPosts({ maxPosts = 3}: RecentBlogPostsProps) {
           <p>Nothing to see here yet</p>
         )}
         <h4 className="mt-20 text-2xl font-bold text-center">
-          <Link href={"/blog/"} title="View more blog posts" className="hover:underline hover:text-accent-foreground">
+          <Link href={"/blog/"} title="View more blog posts" className="hover:text-accent-foreground">
             Click here for more blog posts...
           </Link>
         </h4>
