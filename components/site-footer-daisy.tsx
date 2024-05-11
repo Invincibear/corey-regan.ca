@@ -2,12 +2,15 @@ import { siteConfig } from "@/config/site"
 import Link           from "next/link"
 import {
   Award,
-  Github,
-  Instagram,
   Linkedin,
   PawPrint,
-  Twitter,
 } from "lucide-react"
+import {
+  SiGithub,
+  SiInstagram,
+  SiTwitter,
+} from "@icons-pack/react-simple-icons"
+
 
 
 export function SiteFooter() {
@@ -26,7 +29,7 @@ export function SiteFooter() {
         <div className="grid grid-flow-col gap-4">
           <Link target="_blank" rel="noreferrer" href={siteConfig.links.github}>
             <span className="sr-only">GitHub</span>
-            <Github className="h-6 w-6"/>
+            <SiGithub className="h-6 w-6"/>
           </Link>
           <Link target="_blank" rel="noreferrer" href={siteConfig.links.linkedIn}>
             <span className="sr-only">LinkedIn</span>
@@ -34,11 +37,11 @@ export function SiteFooter() {
           </Link>
           <Link target="_blank" rel="noreferrer" href={siteConfig.links.twitter}>
             <span className="sr-only">Twitter</span>
-            <Twitter className="h-6 w-6"/>
+            <SiTwitter className="h-6 w-6"/>
           </Link>
           <Link target="_blank" rel="noreferrer" href={siteConfig.links.instagram}>
             <span className="sr-only">Instagram</span>
-            <Instagram className="h-6 w-6"/>
+            <SiInstagram className="h-6 w-6"/>
           </Link>
           <Link target="_blank" rel="noreferrer" href={siteConfig.links.credly}>
             <span className="sr-only">Credly</span>

@@ -1,6 +1,5 @@
-import DaisyTimelineEvent          from "@/components/DaisyTimelineEvent"
-import { TimelineEvent }           from "@/lib/TimelineEvents"
-
+import DaisyTimelineEvent from "@/components/DaisyTimelineEvent"
+import { TimelineEvent }  from "@/lib/TimelineEvents"
 
 import "@/styles/timeline.css"
 

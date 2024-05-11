@@ -1,4 +1,4 @@
-import { ReactNode }      from "react"
+import { ReactNode } from "react"
 import {
   CalendarCheck,
   CalendarDays,
@@ -39,11 +39,7 @@ const TimelineEvents: TimelineEvent[] = [
   {
     date:        "2024",
     id:          "paddle-python-sdk",
-    headline:    (
-      <>
-        <a href="https://github.com/PaddleHQ/paddle-python-sdk/commit/03d756dedec66a45a8a189ddbec92911fb39e64d" title="_blank">paddle-python-sdk</a>
-      </>
-                 ),
+    headline:    <a href="https://github.com/PaddleHQ/paddle-python-sdk/commit/03d756dedec66a45a8a189ddbec92911fb39e64d" title="_blank">paddle-python-sdk</a>,
     description: (
       <>
         <p>While working on <a href="https://syncmycalendars.app/" target="_blank">SyncMyCalendars.app</a>, I decided to implement Paddle, a payment processor that competes with PayPal and Stripe. I took it upon myself to translate the PHP SDK into Python, adopting Pythonic coding practices.</p><br />
@@ -74,7 +70,6 @@ const TimelineEvents: TimelineEvent[] = [
       width:  227,
       height: 52,
     },
-    // link:        "https://",
     role:        "Site Reliability Engineer",
     tags:        ["Azure", "Terraform", "Kubernetes", "Ansible", "GitHub Actions", "BASH"],
   },
@@ -106,7 +101,6 @@ const TimelineEvents: TimelineEvent[] = [
       width:  300,
       height: 72,
     },
-    // link:        "https://",
     role:        "Site Reliability Engineer",
     tags:        ["AWS", "Terraform", "Puppet", "PHP", "Python", "Prometheus", "Elasticsearch", "RabbitMQ", "Varnish", "Redis", "BASH"],
   },
@@ -170,7 +164,6 @@ const TimelineEvents: TimelineEvent[] = [
       width:  456,
       height: 90,
     },
-    // link:        "https://",
     role:        "Sr. Systems Engineer",
     tags:        ["CentOS", "Virtuozzo", "Ansible", "BASH", "Plesk", "Wordpress", "PHP", "Cisco"],
   },
@@ -234,7 +227,6 @@ const TimelineEvents: TimelineEvent[] = [
       width:  159,
       height: 102,
     },
-    // link:        "https://",
     role:        "Network Administrator",
     tags:        ["Cisco", "Ubiquity", "Plesk", "PHP", "BASH", "CentOS"],
   },
@@ -244,13 +236,6 @@ const TimelineEvents: TimelineEvent[] = [
     headline:    "Detox Game Servers: Programmer & Systems Engineer",
     description: "As a founder of a game server rental company, I was responsible for designing the website, custom order form, automating game server creation, and created a game server control panel for customers to manage their game servers.",
     icon:        <Gamepad2 />,
-/*    image:       {
-      alt:    "",
-      src:    ".png",
-      width:  ,
-      height: ,
-    },*/
-    // link:        "https://",
     role:        "Jobs",
     tags:        ["HTML", "JavaScript", "CSS", "Hardware", "Windows Server"],
   },

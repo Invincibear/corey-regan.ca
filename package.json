@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@icons-pack/react-simple-icons": "^9.5.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.1.9",
     "lucide-react": "^0.378.0",
