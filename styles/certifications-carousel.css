@@ -32,7 +32,7 @@
     background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
 }
 
-@media (hover: hover) {
+@media (hover: hover) { /* prevent mobile touches from pausing the carousel */
     .certifications-carousel:hover .certifications-slider {
         animation-play-state: paused;
     }

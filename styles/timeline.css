@@ -1,6 +1,3 @@
-/*#timeline a {
-    text-decoration: underline;
-}*/
 #timeline * a:hover {
     color:           var(--color-text);
     text-decoration: underline;
