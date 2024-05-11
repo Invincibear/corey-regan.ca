@@ -32,8 +32,10 @@
     background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
 }
 
-.certifications-carousel:hover .certifications-slider {
-    animation-play-state: paused;
+@media (hover: hover) {
+    .certifications-carousel:hover .certifications-slider {
+        animation-play-state: paused;
+    }
 }
 
 .certifications-slider {
