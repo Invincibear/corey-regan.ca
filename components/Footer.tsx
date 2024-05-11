@@ -6,7 +6,7 @@ import { PawPrint }         from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="footer py-28 px-10 bg-accent-content text-content text-md">
+    <footer className="footer py-28 px-10 bg-accent-background text-content text-md">
       <aside>
         <PawPrint width={50} height={50} />
         <p>
