@@ -1,0 +1,83 @@
+---
+title: How To Migrate A VMWare ESXi 4 VM To KVM-Based Virtuozzo 7
+date: 2019-02-12
+description: Slim chance you're using this old software, but there is hope, the migration can be done!
+published: true
+tags: ["Virtuozzo", "VPS", "migration", "VMWare", "ESXi", "KVM"]
+authors:
+  - corey
+---
+
+Although this migration was designed to migrate VMs from ESXi 4 to Virtuozzo 7, once the disks are converted to a KVM-compatible qcow2 virtual disk format you can simply use KVM to run the VM.
+
+This article will assume the following host names, please modify the commands to suit your needs.
+|             Host Type | Host Name      |
+| --------------------: | -------------- |
+|      **ESXi 4 host:** | `ESXi_HOST`    |
+|        **ESXi 4 VM:** | `ESXi_VM_NAME` |
+| **Virtuozzo 7 host:** | `Virtuozzo7`   |
+|   **Virtuozzo 7 VM:** | `ESXi_VM_NAME` |
+
+
+## Gotchas
+- You must use `virt-v2v-copy-to-local` instead of `virt-v2v` to migrate the VM because we are connecting to an ESXi host and not vSphere. `virt-v2v` requires vSphere to export the config.
+- Once migrated, you must rename the file extension of converted virtual disks to `*.hdd` in order for KVM/Virtuozzo 7 to recognize the disks to start the VM.
+
+
+## Prepare The KVM/Virtuozzo Host
+The following instructions will assume you are using Virtuozzo 7, but newer Virtuozzo versions should also work, and a similar procedure should work for KVM hosts.
+
+Create a new KVM/Virtuozzo VM using same original VM name as the ESXi host's; we'll use `ESXi_VM_NAME` for our examples.
+``` bash title="This example assumes the VM is running CentOS 7"
+[root@Virtuozzo7 ~]# mkdir -p /vz/private/ESXi_VM_NAME
+[root@Virtuozzo7 ~]# prlctl create ESXi_VM_NAME --distribution centos7 --vmtype vm
+```
+
+``` bash title="Get GUID of new Virtuozzo VM"
+[root@Virtuozzo7 ~]# prlctl list -a | grep ESXi_VM_NAME
+{a8bee0ea-9583-42e2-b01e-29274be0be17}  stopped      -               VM ESXi_VM_NAME
+```
+
+``` bash title="List new Virtuozzo VM's disks"
+[root@Virtuozzo7 ~]# ls /vz/vmprivate/a8bee0ea-9583-42e2-b01e-29274be0be17/
+config.pvs  config.pvs.backup  harddisk.hdd
+```
+
+``` bash title="Delete new Virtuozzo VM's empty virtual disk"
+[root@Virtuozzo7 ~]# prlctl set ESXi_VM_NAME --device-del hdd0 --destroy-image
+```
+
+
+## ESXi 4 to KVM Migration
+Export the ESXi VM's XML config file
+``` bash title="From the ESXi host, export via migration the VM's XML configuration file to the same ESXi host"
+[root@ESXi_HOST ~]# virt-v2v-copy-to-local  -v -x -ic esx://root@ESXi_HOST ESXi_VM_NAME
+```
+
+Now for the main act: migrate and convert the ESXi virtual disk. We will convert the virtual disk to [qcow2 format](https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.0/html/technical_reference/qcow2#:~:text=QCOW2%20is%20a%20storage%20format,between%20logical%20and%20physical%20blocks) which is supported by both KVM and Virtuozzo 7.
+
+Be sure to replace `ESXi_VM_NAME` and `NEW_VIRTUOZZO_VM_GUID` with your appropriate values.
+``` bash title="Migrate ESXi VM's virtual disk to Virtuozzo, performing conversion to qcow2 format" /ESXi_VM_NAME/ /NEW_VIRTUOZZO_VM_GUID/
+[root@ESXi_HOST ~]# virt-v2v -i libvirtxml ESXi_VM_NAME.xml -o local -of qcow2 -os /vz/vmprivate/NEW_VIRTUOZZO_VM_GUID/ -v -x
+```
+
+``` bash title="Rename migrated virtual disk to *.hdd and import it into KVM/Virtuozzo VM" /ESXi_VM_NAME/ /NEW_VIRTUOZZO_VM_GUID/
+[root@Virtuozzo7 ~]# mv /vz/vmprivate/NEW_VIRTUOZZO_VM_GUID/ESXi_VM_NAME-sda /vz/vmprivate/NEW_VIRTUOZZO_VM_GUID/ESXi_VM_NAME-sda.hdd
+[root@Virtuozzo7 ~]# prlctl set ESXi_VM_NAME --device-add hdd --image /vz/vmprivate/NEW_VIRTUOZZO_VM_GUID/ESXi_VM_NAME-sda.hdd
+```
+Use the KVM/Virtuozzo GUI to configure the migrated VM's hostname, DNS, search domain, routed IP, and any other needed settings.
+
+You'll need to create the appropriate `ifcfg` network script in the migrated VM's `/etc/sysconfig/network-scripts/`, assuming CentOS 7.
+``` bash title="Setup migrated VM's networking. Be sure to use appropriate network addresses"
+[root@ESXi_VM_NAME ~]# nano /etc/sysconfig/network-scripts/ifcfg-eth0
+ONBOOT=yes
+IPADDR=199.204.213.63
+GATEWAY=199.204.213.1
+NETMASK=255.255.255.0
+DEVICE=eth0
+```
+
+``` bash title="Restart migrated VM's network"
+ifcfg eth0 down
+ifcfg eth0 up
+```

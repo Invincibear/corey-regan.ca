@@ -1,0 +1,154 @@
+---
+title: How To Connect To A MSSQL Server From Ubuntu 22
+date: 2024-05-09
+description: Setting up the Microsoft repo and installing the right packages is just the beginning
+published: true
+tags: ["MSSQL", "Azure", "Ubuntu"]
+authors:
+  - corey
+---
+
+
+## Install Microsoft Server tools, the right way
+Skip all of my struggles, just punch in these commands one line at a time.
+``` bash, title="Assuming you are logged in as root, and have wget installed"
+mkdir -p /root/.gnupg/S.dirmngr && chmod 600 /root/.gnupg/
+gpg --no-default-keyring --keyring /usr/share/keyrings/mssql-archive-keyring.gpg --keyserver keyserver.ubuntu.com --recv-keys EB3E94ADBE1229CF
+wget -qO /etc/apt/sources.list.d/mssql-prod.list https://packages.microsoft.com/config/ubuntu/22.04/mssql-prod.list
+sed -i 's/\(deb \[arch=[^]]*\)/\1 signed-by=\/usr\/share\/keyrings\/mssql-archive-keyring.gpg/' /etc/apt/sources.list.d/mssql-prod.list
+apt update
+apt install mssql-tools
+```
+
+
+## Install Microsoft Server tools, the wrong way
+I've documented all the wrong ways of getting this configured in case somebody else follows bad instructions and gets stuck.
+
+
+### Add the Microsoft apt repository
+``` bash, title=""
+# add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/22.04/mssql-prod.list)"
+Repository: 'deb [arch=amd64,armhf,arm64] https://packages.microsoft.com/ubuntu/22.04/prod jammy main'
+Description:
+Archive for codename: jammy components: main
+More info: https://packages.microsoft.com/ubuntu/22.04/prod
+Adding repository.
+Press [ENTER] to continue or Ctrl-c to cancel.
+Adding deb entry to /etc/apt/sources.list.d/archive_uri-https_packages_microsoft_com_ubuntu_22_04_prod-jammy.list
+Adding disabled deb-src entry to /etc/apt/sources.list.d/archive_uri-https_packages_microsoft_com_ubuntu_22_04_prod-jammy.list
+Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:2 https://dl.google.com/linux/chrome/deb stable InRelease
+Hit:3 http://ca.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Err:8 https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease
+  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY EB3E94ADBE1229CF
+Reading package lists... Done
+
+W: GPG error: https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY EB3E94ADBE1229CF
+E: The repository 'https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease' is not signed.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+```
+
+
+### Add the signing GPG key
+Notice at the end the error about the repo not being signed? Let's import Microsoft's signing key into a new GPG keyring.
+Next we'll use Ubuntu's official keyserver to import the key needed to verify the integrity of the MSSQL repo.
+``` bash, title="Don't use the deprecated apt-key command, use GPG keyrings instead"
+# sudo gpg --no-default-keyring --keyring /usr/share/keyrings/mssql-archive-keyring.gpg --keyserver keyserver.ubuntu.com --recv-keys EB3E94ADBE1229CF
+gpg: failed to create temporary file '/root/.gnupg/.#lk0x000062230980e220.InvinciCODE.1056950': No such file or directory
+gpg: connecting dirmngr at '/root/.gnupg/S.dirmngr' failed: No such file or directory
+gpg: keyserver receive failed: No dirmngr
+```
+
+We can create the missing directory and re-run the command
+``` bash, title="Note the unsafe permissions, we will fix them"
+# mkdir -p /root/.gnupg/S.dirmngr
+
+# gpg --no-default-keyring --keyring /usr/share/keyrings/mssql-archive-keyring.gpg --keyserver keyserver.ubuntu.com --recv-keys EB3E94ADBE1229CF
+gpg: WARNING: unsafe permissions on homedir '/root/.gnupg'
+```
+
+``` bash, title="Let's fix the directory permissions and try again"
+# chmod 600 /root/.gnupg/
+
+# gpg --no-default-keyring --keyring /usr/share/keyrings/mssql-archive-keyring.gpg --keyserver keyserver.ubuntu.com --recv-keys EB3E94ADBE1229CF
+gpg: key EB3E94ADBE1229CF: "Microsoft (Release signing) <gpgsecurity@microsoft.com>" not changed
+gpg: Total number processed: 1
+gpg:              unchanged: 1
+```
+
+``` bash, title="Try again"
+# apt update
+Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:2 https://dl.google.com/linux/chrome/deb stable InRelease
+Hit:3 https://deb.nodesource.com/node_20.x nodistro InRelease
+Get:5 https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease [3,624 B]
+
+(redacted)
+
+W: An error occurred during the signature verification. The repository is not updated and the previous index files will be used. GPG error: https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY EB3E94ADBE1229CF
+W: Failed to fetch https://packages.microsoft.com/ubuntu/22.04/prod/dists/jammy/InRelease  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY EB3E94ADBE1229CF
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+```
+
+### Configure the apt repo to use the GPG key
+At this point we have the repo added, we have the singing key added to a new keyring, but the repo isn't configured to reference the new signing GPG keyring.
+
+``` bash, title="Find the name of the MSSQL repo file, rename it to something easy"
+# ls /etc/apt/sources.list.d/ | grep -i mssql
+archive_uri-https_packages_microsoft_com_ubuntu_22_04_prod-jammy.list
+
+# mv /etc/apt/sources.list.d/archive_uri-https_packages_microsoft_com_ubuntu_22_04_prod-jammy.list /etc/apt/sources.list.d/mssql-prod.list
+```
+
+``` bash, title="Lets inspect the repo, notice the missing reference to our MSSQL GPG keyring?"
+# cat /etc/apt/sources.list.d/mssql-prod.list
+
+deb [arch=amd64,armhf,arm64] https://packages.microsoft.com/ubuntu/22.04/prod jammy main
+# deb-src [arch=amd64,armhf,arm64] https://packages.microsoft.com/ubuntu/22.04/prod jammy main
+```
+
+``` bash, title="Use SED or your favorite text editor to add a reference to the MSSQL GPG keyring"
+# sed -i 's/\(deb \[arch=[^]]*\)/\1 signed-by=\/usr\/share\/keyrings\/mssql-archive-keyring.gpg/g' /etc/apt/sources.list.d/mssql-prod.list
+
+# cat /etc/apt/sources.list.d/mssql-prod.list
+deb [arch=amd64,armhf,arm64 signed-by=/usr/share/keyrings/mssql-archive-keyring.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main
+# deb-src [arch=amd64,armhf,arm64 signed-by=/usr/share/keyrings/mssql-archive-keyring.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main
+```
+
+
+### Finally, install MSSQL tools
+``` bash, title="Refresh available apt packages"
+# apt update
+Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:2 http://ca.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Get:4 https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease [3,624 B]
+
+(redacted)
+
+Fetched 7,220 B in 1s (6,134 B/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+```
+
+Finally! We have successfully securely configured the MSSQL Server 2022 repository. Now we can move onto installing MSSQL Server 2022.
+``` bash, title="Finally, install MSSQL tools"
+# apt install mssql-tools
+```
+
+``` bash, title="Add MSSQL tools to $PATH"
+# export PATH="$PATH:/opt/mssql-tools/bin"
+
+# which sqlcmd
+/opt/mssql-tools/bin/sqlcmd
+```
+
+``` bash, title="Persist new $PATH across reboots"
+# echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
+```
+
+``` bash, title="Connect to your MSSQL server"
+# sqlcmd -S <hostname_or_IP>,<port> -U <username> -P <password>
+```

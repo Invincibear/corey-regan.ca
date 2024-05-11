@@ -1,0 +1,302 @@
+---
+title: How To Install Ubuntu Desktop on RAID
+date: 2024-04-20
+description: How to install Ubuntu 22 LTS Desktop on a RAID1 array and optionally migrate an existing installation to the array
+published: true
+tags: ["Ubuntu", "RAID", "partition", "GRUB", "initramfs"]
+authors:
+  - corey
+---
+
+# RAID1 Ubuntu Desktop, How Hard Could It Be?
+You would be surprised by just how complicated it is to do something as basic as installing Ubuntu Desktop on a RAID array.
+A lot of confusion comes from the handoff between BIOS and boot regions, unable to point to the boot files if they are in a MDADM RAID array.
+Basically, you have to have your /boot sector as a partition of a drive, and have another partition dedicated to the RAID itself,
+manually managing syncing the /boot contents to your other disk(s) for peace of mind in case the disk on which you originally configured /boot fails.
+
+Also, the Ubuntu Desktop installer by default does not load `mdadm`, so you have to boot to a Live install, `apt install mdadm`, then open the installer.
+The installer itself will also fail to set up GRUB, so you'll need to do a bunch of work to manually complete the installation process.
+
+
+## Setup drive partitions
+In my case, I have two Samsung 990 1TB drives (`/dev/nvme0n1` & `/dev/nvme1n1`) that I wish to RAID1 for OS redundancy, since I've heavily customized the look and feel and don't want to lose days setting it up again.
+Ironically, it took days to get this working so that was an L on my part...
+
+I will create three partitions on both drives (so they have mirrored structure).
+- `p1` will be a 1G partition mounted as `/boot`
+- `p2` will will be a 1G partition mounted as `/boot/efi` as a RAID1 array called `/dev/md0`
+- `p3` will be a partition using remaining space mounted as `/` as a RAID1 array called `/dev/md1`.
+- If you want to allocate the remaining disk space to different mount points instead of allocating it all to `/`, you can create additional partitions and their additional RAID1 arrays.
+
+So to summarize, we will be creating:
+``` bash
+NAME         SIZE  TYPE   MOUNTPOINTS
+nvme0n1      1T    disk
+  nvme0n1p1  1G    part   /boot/efi
+  nvme0n1p2  1G    part
+    md0      1G    RAID1  /boot
+  nvme0n1p3  998G  part
+    md1      998G  RAID1  /
+nvme1n1      1T    disk
+  nvme1n1p1  1G    part                # You should manually sync from nvme0n1p1, later
+  nvme1n1p2  1G    part
+    md0      1G    RAID1  /boot
+  nvme1n1p3  998G  part
+    md1      998G  RAID1  /
+```
+
+Let's set up the partitions, we'll set up the RAID arrays afterward. There is a more verbose version after this initial code block which explains things a bit better.
+``` bash
+gdisk /dev/nvme0n1
+o
+y
+
+n
+(default: 1)
+(default: 2048)
++1G
+EF00
+
+n
+(default: 2)
+(default: 2099200)
++1G
+FD00
+
+n
+(default: 3)
+(default: 4196352)
+(default: occupy remaining free space)
+FD00
+
+w
+y
+```
+Here are the same commands but more verbose:
+``` bash
+gdisk /dev/nvme0n1
+
+# Create a New GPT Table (if necessary, this will erase all data on the disk):
+Command: o
+Confirm: Y
+# Create the EFI System Partition:
+Command: n (for new partition)
+Partition number: 1
+First sector: (Accept default)
+Last sector: +1G
+Hex code for partition type: EF00 (EFI System)
+
+# Create the Boot Partition (for RAID):
+Command: n (for new partition)
+Partition number: 2
+First sector: (Accept default)
+Last sector: +1G
+Hex code for partition type: FD00 (Linux RAID)
+
+# Create the Root Partition (for RAID):
+Command: n (for new partition)
+Partition number: 3
+First sector: (Accept default)
+Last sector: (Accept default, which uses the remaining disk)
+Hex code for partition type: FD00 (Linux RAID)
+
+# Write the Table to Disk and Exit:
+Command: w
+Confirm: Y
+```
+
+Now repeat these steps for the other disk(s).
+
+You might need to reboot at this point for the Linux Live environment to pick up on these changes, I did, if you don't see the new partitions using `lsblk` then reboot the system.
+
+
+## Setting up MDADM software RAID arrays
+The Ubuntu Live environment, and by extension it's installer, do not load MDADM by default, meaning there is no software RAID support out of the box, even if you've previously created RAID arrays and want to re-use them.
+Oddly, this support is already baked into the Ubuntu Server installer, just not the Ubuntu Desktop installer.
+No worries, that's as easy as opening a Terminal window and running `apt install mdadm`.
+
+Once MDADM is installed, we can go ahead and create the two RAID1 arrays, where `/dev/md0` will be mounted to `/boot/efi`, and `dev/md1` will be mounted to `/`.
+
+``` bash
+sudo mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 /dev/nvme0n1p2 /dev/nvme1n1p2
+sudo mdadm --create --verbose /dev/md1 --level=1 --raid-devices=2 /dev/nvme0n1p3 /dev/nvme1n1p3
+```
+
+
+## Format the partitions
+Format the EFI partitions on each disk:
+``` bash
+mkfs.vfat /dev/nvme0n1p1
+mkfs.vfat /dev/nvme1n1p1
+```
+
+Format the RAID partitions, you can use XFS or another filesystem if you prefer:
+``` bash
+mkfs.ext4 /dev/md0  # for /boot
+mkfs.ext4 /dev/md1  # for /
+```
+
+
+## Install Ubuntu
+Now you want to launch to Ubuntu installer. When it asks you where to install Ubuntu, select `something else` to manually configure the disks.
+- Mount `/dev/md0` to `/boot`, with type `ext4`, format the partition
+- Mount `/dev/md1` to `/`, with type `ext4`, format the partition
+- Use `/dev/nvme0n1p1` as `EFI System Partition`
+- Use `/dev/nvme1n1p1` as `EFI System Partition`
+- Use `/dev/nvme0n1` as the device for bootloader installation. This part doesn't matter since it will fail anyway, and we will be manually copying its contents to the other disk once it is properly setup.
+
+Install Ubuntu as much as you can until it **probably** fails.
+
+
+## Configure GRUB
+I lost track of the steps in the days of getting this all to work, you might need to reboot to the Ubuntu Live environment again, or not, and possibly reinstall `mdadm` again, and have it rescan for RAID arrays.
+
+``` bash
+sudo apt install mdadm
+sudo mdadm --assemble --scan
+```
+
+Create mount point:
+``` bash
+mkdir /mnt/root
+```
+
+Mount the root and boot partitions:
+``` bash
+mount /dev/md1 /mnt/root
+mount /dev/md0 /mnt/root/boot
+```
+
+Mount the EFI system partition:
+``` bash
+mount /dev/nvmd0n1p1 /mnt/root/boot/efi
+```
+
+Chroot into the mounted install:
+``` bash
+for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /mnt/root$i; done
+sudo mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+chroot /mnt/root
+```
+
+Update GRUB and initramfs:
+``` bash
+echo raid1 >> /etc/modules
+update-initramfs -u
+update-grub2
+```
+
+Install GRUB to both disks:
+``` bash
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Ubuntu
+umount /boot/efi
+mount /dev/nvme1n1p1 /boot/efi
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Ubuntu
+```
+
+Verify boot options:
+``` bash
+efibootmgr
+
+# If you need to change the default, use
+sudo efibootmgr -o xxxx,yyyy
+# where xxxx,yyyy are the IDs of the boot devices whose order you want to rearrange
+```
+
+Exit from chroot, unmount everything, and reboot:
+``` bash
+exit
+for i in /sys /proc /dev/pts /dev /run; do sudo umount /mnt/root$i; done
+sudo umount /mnt/root/boot/efi
+sudo umount /mnt/root/boot
+sudo umount /mnt/root
+sudo reboot
+```
+
+You should now be able to boot into a fresh install of Ubuntu. I noticed though that GRUB takes 30 seconds to auto-boot into Ubuntu, which we can fix.
+The config already has the correct values, but they are overridden by GRUB-installed configs in `/etc/grub.d/`, so we just need to add a couple of settings into a custom GRUB config and rebuild GRUB:
+
+`/etc/grub.d/99_custom`:
+``` bash
+cat << EOF
+set timeout=0
+set timeout_style=hidden
+EOF
+```
+``` bash
+sudo chmod +x /etc/grub.d/99_custom
+sudo update-grub2
+sudo reboot
+```
+
+
+## Bonus: migrate existing Ubuntu instance to new RAID1 instance
+In my case I wanted to replace my 250GB drive with a RAID1 1TB disk. Here are the additional steps used to migrate the system. This assumes the version of Ubuntu installed is the same major version.
+
+The rough steps are:
+- Boot into old single-drive Ubuntu instance
+- Mount RAID disks to `/mnt` and `/mnt/boot`
+- Mount EFI system to `/mnt/boot/efi`
+- Use `rsync` to safely copy file from old to new Ubuntu instance
+- `chroot` into new install and reconfigure boot
+
+In my case, Ubuntu auto-mounted the root RAID1 partition to `/media/$USERNAME/$UUID` (where `$USERNAME` is the username supplied during the Ubuntu install, and `$UUID` is the UUID of the root RAID1 array),
+so I simply mounted the other two partitions following that path
+``` bash
+mount /dev/md126 /media/$USERNAME/$UUID/boot
+mount /dev/nvme0n1p1 /media/$USERNAME/$UUID/boot/efi
+```
+
+Backup the `/etc` folder of the RAID1 root partition, just in case:
+``` bash
+cp -r /media/$USERNAME/$UUID/etc{,.bak}
+```
+
+You should remove old versions of initramfs from `/boot` before running the `rsync` command, especially if the source `/boot` is larger than the destination `/boot`.
+I suggest keeping the two most recent versions.
+
+Copy files from old Ubuntu instance to new RAID1 instance. You'll notice `/etc` isn't excluded:
+``` bash
+sudo rsync \
+    -aAXHv \
+    --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} \
+    / /media/$USERNAME/$UUID/
+```
+
+Chroot into the new instance:
+``` bash
+for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /media/$USERNAME/$UUID$i; done
+sudo chroot /media/$USERNAME/$UUID
+```
+
+Restore `/etc/fstab` from `/etc.bak/fstab`
+``` bash
+cp /etc.bak/fstab /etc/fstab
+```
+
+Re-install GRUB to both disks:
+``` bash
+sudo mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Ubuntu
+update-grub2
+umount /boot/efi
+mount /dev/nvme1n1p1 /boot/efi
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Ubuntu
+update-grub2
+```
+
+Exit chroot, unmount everything, reboot to new Ubuntu RAID1 instance:
+``` bash
+exit
+for i in /run /sys /proc /dev/pts /dev; do sudo umount /mnt$i; done
+sudo umount /mnt/boot/efi /mnt/boot /mnt
+sudo reboot
+```
+
+### Sources:
+Many thanks for putting me on the right track:
+- Wendell @ [Level1Techs](https://www.level1techs.com)
+    - https://www.youtube.com/watch?v=F4YIxh1kkhI
+    - https://forum.level1techs.com/t/how-to-install-ubuntu-20-04-to-linux-me-raid/154105
+- https://www.youtube.com/watch?v=rJzHpc1kQW4
+- [https://superuser.com/questions/1020806/how-to-install-ubuntu-15-10-on-an-encrypted-raid-1](https://superuser.com/a/1020807)

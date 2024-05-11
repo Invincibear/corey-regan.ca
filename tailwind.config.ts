@@ -12,6 +12,13 @@ const config: Config = {
   darkMode: ["class"],
   prefix: "",
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -28,9 +35,9 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        border:     "hsl(var(--border))",
+        input:      "hsl(var(--input))",
+        ring:       "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
@@ -87,6 +94,21 @@ const config: Config = {
         "152":  "38rem",
         "200":  "50rem",
       },
+      typography: (theme: string) => ({
+        DEFAULT: {
+          css: {
+            'code::before': {
+              content: 'none',
+            },
+            'code::after': {
+              content: 'none',
+            },
+            'table': {
+              width: 'none',
+            },
+          },
+        },
+      }),
       width: {
         "8xl":  "88rem",
         "9xl":  "96rem",
@@ -99,6 +121,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('daisyui'),],
-};
-export default config;
+  plugins: [
+    require('daisyui'),
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
+} satisfies Config
+
+export default config

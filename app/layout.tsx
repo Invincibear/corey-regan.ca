@@ -1,6 +1,7 @@
-import { SiteFooter } from "@/components/site-footer-daisy"
-import { siteConfig } from "@/config/site"
-import { Inter }      from "next/font/google"
+import { ThemeProviders } from "@/components/ThemeProviders"
+import { SiteFooter }     from "@/components/SiteFooter"
+import { SiteConfig }     from "@/config/site"
+import { Inter }          from "next/font/google"
 
 import type { Metadata } from "next"
 
@@ -11,8 +12,8 @@ import "@/styles/theme.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title:       siteConfig.name,
-  description: siteConfig.description,
+  title:       SiteConfig.name,
+  description: SiteConfig.description,
 }
 
 export default function RootLayout({
@@ -23,8 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`h-full select-none overflow-x-hidden bg-default text-default text-base ${inter.className}`} data-theme="dark">
-        {children}
-        <SiteFooter />
+        <ThemeProviders>
+          {children}
+          <SiteFooter />
+        </ThemeProviders>
       </body>
     </html>
   )

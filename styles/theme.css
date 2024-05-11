@@ -5,7 +5,7 @@
     --color-text-offset: theme("colors.zinc.700");
     --color-background: theme("colors.zinc.50");
     --color-background-offset: theme("colors.zinc.100");
-    --color-border: theme("colors.zinc.900" / 10%);
+    --color-border: theme("colors.zinc.900 / 10%");
 }
 
 [data-theme="dark"] {
@@ -15,5 +15,5 @@
     --color-text-offset: theme("colors.zinc.300");
     --color-background: theme("colors.zinc.800");
     --color-background-offset: theme("colors.zinc.700");
-    --color-border: theme("colors.zinc.50" / 10%);
+    --color-border: theme("colors.zinc.50 / 10%");
 }

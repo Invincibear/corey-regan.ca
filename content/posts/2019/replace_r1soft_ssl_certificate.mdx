@@ -1,0 +1,73 @@
+---
+title: How To Replace R1Soft SSL/TLS Certificate
+date: 2019-02-12
+description: R1Soft runs on Java and doesn't make it easy to replace certificates
+published: true
+tags: ["certificate", "SSL", "TLS", "R1Soft", "backups", "Java"]
+authors:
+  - corey
+---
+
+This article will assume your private key is not password-protected, and the following filenames. Please adjust the example commands or rename your files.
+|                                    Cert Type | File Name                     |
+| -------------------------------------------: | ----------------------------- |
+|                             **Private key:** | PrivateKeyNoPassphrase.key    |
+|                      **Public certificate:** | PublicWildcard.domain.tld.crt |
+| **Public cert authority intermediate cert:** | PublicIntermediate-ca.crt     |
+
+
+``` bash title="Install prerequisites"
+cd ~ && yum install -y unzip wget
+```
+
+``` bash title="Ensure private key & certs are present"
+vim PrivateKeyNoPassphrase.key
+vim PublicWildcard.domain.tld.crt
+vim PublicIntermediate-ca.crt
+```
+
+``` bash title="Convert PEM format key/cert to DER format"
+openssl pkcs8 -topk8 -nocrypt -in /root/PrivateKeyNoPassphrase.key -inform PEM -out /root/PrivateKeyNoPassphrase.key.der -outform DER && \
+openssl x509 -in /root/PublicWildcard.domain.tld.crt -inform PEM -out /root/PublicWildcard.domain.tld.crt.der -outform DER
+```
+
+``` bash title="Prepare R1Soft folders"
+cd /usr/sbin/r1soft/jre/bin && chmod 755 java keytool
+```
+
+``` bash title="Download and install importkey utility to import keys into a keystore"
+wget http://igniterealtime.jiveon.com/servlet/JiveServlet/download/196707-4718/importkey.zip && \
+unzip importkey.zip
+```
+``` bash title="Import private key and public cert into keystore"
+./java ImportKey /root/PrivateKeyNoPassphrase.key.der /root/PublicWildcard.domain.tld.crt.der cdp && \
+./keytool -storepasswd -keystore /root/keystore.ImportKey && \
+./keytool -keypasswd -alias cdp -keystore /root/keystore.ImportKey
+```
+
+``` bash title="Import intermediate cert into keystore"
+mv /root/keystore.ImportKey /root/keystore && \
+./keytool -import -alias intermed -file /root/PublicIntermediate-ca.crt -keystore /root/keystore -trustcacerts
+```
+
+``` bash title="Backup old R1Soft keystore"
+mv /usr/sbin/r1soft/conf/keystore{,.bak}
+```
+``` bash title="Install new keystore into R1Soft"
+cp /root/keystore /usr/sbin/r1soft/conf/keystore
+```
+
+``` bash title="Restart R1Soft"
+service cdp-server restart
+```
+
+``` bash title="Speed-run the cert import password prompts with this order:"
+importkey
+password
+password
+password
+importkey
+password
+password
+password
+```
