@@ -19,9 +19,9 @@ h1.hero-heading-rich-text {
 }
 
 .hero-heading-rich-text strong {
-    -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(115deg,#76b8ff 22.45%,#f086f2 45%,#fac37b 73%);
     -webkit-background-clip: text;
-    background-clip: text;
-    font-weight: 500
+    -webkit-text-fill-color: transparent;
+    background-clip:         text;
+    background-image:        linear-gradient(115deg, #76b8ff 22.45%, #f086f2 45%, #fac37b 73%);
+    font-weight:             500
 }

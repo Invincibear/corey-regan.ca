@@ -227,7 +227,7 @@ const TimelineEvents: TimelineEvent[] = [
   {
     date:        "2008 - 2012",
     id:          "detox",
-    headline:    "Detox Game Servers: Programmer & System Administrator",
+    headline:    "Detox Game Servers: Programmer & Systems Engineer",
     description: "As a founder of a game server rental company, I was responsible for designing the website, custom order form, automating game server creation, and created a game server control panel for customers to manage their game servers.",
     icon:        "gamepad-2",
 /*    image:       {
