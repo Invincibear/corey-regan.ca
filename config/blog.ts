@@ -1,6 +1,6 @@
 export const BlogConfig = {
   author:      "Corey Regan",
-  avatar:      "/images/avatars/corey.png",
+  avatar:      "/images/avatars/corey.jpeg",
   description: "Learning in public so you can quickly unstuck yourself using what I've learned.",
   name:        "Corey's IT Blog",
   url:         `/blog`,

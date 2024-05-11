@@ -93,9 +93,9 @@ export default async function PostPage({ params }: PostPageProps) {
           <Image
             src={BlogConfig.avatar}
             alt="Corey Regan's avatar"
-            width={42}
-            height={42}
-            className="rounded-full bg-white"
+            width={1944}
+            height={1296}
+            className="size-24 object-cover mask mask-parallelogram-4"
           />
         </Link>
         <div className="flex-1 text-left leading-tight">
