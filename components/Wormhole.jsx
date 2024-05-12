@@ -8,7 +8,13 @@ import { ImprovedNoise }     from "three/addons/math/ImprovedNoise.js"
 
 // https://www.youtube.com/watch?v=Il_GKGFggWY
 // https://github.com/bobbyroe/wormhole-effect
-export default function Wormhole({ isVisible = false, scrollProgress, scaleZoom }) {
+export default function Wormhole(
+  {
+    isVisible       = false,
+    scrollProgress,
+    zoomScrollSpeed = 0.3,
+  }
+) {
   const mountRef  = useRef(null)
   const cameraRef = useRef(null)
 
@@ -27,14 +33,14 @@ export default function Wormhole({ isVisible = false, scrollProgress, scaleZoom 
     scene.fog   = new THREE.FogExp2(0x000000, 0.025)
 
     // Camera movement sequence
-    const zoomStart       = 90
-    const zoomEnd         = 5    // Closer to the wormhole
-    const zoomSpeed       = .3   // Was used for manual test animation
-    const zoomScrollSpeed = 2.69 // Speed of scroll-linked zoom
+    const zoomStartPosition  = 90
+    const zoomEndPosition    = 5    // Closer to the wormhole
+    // const zoomSpeed       = .3   // Was used for manual test animation
+    // const zoomScrollSpeed = 3.69 // Speed of scroll-linked zoom
 
     // Camera
     const camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000)
-    camera.position.set(0.5, 0.5, zoomStart)
+    camera.position.set(0.5, 0.5, zoomStartPosition)
 
     // Controls
     // const controls = new OrbitControls(camera, renderer.domElement)
@@ -91,7 +97,7 @@ export default function Wormhole({ isVisible = false, scrollProgress, scaleZoom 
       if (isVisible && camera.position.z > zoomEnd) camera.position.z -= zoomSpeed*/
 
       // Dynamic zoom based on scroll progress
-      if (isVisible) camera.position.z = zoomStart - (zoomStart - zoomEnd) * scrollProgress.get() * zoomScrollSpeed
+      if (isVisible) camera.position.z = zoomStartPosition - (zoomStartPosition - zoomEndPosition) * scrollProgress.get() * zoomScrollSpeed
 
       renderer.render(scene, camera)
     }
@@ -117,17 +123,17 @@ export default function Wormhole({ isVisible = false, scrollProgress, scaleZoom 
   useEffect(() => {
     const handleScroll = () => {
       if (cameraRef.current) {
-        const zoomStart = 15;
-        const zoomEnd = 5;
-        const zoomPosition = zoomStart - (zoomStart - zoomEnd) * scrollProgress.get();
-        cameraRef.current.position.z = zoomPosition;
+        const zoomStartPosition = 15
+        const zoomEndPosition   = 5
+
+        cameraRef.current.position.z = zoomStartPosition - (zoomStartPosition - zoomEndPosition) * scrollProgress.get()
       }
-    };
+    }
 
-    scrollProgress.onChange(handleScroll);
+    scrollProgress.on("change", handleScroll)
 
-    return () => scrollProgress.onChange(() => {});
+    return () => scrollProgress.on("change", () => {})
   }, [scrollProgress]);
 
-  return <div ref={mountRef} id="wormhole" className="min-w-full h-full" />
+  return <div ref={mountRef} id="wormhole" className="min-w-full h-svh" />
 }
