@@ -78,6 +78,14 @@ const config: Config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         inter: ["Inter"],
       },
+      height: {
+        "150vh": "150vh",
+        "200vh": "200vh",
+        "250vh": "250vh",
+        "300vh": "300vh",
+        "400vh": "400vh",
+        "500vh": "500vh",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
