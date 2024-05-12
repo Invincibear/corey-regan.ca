@@ -11,31 +11,36 @@ export function FooterToggleTheme() {
   const iconClassName = "size-6 transition-all"
   const activeThemeClasses = " bg-accent-foreground text-background"
 
+  const systemVariant = (theme === "system") ? "ghostFooterActive" : "ghostFooter"
+  const darkVariant   = (theme === "dark")   ? "ghostFooterActive" : "ghostFooter"
+  const lightVariant  = (theme === "light")  ? "ghostFooterActive" : "ghostFooter"
+
+
   return (
     <div className="flex -ml-2">
       <Button
-        className = {`${buttonClassName} ${(theme === "system") ? activeThemeClasses : ""}`}
+        className = {buttonClassName}
         onClick   = {() => setTheme("system")}
         title     = "Toggle system's default theme"
-        variant   = "ghost"
+        // variant   = {systemVariant}  /* TODO causing console error */
       >
         <SunMoon className={iconClassName} />
         <span className="sr-only">System</span>
       </Button>
       <Button
-        className = {`${buttonClassName} ${(theme === "dark") ? activeThemeClasses : ""}`}
+        className = {buttonClassName}
         onClick   = {() => setTheme("dark")}
         title     = "Toggle dark theme"
-        variant   = "ghost"
+        variant   = {darkVariant}
       >
         <Moon className={iconClassName} />
         <span className="sr-only">Dark</span>
       </Button>
       <Button
-        className = {`${buttonClassName} ${(theme === "light") ? activeThemeClasses : ""}`}
+        className = {buttonClassName}
         onClick   = {() => setTheme("light")}
         title     = "Toggle light theme"
-        variant   = "ghost"
+        variant   = {lightVariant}
       >
         <Sun className={iconClassName} />
         <span className="sr-only">Light</span>
