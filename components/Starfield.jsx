@@ -9,7 +9,7 @@ const COUNT = 800
 const SPEED = 0.1
 
 /* https://github.com/kirkwat/portfolio/blob/main/src/components/landing/starfield.astro */
-function Starfield() {
+export default function Starfield() {
   const canvasRef    = useRef(null)
   const containerRef = useRef(null)
 
@@ -78,5 +78,3 @@ function Starfield() {
     </div>
   )
 }
-
-export default Starfield

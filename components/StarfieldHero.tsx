@@ -28,7 +28,7 @@ export default function StarfieldHero() {
 
     return () => {
       // Destroy Typed instance during component unmount to stop animation
-      // Also prevents duplicate cursor '|'
+      // This also prevents duplicate '|' cursor
       typed.destroy();
     }
   }, []);
@@ -38,17 +38,16 @@ export default function StarfieldHero() {
       <Starfield />
       <div className="relative w-full h-screen flex items-center justify-center overflow-x-hidden">
         <div
-          id="hero-title"
-          className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
-          style={{ transform: "translateZ(0)" }}
+          id        = "hero-title"
+          className = "flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
+          style     = {{ transform: "translateZ(0)" }}
         >
           <motion.h1
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 5 }}
-            className="hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
+            initial     = {{ opacity: 0 }}
+            whileInView = {{ opacity: 1 }}
+            transition  = {{ duration: 5 }}
+            className   = "hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
           >
-          {/*<h1 className="hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4">*/}
             Corey
             <br/>
             Regan
