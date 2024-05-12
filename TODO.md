@@ -1,9 +1,9 @@
 # TODO
-- ~~Combine `corey-regan.ca` and `corey-regan.ca-blog` repos~~
-  - ~~Show recent posts on bottom of landing page~~
-  - Make blog header prettier
-  - Apply theme colors, light theme looks bad
 - Add functionality to work experience tags
+- Second pass at theme colors
+- Framer-motion to scroll down from starfield into wormhole into work experience section
+  - wormhole: https://www.youtube.com/watch?v=Il_GKGFggWY
+  - work xp should be centered with size-0 and expand to size-full
 - ~~Theme switcher~~
 - ~~Center starfield text~~
 - ~~Footer looks pretty bare, expand on it~~
@@ -11,3 +11,7 @@
 - ~~Replace deprecated brand icons~~
 - ~~Don't pause certifications carousel on mobile~~
 - ~~Consistent spacing between timeline events on mobile~~
+- ~~Combine `corey-regan.ca` and `corey-regan.ca-blog` repos~~
+  - ~~Show recent posts on bottom of landing page~~
+  - ~~Make blog header prettier~~
+  - ~~Apply theme colors, light theme looks bad~~
