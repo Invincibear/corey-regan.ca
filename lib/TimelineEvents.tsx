@@ -91,7 +91,7 @@ const TimelineEvents: TimelineEvent[] = [
   },
   {
     date:        "2021 - 2022",
-    id:          "ies",
+    id:          "freelancer",
     headline:    "Freelancer.com",
     description: "I was a member of a three-person team managing the AWS infra serving ~4 billion non-cached requests per week to ~55 million users worldwide. I was responsible for maintaining uptime, remediating outages, maintaining systems upgrades, upgrading a dozen Kubernetes clusters, and deploying robust scalable infrastructure.",
     icon:        <PencilLine />,
