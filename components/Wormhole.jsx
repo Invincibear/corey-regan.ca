@@ -97,7 +97,13 @@ export default function Wormhole(
       if (isVisible && camera.position.z > zoomEnd) camera.position.z -= zoomSpeed*/
 
       // Dynamic zoom based on scroll progress
-      if (isVisible) camera.position.z = zoomStartPosition - (zoomStartPosition - zoomEndPosition) * scrollProgress.get() * zoomScrollSpeed
+      if (isVisible) {
+        camera.position.z =
+          zoomStartPosition
+          - (zoomStartPosition - zoomEndPosition)
+          * scrollProgress.get()
+          * zoomScrollSpeed
+      }
 
       renderer.render(scene, camera)
     }
@@ -118,7 +124,7 @@ export default function Wormhole(
       window.removeEventListener('resize', handleResize)
       mountRef.current.removeChild(renderer.domElement)
     }
-  }, [isVisible])
+  }, [isVisible, scrollProgress, zoomScrollSpeed])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -126,14 +132,19 @@ export default function Wormhole(
         const zoomStartPosition = 15
         const zoomEndPosition   = 5
 
-        cameraRef.current.position.z = zoomStartPosition - (zoomStartPosition - zoomEndPosition) * scrollProgress.get()
+        cameraRef.current.position.z =
+          zoomStartPosition
+          - (zoomStartPosition - zoomEndPosition)
+          * scrollProgress.get()
+          * zoomScrollSpeed
       }
     }
 
     scrollProgress.on("change", handleScroll)
 
     return () => scrollProgress.on("change", () => {})
-  }, [scrollProgress]);
+  }, [scrollProgress, zoomScrollSpeed])
 
-  return <div ref={mountRef} id="wormhole" className="min-w-full h-svh" />
+  // return <div ref={mountRef} id="wormhole" className="min-w-full h-svh" />
+  return <div ref={mountRef} id="wormhole" className="min-w-full h-full" />
 }
