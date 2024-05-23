@@ -50,7 +50,7 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
 
         {timelineEvent.logo && (
           <div className={`flex justify-${position === 'timeline-end' ? 'start' : 'end'} my-2`}>
-            <Link href={`/timeline/${timelineEvent.logo.src}`}>
+            <Link href={`/images/timeline/${timelineEvent.logo.src}`}>
               <Image
                 src={`/images/timeline/${timelineEvent.logo.src}`}
                 alt={timelineEvent.logo.alt ?? ""}
@@ -66,7 +66,7 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
 
         {timelineEvent.image && (
           <div className={`flex justify-${position === 'timeline-end' ? 'start' : 'end'} mt-4`}>
-            <Link href={`/timeline/${timelineEvent.image.src}`}>
+            <Link href={`/images/timeline/${timelineEvent.image.src}`}>
               <Image
                 src={`/images/timeline/${timelineEvent.image.src}`}
                 alt={timelineEvent.image.alt ?? ""}
