@@ -17,10 +17,11 @@ import {
 
 
 type timelineEventImage = {
-  alt?:   string
+  link?:  string
   src:    string
   width:  number
   height: number
+  alt?:   string
 }
 export type TimelineEvent = {
   date:         string
@@ -49,10 +50,10 @@ const TimelineEvents: TimelineEvent[] = [
                  ),
     icon:        <Landmark />,
     logo:        {
-      alt:    "Paddle",
       src:    "Paddle.svg",
       width:  200,
       height: 69,
+      alt:    "Paddle",
     },
     link:        "https://github.com/PaddleHQ/paddle-python-sdk",
     role:        "Backend Engineer",
@@ -65,10 +66,10 @@ const TimelineEvents: TimelineEvent[] = [
     description: "I was responsible for writing Terraform code to port on-prem infra and apps to a cloud-native architecture, deployed to Azure using Terraform Cloud.",
     icon:        <CloudDownload />,
     logo:        {
-      alt:    "SkyTap provides IBM hardware in Azure",
       src:    "skytap.png",
       width:  227,
       height: 52,
+      alt:    "SkyTap provides IBM hardware in Azure",
     },
     role:        "Site Reliability Engineer",
     tags:        ["Azure", "Terraform", "Kubernetes", "Ansible", "GitHub Actions", "BASH"],
@@ -80,10 +81,11 @@ const TimelineEvents: TimelineEvent[] = [
     description: "I architected, programmed, and deployed a SaaS app to selectively synchronize calendar events between Google and O365 calendar accounts and apply filters and transformations to copied events.",
     icon:        <CalendarCheck />,
     image:       {
-      alt:    "SyncMyCalendars.app",
+      link:   "https://syncmycalendars.app",
       src:    "syncmycalendars.app.png",
       width:  3825,
       height: 2790,
+      alt:    "SyncMyCalendars.app",
     },
     link:        "https://syncmycalendars.app",
     role:        "Full-Stack Engineer",
@@ -96,8 +98,8 @@ const TimelineEvents: TimelineEvent[] = [
     description: "I was a member of a three-person team managing the AWS infra serving ~4 billion non-cached requests per week to ~55 million users worldwide. I was responsible for maintaining uptime, remediating outages, maintaining systems upgrades, upgrading a dozen Kubernetes clusters, and deploying robust scalable infrastructure.",
     icon:        <PencilLine />,
     logo:        {
-      alt:    "Freelancer.com",
       src:    "freelancer.svg",
+      alt:    "Freelancer.com",
       width:  300,
       height: 72,
     },
@@ -111,10 +113,11 @@ const TimelineEvents: TimelineEvent[] = [
     description: "The 2021 GameStop $GME stock sensation took over and I decided to chronicle events as they unfolded for future journalists to reference. The website consists of JSON data parsed with PHP, served using vanilla JS with CSS3 styling and animations.",
     icon:        <TrendingUp />,
     image:       {
-      alt:    "GameStop's short squeeze, documented",
+      link:   "https://gmetimeline.com",
       src:    "gmetimeline.com.png",
       width:  3825,
       height: 1928,
+      alt:    "GameStop's short squeeze, documented",
     },
     link:        "https://gmetimeline.com",
     role:        "Full-Stack Engineer",
@@ -127,10 +130,11 @@ const TimelineEvents: TimelineEvent[] = [
     description: "Inspired by Sam Oven's War Map Calendar, I turned the basic Excel spreadsheet into a fully-fledged SaaS app.",
     icon:        <CalendarDays />,
     image:       {
-      alt:    "The War Map Calendar organizes your life and keeps you goal-oriented",
+      link:   "https://warmapcalendar.com",
       src:    "warmapcalendar.com.png",
       width:  3840,
       height: 1928,
+      alt:    "The War Map Calendar organizes your life and keeps you goal-oriented",
     },
     link:        "https://warmapcalendar.com",
     role:        "Full-Stack Engineer",
@@ -143,10 +147,11 @@ const TimelineEvents: TimelineEvent[] = [
     description: "I designed a Wordpress website and managed its deployment and updates.",
     icon:        <RefreshCcwDot />,
     image:       {
-      alt:    "RediPump",
+      link:   "https://redipump.com",
       src:    "redipump.com.png",
       width:  3817,
       height: 1932,
+      alt:    "RediPump",
     },
     link:        "https://redipump.com",
     role:        "Front-End Engineer",
@@ -159,10 +164,10 @@ const TimelineEvents: TimelineEvent[] = [
     description: "As the primary engineer of a national web hosting company providing dedicated servers, co-located servers, virtual machines, virtual private servers, and shared web hosting in 3 coast-to-coast datacenters, I also provided L3 helpdesk support as-needed, programming support, and training for our team of junior systems administrators and helpdesk technicians.",
     icon:        <Rss />,
     logo:       {
-      alt:    "Dynamic Hosting",
       src:    "dynamichosting-logo.png",
       width:  456,
       height: 90,
+      alt:    "Dynamic Hosting",
     },
     role:        "Sr. Systems Engineer",
     tags:        ["CentOS", "Virtuozzo", "Ansible", "BASH", "Plesk", "Wordpress", "PHP", "Cisco"],
