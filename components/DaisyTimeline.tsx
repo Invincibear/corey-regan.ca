@@ -11,7 +11,7 @@ export default function DaisyTimeline({ timelineEvents }: TimelineComponentProps
   let position: string = "timeline-end"
 
   return (
-    <section className="bg-accent-background">
+    <section className="bg-accent-background pt-40">
       <h3 className="mb-20 text-5xl font-bold text-center">Work Experience</h3>
       <div id="timeline" className="pb-40 flex justify-center items-center overflow-x-hidden">
           <ul className="max-w-8xl timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
