@@ -22,7 +22,7 @@ export function FooterToggleTheme() {
         className = {buttonClassName}
         onClick   = {() => setTheme("system")}
         title     = "Toggle system's default theme"
-        // variant   = {systemVariant}  /* TODO causing console error */
+        variant   = {systemVariant}
       >
         <SunMoon className={iconClassName} />
         <span className="sr-only">System</span>
