@@ -9,7 +9,7 @@ export function FooterToggleTheme() {
   const { theme, setTheme } = useTheme()
   const buttonClassName = "w-10 px-0"
   const iconClassName = "size-6 transition-all"
-  const activeThemeClasses = " bg-accent-foreground text-background"
+  // const activeThemeClasses = " bg-accent-foreground text-background"
 
   const systemVariant = (theme === "system") ? "ghostFooterActive" : "ghostFooter"
   const darkVariant   = (theme === "dark")   ? "ghostFooterActive" : "ghostFooter"
