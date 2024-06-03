@@ -4,10 +4,10 @@ import { gsap }              from 'gsap'
 import { useEffect, useRef } from 'react'
 import * as THREE            from 'three'
 import { Curves }            from 'three/examples/jsm/curves/CurveExtras'
-import { SceneUtils }        from 'three/examples/jsm/utils/SceneUtils.js'
+import { SceneUtils }        from 'three/examples/jsm/utils/SceneUtils'
 
 
-function WormholeCurved({ scrollProgress }) {
+function WormholeCurved() {
   const mountRef = useRef(null)
 
   useEffect(() => {
@@ -75,7 +75,7 @@ function WormholeCurved({ scrollProgress }) {
       opacity: parameters.wormhole.wireframeStarsSpeeder.material.opacity,
       blending: THREE.AdditiveBlending,
       side: THREE.BackSide,
-      wireframe: true,  // required to show upcoming wormhole trail
+      wireframe: false,  // required to show upcoming wormhole trail
     })
 
     library.textures.wormhole.galaxy[1].wrapS = THREE.RepeatWrapping

@@ -65,59 +65,57 @@ export default function StarfieldHero() {
   )
 
   return (
-    <>
-      <motion.section
-        className = "w-full h-screen bg-black overflow-hidden fixed top-0"
-        ref       = {sectionRef}
+    <motion.section
+      className = "w-full h-screen bg-black overflow-hidden fixed top-0"
+      ref       = {sectionRef}
+      style     = {{
+        opacity,
+        scale,
+        transformOrigin: "center",
+      }}
+    >
+      <motion.div
+        className = "w-full h-full bg-black"
+        id        = "hero"
+        ref       = {divRef}
         style     = {{
+          position: "relative",
           opacity,
           scale,
           transformOrigin: "center",
         }}
       >
-        <motion.div
-          className = "w-full h-full bg-black"
-          id        = "hero"
-          ref       = {divRef}
-          style     = {{
-            position: "relative",
-            opacity,
-            scale,
-            transformOrigin: "center",
-          }}
-        >
-          <Starfield />
-          <div className="w-full h-screen flex items-center justify-center overflow-x-hidden">
-            <div
-              id        = "hero-title"
-              className = "flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
-              style     = {{ transform: "translateZ(0)" }}
+        <Starfield />
+        <div className="w-full h-screen flex items-center justify-center overflow-x-hidden">
+          <div
+            id        = "hero-title"
+            className = "flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
+            style     = {{ transform: "translateZ(0)" }}
+          >
+            <motion.h1
+              className   = "hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
+              initial     = {{ opacity: 0, scale: 0 }}
+              transition  = {{ duration: 3 }}
+              viewport    = {{ once: true }}
+              whileInView = {{ opacity: 1, scale: 1 }}
             >
-              <motion.h1
-                className   = "hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
-                initial     = {{ opacity: 0, scale: 0 }}
-                transition  = {{ duration: 3 }}
-                viewport    = {{ once: true }}
-                whileInView = {{ opacity: 1, scale: 1 }}
-              >
-                Corey
-                <br/>
-                Regan
-              </motion.h1>
-              <h2 className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-2xl sm:text-5xl lg:text-6xl">
-                <div className="flex justify-center items-baseline">
-                  <div className="w-120 text-right pr-3">
-                    <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
-                  </div>
-                  <div className="w-120 text-left pl-3">
-                    <span className="font-bold shimmer">Engineer</span>
-                  </div>
+              Corey
+              <br/>
+              Regan
+            </motion.h1>
+            <h2 className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-2xl sm:text-5xl lg:text-6xl">
+              <div className="flex justify-center items-baseline">
+                <div className="w-120 text-right pr-3">
+                  <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
                 </div>
-              </h2>
-            </div>
+                <div className="w-120 text-left pl-3">
+                  <span className="font-bold shimmer">Engineer</span>
+                </div>
+              </div>
+            </h2>
           </div>
-        </motion.div>
-      </motion.section>
-    </>
+        </div>
+      </motion.div>
+    </motion.section>
   )
 }
