@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <div id="scrollcontainer" ref={scrollContainer}>
-        <WormholeHero scrollContainer={scrollContainer} />
+        <WormholeHero />
         <StarfieldHero />
       </div>
       <CertificationCarousel />

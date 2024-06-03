@@ -1,20 +1,45 @@
 "use client"
 
 import WormholeCurved from "@/components/WormholeCurved"
-import {MutableRefObject, useRef} from "react"
+import {useEffect, useState, useRef} from "react"
 
 import { motion, useAnimation, useScroll, useSpring, useTransform } from "framer-motion"
 
 
 // https://github.com/jesuisundev/acrossthemultiverse/
-export default function WormholeHero(scrollContainer: MutableRefObject<any>) {
+export default function WormholeHero() {
   // Reference HTML elements
   const sectionRef = useRef(null)
   const divRef = useRef(null)
+  
+  
+  const [scrollPoints, setScrollPoints] = useState({ vh: 0, bodyHeight: 0, wormholeSectionStart: 0, wormholeSectionEnd: 0 })
+  useEffect(() => {
+    const updateScrollPoints = () => {
+      const vh = window.innerHeight
+      const bodyHeight = document.body.scrollHeight
 
+      const wormholeSection = sectionRef.current.getBoundingClientRect()
+      const wormholeSectionStart = wormholeSection.top + window.scrollY
+      const wormholeSectionEnd = wormholeSectionStart + wormholeSection.height - vh
+      // const mid = start + wormholeSection.height / 2
+      setScrollPoints({ vh, bodyHeight, wormholeSectionStart, wormholeSectionEnd })
+    }
+
+    // Update scroll points initially and on resize
+    updateScrollPoints()
+    window.addEventListener('resize', updateScrollPoints)
+    return () => window.removeEventListener('resize', updateScrollPoints)
+  }, [])
+
+  // useEffect(() => {
+  //   console.debug(scrollPoints)
+  // }, [scrollPoints])
+  
   const {scrollYProgress} = useScroll({
-    target:    sectionRef.current,
-    container: scrollContainer,
+    // target:    sectionRef.current,
+    // container: scrollContainer,
+    container: sectionRef.current,
     offset:    ["start start", "end end"],
   })
   const scaleZoom = useSpring(scrollYProgress, {bounce: 0}) // 0 bounce prevents unintentional backwards movement
@@ -28,23 +53,60 @@ export default function WormholeHero(scrollContainer: MutableRefObject<any>) {
     scrollYProgress,
     // [0, 0.0420, 0.1, 0.18, 0.20],
     // [0, 0,      1,   1,    0],
-     [0, 0.0420, 0.1, 0.48, 0.52],
-    [0, 0,      1,   1,    0],
+     [
+       0,
+       0.0420,
+       0.1,
+       (scrollPoints.wormholeSectionEnd - scrollPoints.vh)       / scrollPoints.bodyHeight,
+       (scrollPoints.wormholeSectionEnd + (scrollPoints.vh / 2)) / scrollPoints.bodyHeight,
+     ],
+    [
+      0,
+      0,
+      1,
+      1,
+      0,
+    ],
   )
+
   const whiteDivOpacity = useTransform(
     scrollYProgress,
-     [0.48, 0.54, 1],
-    [0,    1,    1],
+     [
+       (scrollPoints.wormholeSectionEnd - scrollPoints.vh) / scrollPoints.bodyHeight,
+       (scrollPoints.wormholeSectionEnd + scrollPoints.vh) / scrollPoints.bodyHeight,
+       1,
+     ],
+    [
+      0,
+      1,
+      1,
+    ],
   )
   const whiteDivScale = useTransform(
     scrollYProgress,
-     [0.48, 0.52, 1],
-    [0,    1,    1],
+     [
+       (scrollPoints.wormholeSectionEnd - (scrollPoints.vh / 2)) / scrollPoints.bodyHeight,
+       (scrollPoints.wormholeSectionEnd + (scrollPoints.vh))     / scrollPoints.bodyHeight,
+       1,
+     ],
+    [
+      0,
+      1,
+      1,
+    ],
   )
   const whiteDivBorderRadius = useTransform(
     scrollYProgress,
-     [0.48,  0.50,  0.52],
-    ["50%", "50%", "0%"],
+     [
+       (scrollPoints.wormholeSectionEnd - scrollPoints.vh)       / scrollPoints.bodyHeight,
+       (scrollPoints.wormholeSectionEnd + (scrollPoints.vh / 2)) / scrollPoints.bodyHeight,
+       (scrollPoints.wormholeSectionEnd + scrollPoints.vh)       / scrollPoints.bodyHeight,
+     ],
+    [
+      "50%",
+      "50%",
+      "0%",
+    ],
   )
 
   return (
