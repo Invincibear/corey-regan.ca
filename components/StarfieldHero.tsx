@@ -37,21 +37,6 @@ export default function StarfieldHero() {
     }
   }, [])
 
-  const sectionVariants = {
-    visible: {
-      scale: 1,
-      transition: {
-        duration: .69 // This controls how fast the section comes into normal view
-      }
-    },
-    hidden: {
-      scale:   0,
-      transition: {
-        duration: 2 // Duration of the animation when the section goes out of view
-      }
-    }
-  }
-
   const { scrollYProgress } = useScroll({})
   const opacity = useTransform(
     scrollYProgress,

@@ -1,8 +1,8 @@
 "use client"
 
-import WormholeCurved                                 from "@/components/WormholeCurved"
-import { motion, useScroll, useSpring, useTransform } from "framer-motion"
-import {useEffect, useState, useRef}                  from "react"
+import WormholeCurved                      from "@/components/WormholeCurved"
+import { motion, useScroll, useTransform } from "framer-motion"
+import {useEffect, useState, useRef}       from "react"
 
 
 //
