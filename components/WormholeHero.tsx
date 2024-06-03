@@ -1,6 +1,7 @@
 "use client"
 
 import Wormhole from "@/components/Wormhole"
+import WormholeCurved from "@/components/WormholeCurved"
 import { useEffect, useRef, useState } from "react"
 
 import { motion, useAnimation, useScroll, useSpring, useTransform } from "framer-motion"
@@ -13,7 +14,7 @@ export default function WormholeHero() {
 
   // Zoom properties
   const zoomInitialSpeed = 5   // 0.3
-  const zoomFullyInViewSpeed = .3  // 2.69
+  const zoomFullyInViewSpeed = 3 //.3  // 2.69
   const [zoomScrollSpeed, setZoomScrollSpeed] = useState(zoomInitialSpeed)
 
   // Visibility properties
@@ -28,6 +29,7 @@ export default function WormholeHero() {
     // container: divRef.current,
     // offset:    ["end end", "end start"],
   })
+  const { scrollY } = useScroll()
   const scaleZoom = useSpring(scrollYProgress, { bounce: 0 }) // 0 bounce prevents unintentional backwards movement
   const controls = useAnimation();
 
@@ -92,7 +94,7 @@ export default function WormholeHero() {
   return (
     <motion.section
       id              = "wormhole-hero"
-      className       = "relative w-full bg-pink-500 h-500vh"
+      className       = "w-full bg-pink-500 h-500vh"
       ref             = {sectionRef}
       // onScroll        = {checkIfFullyVisible}
       onViewportEnter = {() => setIsSectionVisible(true)}
@@ -101,10 +103,15 @@ export default function WormholeHero() {
       <motion.div
         animate   = {controls}
         // className = "w-full h-full top-0"
-        className = "size-96 top-0"
+        className = "size-96 top-0 sticky h-screen"
         ref       = {divRef}
       >
-        <Wormhole
+{/*        <Wormhole
+          isVisible       = {isSectionVisible}
+          scrollProgress  = {scaleZoom}
+          zoomScrollSpeed = {zoomScrollSpeed}
+        />*/}
+        <WormholeCurved
           isVisible       = {isSectionVisible}
           scrollProgress  = {scaleZoom}
           zoomScrollSpeed = {zoomScrollSpeed}

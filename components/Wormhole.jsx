@@ -1,50 +1,36 @@
-"use client"
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import {ImprovedNoise} from "three/addons/math/ImprovedNoise";
 
-import { useEffect, useRef } from "react"
-import * as THREE            from "three"
-import { ImprovedNoise }     from "three/addons/math/ImprovedNoise.js"
-// import { OrbitControls }  from "three/addons/controls/OrbitControls.js"
+function Wormhole({ isVisible, scrollProgress, zoomScrollSpeed }) {
+  const mountRef = useRef(null);
+  const cameraRef = useRef(null);
+  const rendererRef = useRef(null);
+  const zoomSpeedRef = useRef(zoomScrollSpeed); // Use ref to track zoom speed
 
-
-// https://www.youtube.com/watch?v=Il_GKGFggWY
-// https://github.com/bobbyroe/wormhole-effect
-export default function Wormhole(
-  {
-    isVisible       = false,
-    scrollProgress,
-    zoomScrollSpeed = 0.3,
-  }
-) {
-  const mountRef  = useRef(null)
-  const cameraRef = useRef(null)
+  // Camera movement sequence
+  const zoomStartPosition  = 90
+  const zoomEndPosition    = 5    // Closer to the wormhole
+  // const zoomSpeed       = .3   // Was used for manual test animation
+  // const zoomScrollSpeed = 3.69 // Speed of scroll-linked zoom
 
   useEffect(() => {
-    // Canvas dimensions
-    const width  = mountRef.current.clientWidth
-    const height = mountRef.current.clientHeight
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    mountRef.current.appendChild(renderer.domElement);
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setSize(width, height)
-    mountRef.current.appendChild(renderer.domElement)
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.set(0.5, 0.5, 90); // Initial position
+    cameraRef.current = camera;
+    rendererRef.current = renderer;
 
-    // Scene
-    const scene = new THREE.Scene()
-    scene.fog   = new THREE.FogExp2(0x000000, 0.025)
-
-    // Camera movement sequence
-    const zoomStartPosition  = 90
-    const zoomEndPosition    = 5    // Closer to the wormhole
-    // const zoomSpeed       = .3   // Was used for manual test animation
-    // const zoomScrollSpeed = 3.69 // Speed of scroll-linked zoom
-
-    // Camera
-    const camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000)
-    camera.position.set(0.5, 0.5, zoomStartPosition)
-
-    // Controls
-    // const controls = new OrbitControls(camera, renderer.domElement)
-    // controls.update()
+    // Animation or scroll event handler
+    const updateCameraPosition = () => {
+      if (cameraRef.current) {
+        cameraRef.current.position.z = 90 - (85 * scrollProgress.get() * zoomSpeedRef.current); // Adjust formula as needed
+      }
+    };
 
     // Wormhole Geometry and Materials
     const radius     = 3
@@ -54,7 +40,7 @@ export default function Wormhole(
     const colors     = []
 
     const noise        = new ImprovedNoise()
-    const noisefreq    = .69 // how not-straight are the lines
+    const noiseFreq    = .69 // how not-straight are the lines
     const noiseAmp     = 0.3 // how tall are the ripples
     const color        = new THREE.Color()
     const hueNoiseFreq = 0.005
@@ -63,8 +49,8 @@ export default function Wormhole(
       let p           = new THREE.Vector3().fromBufferAttribute(tubeVerts, i)
       let v3          = p.clone()
       let vertexNoise = noise.noise(
-        v3.x * noisefreq,
-        v3.y * noisefreq,
+        v3.x * noiseFreq,
+        v3.y * noiseFreq,
         v3.z,
       )
 
@@ -90,61 +76,58 @@ export default function Wormhole(
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate)
 
-      /*// Rotate the wormhole
+      /*!// Rotate the wormhole
       if (isVisible) points.rotation.y += 0.005
 
       // Perform zoom by moving camera closer
       if (isVisible && camera.position.z > zoomEnd) camera.position.z -= zoomSpeed*/
 
       // Dynamic zoom based on scroll progress
-      if (isVisible) {
-        camera.position.z =
-          zoomStartPosition
-          - (zoomStartPosition - zoomEndPosition)
-          * scrollProgress.get()
-          * zoomScrollSpeed
-      }
+      if (isVisible) camera.position.z = zoomStartPosition
 
-      renderer.render(scene, camera)
+      rendererRef.current.render(scene, camera)
     }
     animate()
 
-    // Handle Resize
-    const handleResize = () => {
-      camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight
-      camera.updateProjectionMatrix()
+    // scrollProgress.on("change", updateCameraPosition); // Assuming scrollProgress has an onChange method
 
-      renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight)
-    }
-    window.addEventListener('resize', handleResize)
-
-    // Cleanup
     return () => {
-      cancelAnimationFrame(animationFrameId)
-      window.removeEventListener('resize', handleResize)
-      mountRef.current.removeChild(renderer.domElement)
-    }
-  }, [isVisible, scrollProgress, zoomScrollSpeed])
+      mountRef.current.removeChild(renderer.domElement);
+    };
+  }, []); // Setup only once
+
+
 
   useEffect(() => {
-    const handleScroll = () => {
+    // Animation or scroll event handler
+    const updateCameraPosition = () => {
       if (cameraRef.current) {
-        const zoomStartPosition = 15
-        const zoomEndPosition   = 5
+        cameraRef.current.position.z = 90 - (85 * scrollProgress.get() * zoomSpeedRef.current); // Adjust formula as needed
+      }
+    };
 
-        cameraRef.current.position.z =
-          zoomStartPosition
+    const animate = () => {
+      requestAnimationFrame(animate);
+      if (isVisible && cameraRef.current) {
+        // Use zoomSpeedRef.current in your calculations to apply changes
+        cameraRef.current.position.z = zoomStartPosition
           - (zoomStartPosition - zoomEndPosition)
           * scrollProgress.get()
-          * zoomScrollSpeed
+          * zoomSpeedRef.current
       }
-    }
+    };
+    animate();
+    scrollProgress.on("change", updateCameraPosition); // Assuming scrollProgress has an onChange method
+  }, []);  // Run this when visibility changes, but it doesn't need to re-run for zoom speed changes
 
-    scrollProgress.on("change", handleScroll)
 
-    return () => scrollProgress.on("change", () => {})
-  }, [scrollProgress, zoomScrollSpeed])
+  // Handles changes to scroll speed
+  useEffect(() => {
+    zoomSpeedRef.current = zoomScrollSpeed; // Update ref whenever zoom speed changes
+    console.debug("new zoom scroll speed useEffect")
+  }, [zoomScrollSpeed]);
 
-  // return <div ref={mountRef} id="wormhole" className="min-w-full h-svh" />
-  return <div ref={mountRef} id="wormhole" className="min-w-full h-full" />
+  return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
 }
+
+export default Wormhole
