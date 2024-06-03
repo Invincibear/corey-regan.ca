@@ -85,6 +85,11 @@ const config: Config = {
         "300vh": "300vh",
         "400vh": "400vh",
         "500vh": "500vh",
+        "600vh": "600vh",
+        "700vh": "700vh",
+        "800vh": "800vh",
+        "900vh": "900vh",
+        "1000vh": "1000vh",
       },
       keyframes: {
         "accordion-down": {

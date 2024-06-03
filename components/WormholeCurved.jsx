@@ -1,24 +1,17 @@
 "use client"
 
-import { gsap }                      from 'gsap'
-import { useEffect, useRef }         from 'react'
-import * as THREE                    from 'three'
-import { TorusKnot }                 from "three/examples/jsm/curves/CurveExtras"
-import { createMultiMaterialObject } from 'three/examples/jsm/utils/SceneUtils'
+import { gsap }              from 'gsap'
+import { useEffect, useRef } from 'react'
+import * as THREE            from 'three'
+import { Curves }            from 'three/examples/jsm/curves/CurveExtras'
+import { SceneUtils }        from 'three/examples/jsm/utils/SceneUtils.js'
 
 
-function WormholeCurved({ isVisible, scrollProgress, zoomScrollSpeed }) {
+function WormholeCurved({ scrollProgress }) {
   const mountRef = useRef(null)
 
   useEffect(() => {
     const scene = new THREE.Scene()
-
-    // const camera = new THREE.PerspectiveCamera(
-    //   75,
-    //   window.innerWidth / window.innerHeight,
-    //   0.1,
-    //   1000,
-    // )
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setSize(window.innerWidth, window.innerHeight)
     mountRef.current.appendChild(renderer.domElement)
@@ -47,7 +40,7 @@ function WormholeCurved({ isVisible, scrollProgress, zoomScrollSpeed }) {
         defaultForward:  0.5,
       },
       wormhole: {
-        speed: 0.000042069, // speed controlled by gsap.timeline()
+        speed: 0.0002, // speed controlled by gsap.timeline()
 
         wireframeStarsSpeeder: { material: { opacity: 0 } }, // opacity controlled by gsap.timeline()
         auraSpeeder:           { material: { opacity: 0 } }, // opacity controlled by gsap.timeline()
@@ -69,28 +62,25 @@ function WormholeCurved({ isVisible, scrollProgress, zoomScrollSpeed }) {
     )
     camera.position.z = 5
 
-    // Wormhole specific code
-    const path = new THREE.CurvePath()
-    path.add(new TorusKnot(parameters.wormhole.tubeLength))
-
+    // Create the wormhole shape, assign textures to 5 different materials that we'll use
+    // to stylize the wormhole
+    const shape = new Curves.TorusKnot(parameters.wormhole.tubeLength)
 
     library.textures.wormhole.galaxy[0].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[0].wrapT = THREE.MirroredRepeatWrapping
     library.textures.wormhole.galaxy[0].repeat.set(40, 2)
-
     const wireframeStarsSpeederMaterial = new THREE.MeshBasicMaterial({
       map: library.textures.wormhole.galaxy[0],
       transparent: false,
       opacity: parameters.wormhole.wireframeStarsSpeeder.material.opacity,
       blending: THREE.AdditiveBlending,
       side: THREE.BackSide,
-      wireframe: true,
+      wireframe: true,  // required to show upcoming wormhole trail
     })
 
     library.textures.wormhole.galaxy[1].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[1].wrapT = THREE.MirroredRepeatWrapping
     library.textures.wormhole.galaxy[1].repeat.set(1, 2)
-
     const auraSpeederMaterial = new THREE.MeshBasicMaterial({
       map: library.textures.wormhole.galaxy[1],
       transparent: false,
@@ -102,7 +92,6 @@ function WormholeCurved({ isVisible, scrollProgress, zoomScrollSpeed }) {
     library.textures.wormhole.galaxy[2].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[2].wrapT = THREE.MirroredRepeatWrapping
     library.textures.wormhole.galaxy[2].repeat.set(20, 2)
-
     const nebulaSpeederMaterial = new THREE.MeshBasicMaterial({
       map: library.textures.wormhole.galaxy[2],
       transparent: false,
@@ -114,7 +103,6 @@ function WormholeCurved({ isVisible, scrollProgress, zoomScrollSpeed }) {
     library.textures.wormhole.galaxy[3].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[3].wrapT = THREE.MirroredRepeatWrapping
     library.textures.wormhole.galaxy[3].repeat.set(10, 2)
-
     const starsSpeederMaterial = new THREE.MeshBasicMaterial({
       map: library.textures.wormhole.galaxy[3],
       transparent: false,
@@ -126,7 +114,6 @@ function WormholeCurved({ isVisible, scrollProgress, zoomScrollSpeed }) {
     library.textures.wormhole.galaxy[4].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[4].wrapT = THREE.MirroredRepeatWrapping
     library.textures.wormhole.galaxy[4].repeat.set(20, 2)
-
     const clusterSpeederMaterial = new THREE.MeshBasicMaterial({
       map: library.textures.wormhole.galaxy[4],
       transparent: false,
@@ -136,13 +123,13 @@ function WormholeCurved({ isVisible, scrollProgress, zoomScrollSpeed }) {
     })
 
     const wormholeGeometry = new THREE.TubeGeometry(
-      path,
+      shape,
       parameters.wormhole.tubeSegments,
       parameters.wormhole.tubeRadius,
       parameters.wormhole.tubeSegments,
       true,
     )
-    const wormholeTubeMesh = createMultiMaterialObject(wormholeGeometry, [
+    const wormholeTubeMesh = SceneUtils.createMultiMaterialObject(wormholeGeometry, [
       wireframeStarsSpeederMaterial,
       auraSpeederMaterial,
       nebulaSpeederMaterial,
@@ -161,48 +148,46 @@ function WormholeCurved({ isVisible, scrollProgress, zoomScrollSpeed }) {
       cameraPosition += parameters.wormhole.speed
       if (cameraPosition > 1) cameraPosition = 0 // Reset progress to loop the animation
 
-      const point = path.getPointAt(cameraPosition)
-      const tangent = path.getTangentAt(cameraPosition)
+      const point = shape.getPointAt(cameraPosition)
+      const tangent = shape.getTangentAt(cameraPosition)
 
       camera.position.copy(point)
       camera.lookAt(point.clone().add(tangent))
 
       renderer.render(scene, camera)
     }
-
     animate()
 
     // GSAP animations
     const wormholeTimeline = gsap.timeline()
 
-    // Initial massive boost at wormhole enter
-    wormholeTimeline
-      .to(starsSpeederMaterial,          { duration: 3, opacity: 1 }, 0)
+    // All the params to play with
+/*    wormholeTimeline
+      .to(starsSpeederMaterial,          { duration: 3, opacity: 0 }, 0)
       .to(wireframeStarsSpeederMaterial, { duration: 3, opacity: 0 }, 0)
       .to(auraSpeederMaterial,           { duration: 3, opacity: 0 }, 0)
       .to(clusterSpeederMaterial,        { duration: 3, opacity: 0 }, 0)
       .to(nebulaSpeederMaterial,         { duration: 3, opacity: 0 }, 0)
-      .to(parameters.wormhole,           { duration: 1, speed: 0.000025 }, 0)
+      .to(parameters.wormhole,           { duration: 3, speed: 0.00025 }, 0)*/
 
-/*    // Adding speed and noises
     wormholeTimeline
-      .to(clusterSpeederMaterial, { duration: 3, opacity: 1 }, 3)
-      .to(auraSpeederMaterial, { duration: 3, opacity: 0 }, 3)
-      .to(parameters.wormhole, { duration: 3, speed: 0.00002 }, 3)
+      .to(starsSpeederMaterial, { duration: 3.5, opacity: .3 }, 0)
+      .to(wireframeStarsSpeederMaterial, { duration: 3.5, ease: 'expo.out', opacity: .3 }, 0)
+      .to(auraSpeederMaterial, { duration: 3.5, ease: 'expo.out', opacity: 1 }, 0)
+      .to(window.wormhole, { duration: 3.5, ease: 'expo.out', speed: .00002500 }, 0)
 
-    // Adding speed and nebula distorted
     wormholeTimeline
-      .to(nebulaSpeederMaterial, { duration: 3, opacity: 1 }, 7)
-      .to(clusterSpeederMaterial, { duration: 3, opacity: 0 }, 7)
-      .to(auraSpeederMaterial, { duration: 3, opacity: 0.7 }, 7)
-      .to(parameters.wormhole, { duration: 3, speed: 0.000018 }, 7)
+      .to(clusterSpeederMaterial, { duration: 3, opacity: 1 }, 2)
+    
+    wormholeTimeline
+      .to(auraSpeederMaterial, { duration: 1, opacity: 0 }, 3.5)
+      .to(window.wormhole, { duration: 3, speed: .00002000 }, 3.5)
 
-    // Arrival
     wormholeTimeline
-      .to(nebulaSpeederMaterial, { duration: 3, opacity: 1 }, 10)
-      .to(clusterSpeederMaterial, { duration: 3, opacity: 1 }, 10)
-      .to(auraSpeederMaterial, { duration: 3, opacity: 1 }, 10)
-      .to(parameters.wormhole, { duration: 3, speed: 0.000069 }, 10)*/
+      .to(nebulaSpeederMaterial, { duration: 3, opacity: .5 }, 6.5)
+      .to(clusterSpeederMaterial, { duration: 3, opacity: 0 }, 6.5)
+      .to(auraSpeederMaterial, { duration: 3, opacity: 0.4 }, 6.5)
+      .to(window.wormhole, { duration: 3, speed: .00001800 }, 6.5)
 
     const handleResize = () => {
       const { innerWidth, innerHeight } = window
