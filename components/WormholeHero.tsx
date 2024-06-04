@@ -4,6 +4,8 @@ import WormholeCurved                      from "@/components/WormholeCurved"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useEffect, useState, useRef }     from "react"
 
+import "@/styles/wormhole.css"
+
 
 //
 // Wormhole brought to you in part by: 
@@ -161,7 +163,7 @@ export default function WormholeHero() {
       "0%",
     ],
   )
-
+  
   const scrollToTarget = () => {
     if (hasAutoScrolled.current) return
 
@@ -180,7 +182,12 @@ export default function WormholeHero() {
       if (progress < duration) {
         window.requestAnimationFrame(step)
       } else {
-        console.debug('we reached the end of our autoscroll')
+        // We reached the end of our auto-scroll
+
+        document.exitFullscreen()
+        if (sectionRef.current) sectionRef.current.classList.remove('cursor-none')
+        document.body.classList.remove('scrollbar-none')
+
         isAutoScrolling.current = false // Reset flag once scrolling is complete
         hasAutoScrolled.current = true  // But note that we have scrolled
       }
@@ -198,7 +205,13 @@ export default function WormholeHero() {
         window.scrollY <= scrollPoints.wormholeSectionEnd
       ) {
         // We should have scrolled past one view height but not past the entire wormhole <section>
+        // Which means it's time to start auto-scrolling
+
         isAutoScrolling.current = true // Set flag to true to prevent further auto-scrolls
+
+        document.documentElement.requestFullscreen()
+        if (sectionRef.current) sectionRef.current.classList.add('cursor-none')
+        document.body.classList.add('scrollbar-none')
 
         const autoScroll = setTimeout(() => scrollToTarget(), 200)
         return () => clearTimeout(autoScroll)
@@ -217,28 +230,28 @@ export default function WormholeHero() {
 
   return (
     <motion.section
-      id="wormhole-hero"
-      className="bg-black w-full h-1000vh relative top-0 z-10 hidden xl:block" // hide on small screens
-      ref={sectionRef}
-      style={{opacity: wormholeSectionOpacity}}
+      id        = "wormhole-hero"
+      className = "bg-black w-full h-1000vh relative top-0 z-10 hidden xl:block"
+      ref       = {sectionRef}
+      style     = {{opacity: wormholeSectionOpacity}}
     >
       <motion.div
-        className="bg-white max-w-full max-h-screen sticky z-20 mx-auto"
+        className="bg-white max-w-full max-h-screen sticky z-20"
         style={{
-          borderRadius: whiteDivBorderRadius,
-          opacity: whiteDivOpacity,
-          scale: whiteDivScale,
+          borderRadius:    whiteDivBorderRadius,
+          opacity:         whiteDivOpacity,
+          scale:           whiteDivScale,
           transformOrigin: "center",
-          width: whiteDivWidth,
-          height: whiteDivHeight,
-          top: whiteDivTopPosition,
+          width:           whiteDivWidth,
+          height:          whiteDivHeight,
+          top:             whiteDivTopPosition,
         }}
       >
       </motion.div>
       <motion.div
-        className="w-screen h-screen top-0 sticky"
-        ref={divRef}
-        style={{opacity: wormholeDivOpacity}}
+        className = "w-screen h-screen top-0 sticky"
+        ref       = {divRef}
+        style     = {{opacity: wormholeDivOpacity}}
       >
         <WormholeCurved/>
       </motion.div>
