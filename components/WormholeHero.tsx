@@ -2,7 +2,7 @@
 
 import WormholeCurved                      from "@/components/WormholeCurved"
 import { motion, useScroll, useTransform } from "framer-motion"
-import {useEffect, useState, useRef, RefObject, MutableRefObject} from "react"
+import { useEffect, useState, useRef }     from "react"
 
 
 //
