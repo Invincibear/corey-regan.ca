@@ -2,7 +2,7 @@
 
 import WormholeCurved                      from "@/components/WormholeCurved"
 import { motion, useScroll, useTransform } from "framer-motion"
-import {useEffect, useState, useRef}       from "react"
+import {useEffect, useState, useRef, RefObject, MutableRefObject} from "react"
 
 
 //
@@ -10,8 +10,10 @@ import {useEffect, useState, useRef}       from "react"
 // https://github.com/jesuisundev/acrossthemultiverse/
 //
 export default function WormholeHero() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const divRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const divRef = useRef<HTMLDivElement | null>(null)
+  const isAutoScrolling = useRef(false)
+  const hasAutoScrolled = useRef(false)
 
   const [scrollPoints, setScrollPoints] = useState({
     viewHeight:           0,
@@ -160,10 +162,63 @@ export default function WormholeHero() {
     ],
   )
 
+  const scrollToTarget = () => {
+    if (hasAutoScrolled.current) return
+
+    const targetPosition = (scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight) ?? 0
+    const startPosition = window.scrollY
+    const distance = targetPosition - startPosition
+    const duration = 6000 // Duration in milliseconds
+    let start: number | null = null
+
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp
+      const progress = timestamp - start
+      const increment = Math.min(progress / duration, 1)
+      window.scrollTo(0, startPosition + distance * increment)
+
+      if (progress < duration) {
+        window.requestAnimationFrame(step)
+      } else {
+        console.debug('we reached the end of our autoscroll')
+        isAutoScrolling.current = false // Reset flag once scrolling is complete
+        hasAutoScrolled.current = true  // But note that we have scrolled
+      }
+    }
+
+    window.requestAnimationFrame(step)
+  }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        !isAutoScrolling.current &&
+        !hasAutoScrolled.current &&
+        window.scrollY > scrollPoints.viewHeight &&
+        window.scrollY <= scrollPoints.wormholeSectionEnd
+      ) {
+        // We should have scrolled past one view height but not past the entire wormhole <section>
+        isAutoScrolling.current = true // Set flag to true to prevent further auto-scrolls
+
+        const autoScroll = setTimeout(() => scrollToTarget(), 200)
+        return () => clearTimeout(autoScroll)
+      } else if (isAutoScrolling.current) {
+        // Actively auto-scrolling
+      } else if (hasAutoScrolled.current) {
+        // Already auto-scrolled, not auto-scrolling again
+      } else {
+        // Something else is up, should probably log this to console
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [scrollYProgress, scrollPoints])
+
   return (
     <motion.section
       id="wormhole-hero"
-      className="bg-black w-full h-1000vh relative top-0 z-10" //  bg-pink-500
+      className="bg-black w-full h-1000vh relative top-0 z-10 hidden xl:block" // hide on small screens
       ref={sectionRef}
       style={{opacity: wormholeSectionOpacity}}
     >
@@ -179,14 +234,14 @@ export default function WormholeHero() {
           top: whiteDivTopPosition,
         }}
       >
-    </motion.div>
-    <motion.div
-      className="w-screen h-screen top-0 sticky"
-      ref={divRef}
-      style={{opacity: wormholeDivOpacity}}
-    >
-      <WormholeCurved/>
-    </motion.div>
-  </motion.section>
+      </motion.div>
+      <motion.div
+        className="w-screen h-screen top-0 sticky"
+        ref={divRef}
+        style={{opacity: wormholeDivOpacity}}
+      >
+        <WormholeCurved/>
+      </motion.div>
+    </motion.section>
   )
 }

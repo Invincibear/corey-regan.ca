@@ -50,7 +50,7 @@ function WormholeCurved() {
 
         tubeSegments: 500,
         tubeRadius:   5,
-        tubeLength:   500,
+        tubeLength:   800,
       },
     }
 
@@ -171,23 +171,52 @@ function WormholeCurved() {
       .to(parameters.wormhole,           { duration: 3, speed: 0.00025 }, 0)*/
 
     wormholeTimeline
-      .to(starsSpeederMaterial, { duration: 3.5, opacity: .3 }, 0)
-      .to(wireframeStarsSpeederMaterial, { duration: 3.5, ease: 'expo.out', opacity: .3 }, 0)
-      .to(auraSpeederMaterial, { duration: 3.5, ease: 'expo.out', opacity: 1 }, 0)
-      .to(window.wormhole, { duration: 3.5, ease: 'expo.out', speed: .00002500 }, 0)
+      .to(starsSpeederMaterial,          { duration: 3.5, opacity: 0.3 },                          0)
+      .to(wireframeStarsSpeederMaterial, { duration: 3.5, opacity: 0.2,        ease: 'expo.out' }, 0)
+      .to(auraSpeederMaterial,           { duration: 3.5, opacity: 1,          ease: 'expo.out' }, 0)
+      .to(window.wormhole,               { duration: 3.5, speed:   0.00002500, ease: 'expo.out' }, 0)
 
     wormholeTimeline
       .to(clusterSpeederMaterial, { duration: 3, opacity: 1 }, 2)
-    
-    wormholeTimeline
-      .to(auraSpeederMaterial, { duration: 1, opacity: 0 }, 3.5)
-      .to(window.wormhole, { duration: 3, speed: .00002000 }, 3.5)
 
     wormholeTimeline
-      .to(nebulaSpeederMaterial, { duration: 3, opacity: .5 }, 6.5)
-      .to(clusterSpeederMaterial, { duration: 3, opacity: 0 }, 6.5)
-      .to(auraSpeederMaterial, { duration: 3, opacity: 0.4 }, 6.5)
-      .to(window.wormhole, { duration: 3, speed: .00001800 }, 6.5)
+      .to(auraSpeederMaterial, { duration: 1, opacity: 0.1        }, 3)
+      .to(window.wormhole,     { duration: 3, speed:   0.00002000 }, 3)
+
+    wormholeTimeline
+      .to(nebulaSpeederMaterial,  { duration: 3, opacity: 1          }, 6)
+      .to(clusterSpeederMaterial, { duration: 3, opacity: 0          }, 6)
+      .to(auraSpeederMaterial,    { duration: 3, opacity: 0.1        }, 6)
+      .to(window.wormhole,        { duration: 3, speed:   0.00001800 }, 6)
+
+    wormholeTimeline
+      .to(starsSpeederMaterial,          { duration: 3, opacity: 1          }, 10)
+      .to(wireframeStarsSpeederMaterial, { duration: 3, opacity: 1          }, 10)
+      .to(auraSpeederMaterial,           { duration: 3, opacity: 1          }, 10)
+      .to(clusterSpeederMaterial,        { duration: 3, opacity: 1          }, 10)
+      .to(nebulaSpeederMaterial,         { duration: 3, opacity: 1          }, 10)
+      .to(window.wormhole,               { duration: 3, speed:   0.00001500 }, 10)
+
+    wormholeTimeline
+      .to(starsSpeederMaterial,          { duration: 3, opacity: 0.3        }, 15)
+      .to(wireframeStarsSpeederMaterial, { duration: 3, opacity: 0.2        }, 15)
+      .to(auraSpeederMaterial,           { duration: 3, opacity: 1          }, 15)
+      .to(clusterSpeederMaterial,        { duration: 3, opacity: 0          }, 15)
+      .to(nebulaSpeederMaterial,         { duration: 3, opacity: 0          }, 15)
+      .to(window.wormhole,               { duration: 3, speed:   0.00001500 }, 15)
+
+    wormholeTimeline
+      .to(clusterSpeederMaterial, { duration: 3, opacity: 1 }, 17)
+
+    wormholeTimeline
+      .to(auraSpeederMaterial, { duration: 1, opacity: 0.1        }, 20)
+      .to(window.wormhole,     { duration: 3, speed:   0.00002000 }, 20)
+
+    wormholeTimeline
+      .to(nebulaSpeederMaterial,  { duration: 3, opacity: 1          }, 23)
+      .to(clusterSpeederMaterial, { duration: 3, opacity: 0          }, 23)
+      .to(auraSpeederMaterial,    { duration: 3, opacity: 0.1        }, 23)
+      .to(window.wormhole,        { duration: 3, speed:   0.00001800 }, 23)
 
     const handleResize = () => {
       const { innerWidth, innerHeight } = window

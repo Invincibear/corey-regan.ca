@@ -11,17 +11,13 @@ import {useRef} from "react"
 
 
 export default function Home() {
-  const scrollContainer = useRef(null)
-  
   return (
     <>
-      <div id="scrollcontainer" ref={scrollContainer}>
-        <WormholeHero />
-        <StarfieldHero />
-      </div>
-      <CertificationCarousel />
-      <DaisyTimeline timelineEvents={TimelineEvents} />
-      <RecentBlogPosts />
+      <WormholeHero/>
+      <StarfieldHero/>
+      <CertificationCarousel/>
+      <DaisyTimeline timelineEvents={TimelineEvents}/>
+      <RecentBlogPosts/>
     </>
   )
 }
