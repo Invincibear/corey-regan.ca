@@ -168,7 +168,7 @@ export default function WormholeHero() {
     const targetPosition = (scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight) ?? 0
     const startPosition = window.scrollY
     const distance = targetPosition - startPosition
-    const duration = 6000 // Duration in milliseconds
+    const duration = 12 * 1000
     let start: number | null = null
 
     const step = (timestamp: number) => {
