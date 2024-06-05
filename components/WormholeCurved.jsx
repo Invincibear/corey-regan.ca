@@ -197,7 +197,7 @@ function WormholeCurved({startAnimation = false}) {
 
     return () => {
       window.removeEventListener('resize', handleResize)
-      mountRef.current.removeChild(renderer.domElement)
+      if (mountRef.current) mountRef.current.removeChild(renderer.domElement)
     }
   }, [wormholeIsAnimated])
 
