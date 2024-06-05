@@ -54,22 +54,22 @@ export default function StarfieldHero() {
   return (
     <>
       <motion.section
-        className={`w-full h-screen bg-black overflow-hidden fixed top-0 ${!starfieldVisible ? "pointer-events-none" : ""}`}
-        ref={sectionRef}
-        style={{
-          opacity,
-          scale,
+        className = {`w-full h-screen bg-black overflow-hidden fixed top-0 ${!starfieldVisible ? "pointer-events-none" : ""}`}
+        ref       = {sectionRef}
+        style     = {{
+          opacity:         opacity,
+          scale:           scale,
           transformOrigin: "center",
         }}
       >
         <motion.div
-          className="w-full h-full bg-black"
-          id="starfieldhero"
-          ref={starfieldDivRef}
-          style={{
-            position: "relative",
-            opacity,
-            scale,
+          className = "w-full h-full bg-black"
+          id        = "starfieldhero"
+          ref       = {starfieldDivRef}
+          style     = {{
+            position:        "relative",
+            opacity:         opacity,
+            scale:           scale,
             transformOrigin: "center",
           }}
         >
@@ -81,11 +81,11 @@ export default function StarfieldHero() {
               style={{transform: "translateZ(0)"}}
             >
               <motion.h1
-                className="hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
-                initial={{opacity: 0, scale: 0}}
-                transition={{duration: 3}}
-                viewport={{once: true}}
-                whileInView={{opacity: 1, scale: 1}}
+                className   = "hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
+                initial     = {{opacity:  0, scale: 0}}
+                whileInView = {{opacity:  1, scale: 1}}
+                transition  = {{duration: 3}}
+                viewport    = {{once:     true}}
               >
                 Corey
                 <br/>
@@ -111,10 +111,10 @@ export default function StarfieldHero() {
         className = "w-screen h-screen top-0 sticky block xl:hidden"
       />
       <motion.div
-        id="starfieldHeroVisibilityTarget"
-        className="bg-white w-full h-1"
-        onViewportEnter={() => setStarfieldVisible(true)}
-        onViewportLeave={() => setStarfieldVisible(false)}
+        id              = "starfieldHeroVisibilityTarget"
+        className       = "bg-white w-full h-1"
+        onViewportEnter = {() => setStarfieldVisible(true)}
+        onViewportLeave = {() => setStarfieldVisible(false)}
       />
     </>
   )
