@@ -71,6 +71,7 @@ export default function WormholeHero() {
       1
     ],
   )
+
   const wormholeDivOpacity = useTransform(
     scrollYProgress,
      [
@@ -238,11 +239,14 @@ export default function WormholeHero() {
       id        = "wormhole-hero"
       className = "bg-black w-full h-1000vh relative top-0 z-10 hidden xl:block"
       ref       = {sectionRef}
-      style     = {{opacity: wormholeSectionOpacity}}
+      style     = {{
+        opacity: wormholeSectionOpacity,
+      }}
     >
       <motion.div
-        className="bg-white max-w-full max-h-screen sticky z-20"
-        style={{
+        id        = "wormholeArrivalFlash"
+        className = "bg-white max-w-full max-h-screen sticky z-20"
+        style     = {{
           borderRadius:    whiteDivBorderRadius,
           opacity:         whiteDivOpacity,
           scale:           whiteDivScale,
@@ -254,9 +258,12 @@ export default function WormholeHero() {
       >
       </motion.div>
       <motion.div
+        id        = "wormholeFixedPositioner"
         className = "w-screen h-screen top-0 sticky"
         ref       = {divRef}
-        style     = {{opacity: wormholeDivOpacity}}
+        style     = {{
+          opacity: wormholeDivOpacity,
+        }}
       >
         <WormholeCurved startAnimation={wormholeIsAnimated} />
       </motion.div>
