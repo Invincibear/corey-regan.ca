@@ -12,7 +12,10 @@ import "@/styles/wormhole.css"
 // https://github.com/jesuisundev/acrossthemultiverse/
 //
 export default function WormholeHero() {
-  const fullScreen = false
+  const fullScreen    = false
+  const hideScrollbar = false
+  const hideCursor    = true
+  const autoScroll    = true
   const scrollDuration = 14 // measured in seconds
 
   const sectionRef = useRef<HTMLElement | null>(null)
@@ -189,9 +192,9 @@ export default function WormholeHero() {
       } else {
         // We reached the end of our auto-scroll
 
-        if (fullScreen && document.fullscreenElement) document.exitFullscreen()
-        if (sectionRef.current) sectionRef.current.classList.remove('cursor-none')
-        document.body.classList.remove('scrollbar-none')
+        if (fullScreen && document.fullscreenElement) document.exitFullscreen().then()
+        if (hideCursor && sectionRef.current) sectionRef.current.classList.remove('cursor-none')
+        if (hideScrollbar) document.body.classList.remove('scrollbar-none')
 
         isAutoScrolling.current = false // Reset flag once scrolling is complete
         hasAutoScrolled.current = true  // But note that we have scrolled
@@ -212,17 +215,22 @@ export default function WormholeHero() {
       ) {
         // We should have scrolled past one view height but not past the entire wormhole <section>
         // Which means it's time to start auto-scrolling
-        isAutoScrolling.current = true // Set flag to true to prevent further auto-scrolls
         setWormholeIsAnimated(true) // Start the wormhole
 
-        if (fullScreen && !document.fullscreenElement) document.documentElement.requestFullscreen()
-        if (sectionRef.current) sectionRef.current.classList.add('cursor-none')
-        // document.body.classList.add('scrollbar-none')
+        if (fullScreen && !document.fullscreenElement) document.documentElement.requestFullscreen().then()
+        if (hideCursor && sectionRef.current) sectionRef.current.classList.add('cursor-none')
+        if (hideScrollbar) document.body.classList.add('scrollbar-none')
 
-        const autoScroll = setTimeout(() => scrollToTarget(), 200)
-        return () => clearTimeout(autoScroll)
+        if (autoScroll) {
+          isAutoScrolling.current = true // Set flag to true to prevent further auto-scrolls
+          const autoScroll = setTimeout(() => scrollToTarget(), 200)
+          return () => clearTimeout(autoScroll)
+        }
       } else if (isAutoScrolling.current) {
         // Actively auto-scrolling
+
+        // See if we're one viewport height away from completing scrolling, and if so, enlarge the wormhole radius
+        // if (window.scrollY >= scrollPoints.wormholeSectionEnd - (2 * scrollPoints.viewHeight)) setEnlargeTubeRadius(true)
       } else if (hasAutoScrolled.current) {
         // Already auto-scrolled, not auto-scrolling again
       } else {

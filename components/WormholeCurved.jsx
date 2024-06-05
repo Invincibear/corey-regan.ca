@@ -8,7 +8,7 @@ import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils'
 import { useEffect, useRef, useState } from 'react'
 
 
-function WormholeCurved({startAnimation}) {
+function WormholeCurved({startAnimation = false}) {
   const mountRef = useRef(null)
   const [wormholeIsAnimated, setWormholeIsAnimated] = useState(startAnimation)
 
@@ -200,14 +200,6 @@ function WormholeCurved({startAnimation}) {
       mountRef.current.removeChild(renderer.domElement)
     }
   }, [wormholeIsAnimated])
-
-/*  useEffect(() => {
-    if (start && !hasStarted.current) {
-      setHasStarted(true)
-      // animate()
-      gsap.globalTimeline.getAll().forEach(t => t.restart(true, false))
-    }
-  }, [start])*/
 
   return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />
 }
