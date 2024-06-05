@@ -13,6 +13,7 @@ import "@/styles/wormhole.css"
 //
 export default function WormholeHero() {
   const fullScreen = false
+  const scrollDuration = 14 // measured in seconds
 
   const sectionRef = useRef<HTMLElement | null>(null)
   const divRef = useRef<HTMLDivElement | null>(null)
@@ -173,7 +174,7 @@ export default function WormholeHero() {
     const targetPosition = (scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight) ?? 0
     const startPosition = window.scrollY
     const distance = targetPosition - startPosition
-    const duration = 12 * 1000
+    const duration = scrollDuration * 1000
     let start: number | null = null
 
     const step = (timestamp: number) => {
