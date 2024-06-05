@@ -19,7 +19,6 @@ export default function WormholeHero() {
   const scrollDuration = 14 // measured in seconds
 
   const sectionRef = useRef<HTMLElement | null>(null)
-  const divRef = useRef<HTMLDivElement | null>(null)
   const isAutoScrolling = useRef(false)
   const hasAutoScrolled = useRef(false)
 
@@ -268,7 +267,6 @@ export default function WormholeHero() {
       <motion.div
         id        = "wormholeFixedPositioner"
         className = "w-screen h-screen top-0 sticky"
-        ref       = {divRef}
         style     = {{
           opacity: wormholeDivOpacity,
         }}
