@@ -108,7 +108,7 @@ export default function StarfieldHero() {
       </motion.section>
       <motion.div
         id        = "wormholeFixedPositioner"
-        className = "w-screen h-screen top-0 sticky"
+        className = "w-screen h-screen top-0 sticky block xl:hidden"
       />
       <motion.div
         id="starfieldHeroVisibilityTarget"
