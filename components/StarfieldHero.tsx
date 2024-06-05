@@ -51,6 +51,12 @@ export default function StarfieldHero() {
     [1, 2] // Increase scale the further down user scrolls
   )
 
+  const starfieldFixedPositionerOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.069],
+    [1, 0],
+  )
+
   return (
     <>
       <motion.section
@@ -107,8 +113,11 @@ export default function StarfieldHero() {
         </motion.div>
       </motion.section>
       <motion.div
-        id        = "wormholeFixedPositioner"
-        className = "w-screen h-screen top-0 sticky block xl:hidden"
+        id        = "starfieldFixedPositioner"
+        className = {`w-screen h-screen top-0 sticky block xl:hidden ${!starfieldVisible ? "pointer-events-none" : ""}`}
+        style     = {{
+          opacity: starfieldFixedPositionerOpacity, // Needed to not block content after the starfield <section>
+        }}
       />
       <motion.div
         id              = "starfieldHeroVisibilityTarget"

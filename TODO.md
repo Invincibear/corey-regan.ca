@@ -3,6 +3,8 @@
 - Bug: can't navigate to blog, causes 404, perhaps wormhole destruction is failing? (console msg)
 - Blog tags prefetching returns 404s
 - Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. This is really only for refreshes and my troubleshooting, but I shouldn't need to wait the full 12 seconds if I'm barely scrolled above the end of the wormhole sequence
+- mechanism to stop wormhole animation, separate from unmounting the containers
+  - `ESC` should cancel an active auto-scroller
 - Incorporate mouse-tracked background highlight
   - https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx
 - Third pass at theme colors?
