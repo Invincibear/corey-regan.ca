@@ -2,12 +2,15 @@
 - If scrolled past wormhole end, abort auto-scroll
 - Bug: can't navigate to blog, causes 404, perhaps wormhole destruction is failing? (console msg)
 - Blog tags prefetching returns 404s
+- Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. This is really only for refreshes and my troubleshooting, but I shouldn't need to wait the full 12 seconds if I'm barely scrolled above the end of the wormhole sequence
 - Incorporate mouse-tracked background highlight
   - https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx
 - Third pass at theme colors?
 - Add bloom to wormhole camera
+  - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
 - ~~Bug: Mobile starfield hero issues~~
+- ~~Only auto-scroll once~~
 - ~~Framer-motion to scroll down from starfield into wormhole into work experience section~~
   - ~~Wormhole: https://www.youtube.com/watch?v=Il_GKGFggWY~~
   - ~~Better wormhole: https://www.jesuisundev.com/en/wormhole-in-javascript/~~

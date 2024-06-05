@@ -170,7 +170,7 @@ export default function WormholeHero() {
       "0%",
     ],
   )
-  
+
   const scrollToTarget = () => {
     if (hasAutoScrolled.current) return
 
@@ -195,8 +195,8 @@ export default function WormholeHero() {
         if (hideCursor && sectionRef.current) sectionRef.current.classList.remove('cursor-none')
         if (hideScrollbar) document.body.classList.remove('scrollbar-none')
 
-        isAutoScrolling.current = false // Reset flag once scrolling is complete
-        hasAutoScrolled.current = true  // But note that we have scrolled
+        isAutoScrolling.current = false   // Reset flag once scrolling is complete
+        hasAutoScrolled.current = true    // But note that we have scrolled
         setWormholeIsAnimated(false) // Stop the wormhole for performance reasons
       }
     }
