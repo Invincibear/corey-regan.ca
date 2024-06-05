@@ -7,8 +7,6 @@ import StarfieldHero         from "@/components/StarfieldHero"
 import WormholeHero          from "@/components/WormholeHero"
 import TimelineEvents        from "@/lib/TimelineEvents"
 
-import {useRef} from "react"
-
 
 export default function Home() {
   return (
