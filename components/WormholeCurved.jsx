@@ -1,14 +1,20 @@
 "use client"
 
-import { gsap }              from 'gsap'
-import { useEffect, useRef } from 'react'
-import * as THREE            from 'three'
-import { Curves }            from 'three/examples/jsm/curves/CurveExtras'
-import { SceneUtils }        from 'three/examples/jsm/utils/SceneUtils'
+import { gsap }       from 'gsap'
+import * as THREE     from 'three'
+import { Curves }     from 'three/examples/jsm/curves/CurveExtras'
+import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils'
+
+import { useEffect, useRef, useState } from 'react'
 
 
-function WormholeCurved() {
+function WormholeCurved({startAnimation}) {
   const mountRef = useRef(null)
+  const [wormholeIsAnimated, setWormholeIsAnimated] = useState(startAnimation)
+
+  useEffect(() => {
+    if (startAnimation && !wormholeIsAnimated) setWormholeIsAnimated(true)
+  }, [startAnimation])
 
   useEffect(() => {
     const scene = new THREE.Scene()
@@ -40,7 +46,7 @@ function WormholeCurved() {
         defaultForward:  0.5,
       },
       wormhole: {
-        speed: 0.00095, // speed controlled by gsap.timeline()
+        speed: 0.00001, // speed controlled by gsap.timeline()
 
         wireframeStarsSpeeder: { material: { opacity: 0 } }, // opacity controlled by gsap.timeline()
         auraSpeeder:           { material: { opacity: 0 } }, // opacity controlled by gsap.timeline()
@@ -48,9 +54,9 @@ function WormholeCurved() {
         starsSpeeder:          { material: { opacity: 0 } }, // opacity controlled by gsap.timeline()
         clusterSpeeder:        { material: { opacity: 0 } }, // opacity controlled by gsap.timeline()
 
-        tubeSegments: 420,
-        tubeRadius:   50,
-        tubeLength:   420,
+        tubeSegments: 242.0,
+        tubeRadius:   6,
+        tubeLength:   42.0,
       },
     }
 
@@ -69,7 +75,7 @@ function WormholeCurved() {
     library.textures.wormhole.galaxy[0].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[0].wrapT = THREE.MirroredRepeatWrapping
     library.textures.wormhole.galaxy[0].repeat.set(40, 2)
-    const wireframeStarsSpeederMaterial = new THREE.MeshBasicMaterial({
+    const infinityMirrorStarsSpeederMaterial = new THREE.MeshBasicMaterial({
       map: library.textures.wormhole.galaxy[0],
       transparent: false,
       opacity: parameters.wormhole.wireframeStarsSpeeder.material.opacity,
@@ -81,7 +87,7 @@ function WormholeCurved() {
     library.textures.wormhole.galaxy[1].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[1].wrapT = THREE.MirroredRepeatWrapping
     library.textures.wormhole.galaxy[1].repeat.set(1, 2)
-    const auraSpeederMaterial = new THREE.MeshBasicMaterial({
+    const yellowAuraSpeederMaterial = new THREE.MeshBasicMaterial({
       map: library.textures.wormhole.galaxy[1],
       transparent: false,
       opacity: parameters.wormhole.auraSpeeder.material.opacity,
@@ -103,7 +109,7 @@ function WormholeCurved() {
     library.textures.wormhole.galaxy[3].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[3].wrapT = THREE.MirroredRepeatWrapping
     library.textures.wormhole.galaxy[3].repeat.set(10, 2)
-    const starsSpeederMaterial = new THREE.MeshBasicMaterial({
+    const sparseStarsSpeederMaterial = new THREE.MeshBasicMaterial({
       map: library.textures.wormhole.galaxy[3],
       transparent: false,
       opacity: parameters.wormhole.starsSpeeder.material.opacity,
@@ -130,10 +136,10 @@ function WormholeCurved() {
       true,
     )
     const wormholeTubeMesh = SceneUtils.createMultiMaterialObject(wormholeGeometry, [
-      wireframeStarsSpeederMaterial,
-      auraSpeederMaterial,
+      infinityMirrorStarsSpeederMaterial,
+      yellowAuraSpeederMaterial,
       nebulaSpeederMaterial,
-      starsSpeederMaterial,
+      sparseStarsSpeederMaterial,
       clusterSpeederMaterial,
     ])
 
@@ -156,67 +162,28 @@ function WormholeCurved() {
 
       renderer.render(scene, camera)
     }
-    animate()
+    if (startAnimation) animate()
 
-    // GSAP animations
+    // GSAP sequencing, load different materials at different times, then loop back to start
+    // const wormholeTimeline = gsap.timeline({ paused: false })
     const wormholeTimeline = gsap.timeline()
-
-    // All the params to play with
-/*    wormholeTimeline
-      .to(starsSpeederMaterial,          { duration: 3, opacity: 0 }, 0)
-      .to(wireframeStarsSpeederMaterial, { duration: 3, opacity: 0 }, 0)
-      .to(auraSpeederMaterial,           { duration: 3, opacity: 0 }, 0)
-      .to(clusterSpeederMaterial,        { duration: 3, opacity: 0 }, 0)
-      .to(nebulaSpeederMaterial,         { duration: 3, opacity: 0 }, 0)
-      .to(parameters.wormhole,           { duration: 3, speed: 0.00025 }, 0)*/
-
     wormholeTimeline
-      .to(starsSpeederMaterial,          { duration: 3.5, opacity: 0.3 },                       0)
-      .to(wireframeStarsSpeederMaterial, { duration: 3.5, opacity: 0.2,     ease: 'expo.out' }, 0)
-      .to(auraSpeederMaterial,           { duration: 3.5, opacity: 1,       ease: 'expo.out' }, 0)
-      .to(window.wormhole,               { duration: 3.5, speed:   0.00085, ease: 'expo.out' }, 0)
-
-    wormholeTimeline
-      .to(clusterSpeederMaterial, { duration: 3, opacity: 1 }, 2)
-
-    wormholeTimeline
-      .to(auraSpeederMaterial, { duration: 1, opacity: 0.1    }, 3)
-      .to(window.wormhole,     { duration: 3, speed:   0.0008 }, 3)
-
-    wormholeTimeline
-      .to(nebulaSpeederMaterial,  { duration: 3, opacity: 1      }, 6)
-      .to(clusterSpeederMaterial, { duration: 3, opacity: 0      }, 6)
-      .to(auraSpeederMaterial,    { duration: 3, opacity: 0.1    }, 6)
-      .to(window.wormhole,        { duration: 3, speed:   0.0007 }, 6)
-
-    wormholeTimeline
-      .to(starsSpeederMaterial,          { duration: 3, opacity: 1       }, 10)
-      .to(wireframeStarsSpeederMaterial, { duration: 3, opacity: 1       }, 10)
-      .to(auraSpeederMaterial,           { duration: 3, opacity: 1       }, 10)
-      .to(clusterSpeederMaterial,        { duration: 3, opacity: 1       }, 10)
-      .to(nebulaSpeederMaterial,         { duration: 3, opacity: 1       }, 10)
-      .to(window.wormhole,               { duration: 3, speed:   0.00065 }, 10)
-
-    wormholeTimeline
-      .to(starsSpeederMaterial,          { duration: 3, opacity: 0.3     }, 15)
-      .to(wireframeStarsSpeederMaterial, { duration: 3, opacity: 0.2     }, 15)
-      .to(auraSpeederMaterial,           { duration: 3, opacity: 1       }, 15)
-      .to(clusterSpeederMaterial,        { duration: 3, opacity: 0       }, 15)
-      .to(nebulaSpeederMaterial,         { duration: 3, opacity: 0       }, 15)
-      .to(window.wormhole,               { duration: 3, speed:   0.00065 }, 15)
-
-    wormholeTimeline
-      .to(clusterSpeederMaterial, { duration: 3, opacity: 1 }, 17)
-
-    wormholeTimeline
-      .to(auraSpeederMaterial, { duration: 1, opacity: 0.1    }, 20)
-      .to(window.wormhole,     { duration: 3, speed:   0.0007 }, 20)
-
-    wormholeTimeline
-      .to(nebulaSpeederMaterial,  { duration: 3, opacity: 1      }, 23)
-      .to(clusterSpeederMaterial, { duration: 3, opacity: 0      }, 23)
-      .to(auraSpeederMaterial,    { duration: 3, opacity: 0.1    }, 23)
-      .to(window.wormhole,        { duration: 3, speed:   0.0006 }, 23)
+      .to(sparseStarsSpeederMaterial,         { duration: 1.5, opacity: 0.2                      }, 0)
+      .to(infinityMirrorStarsSpeederMaterial, { duration: 1.5, opacity: 0.1                      }, 0)
+      .to(yellowAuraSpeederMaterial,          { duration: 4.0, opacity: 1.0,     ease: 'expo.in' }, 0)
+      .to(parameters.wormhole,                { duration: 1.5, speed:   0.00085, ease: 'expo.in' }, 0)
+      .to(nebulaSpeederMaterial,              { duration: 4,   opacity: 1,       ease: 'expo.in' }, 3)
+      .to(yellowAuraSpeederMaterial,          { duration: 3,   opacity: 0                        }, 4)
+      .to(clusterSpeederMaterial,             { duration: 2,   opacity: 1                        }, 5)
+      .to(nebulaSpeederMaterial,              { duration: 2,   opacity: 0                        }, 7)
+      .to(yellowAuraSpeederMaterial,          { duration: 5,   opacity: 1                        }, 7)
+      .to(sparseStarsSpeederMaterial,         { duration: 3.0, opacity: 1,       ease: 'expo.in' }, 9)
+      .to(infinityMirrorStarsSpeederMaterial, { duration: 3.0, opacity: 1,       ease: 'expo.in' }, 9)
+      .to(yellowAuraSpeederMaterial,          { duration: 3.0, opacity: 1,       ease: 'expo.in' }, 9)
+      .to(clusterSpeederMaterial,             { duration: 3.0, opacity: 1,       ease: 'expo.in' }, 9)
+      .to(nebulaSpeederMaterial,              { duration: 3.0, opacity: 1,       ease: 'expo.in' }, 9)
+      .to(parameters.wormhole,                { duration: 1.5, speed:   0.00065                  }, 9)
+      .restart(false)
 
     const handleResize = () => {
       const { innerWidth, innerHeight } = window
@@ -232,7 +199,15 @@ function WormholeCurved() {
       window.removeEventListener('resize', handleResize)
       mountRef.current.removeChild(renderer.domElement)
     }
-  }, [])
+  }, [wormholeIsAnimated])
+
+/*  useEffect(() => {
+    if (start && !hasStarted.current) {
+      setHasStarted(true)
+      // animate()
+      gsap.globalTimeline.getAll().forEach(t => t.restart(true, false))
+    }
+  }, [start])*/
 
   return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />
 }

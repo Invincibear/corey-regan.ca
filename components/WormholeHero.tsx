@@ -2,7 +2,7 @@
 
 import WormholeCurved                      from "@/components/WormholeCurved"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { useEffect, useState, useRef }     from "react"
+import { useEffect, useRef, useState }     from "react"
 
 import "@/styles/wormhole.css"
 
@@ -12,11 +12,14 @@ import "@/styles/wormhole.css"
 // https://github.com/jesuisundev/acrossthemultiverse/
 //
 export default function WormholeHero() {
+  const fullScreen = false
+
   const sectionRef = useRef<HTMLElement | null>(null)
   const divRef = useRef<HTMLDivElement | null>(null)
   const isAutoScrolling = useRef(false)
   const hasAutoScrolled = useRef(false)
 
+  const [wormholeIsAnimated, setWormholeIsAnimated]   = useState(false)
   const [scrollPoints, setScrollPoints] = useState({
     viewHeight:           0,
     bodyHeight:           0,
@@ -184,12 +187,13 @@ export default function WormholeHero() {
       } else {
         // We reached the end of our auto-scroll
 
-        document.exitFullscreen()
+        if (fullScreen && document.fullscreenElement) document.exitFullscreen()
         if (sectionRef.current) sectionRef.current.classList.remove('cursor-none')
         document.body.classList.remove('scrollbar-none')
 
         isAutoScrolling.current = false // Reset flag once scrolling is complete
         hasAutoScrolled.current = true  // But note that we have scrolled
+        setWormholeIsAnimated(false) // Stop the wormhole for performance reasons
       }
     }
 
@@ -206,12 +210,12 @@ export default function WormholeHero() {
       ) {
         // We should have scrolled past one view height but not past the entire wormhole <section>
         // Which means it's time to start auto-scrolling
-
         isAutoScrolling.current = true // Set flag to true to prevent further auto-scrolls
+        setWormholeIsAnimated(true) // Start the wormhole
 
-        document.documentElement.requestFullscreen()
+        if (fullScreen && !document.fullscreenElement) document.documentElement.requestFullscreen()
         if (sectionRef.current) sectionRef.current.classList.add('cursor-none')
-        document.body.classList.add('scrollbar-none')
+        // document.body.classList.add('scrollbar-none')
 
         const autoScroll = setTimeout(() => scrollToTarget(), 200)
         return () => clearTimeout(autoScroll)
@@ -253,7 +257,7 @@ export default function WormholeHero() {
         ref       = {divRef}
         style     = {{opacity: wormholeDivOpacity}}
       >
-        <WormholeCurved/>
+        <WormholeCurved startAnimation={wormholeIsAnimated} />
       </motion.div>
     </motion.section>
   )
