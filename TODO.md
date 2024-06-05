@@ -1,9 +1,17 @@
 # TODO
+- If scrolled past wormhole end, abort auto-scroll
+- Bug: can't navigate to blog, causes 404, perhaps wormhole destruction is failing? (console msg)
+- Blog tags prefetching returns 404s
+- Mobile starfield hero issues
+- Incorporate mouse-tracked background highlight
+  - https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx
+- Third pass at theme colors?
+- Add bloom to wormhole camera
 - Add functionality to work experience tags
-- Second pass at theme colors
-- Framer-motion to scroll down from starfield into wormhole into work experience section
-  - wormhole: https://www.youtube.com/watch?v=Il_GKGFggWY
-  - work xp should be centered with size-0 and expand to size-full
+- ~~Framer-motion to scroll down from starfield into wormhole into work experience section~~
+  - ~~wormhole: https://www.youtube.com/watch?v=Il_GKGFggWY~~
+  - Animate "Work Experience" header, should be centered with scale=0 and expand to scale=1
+- ~~Second pass at theme colors~~
 - ~~Theme switcher~~
 - ~~Center starfield text~~
 - ~~Footer looks pretty bare, expand on it~~
