@@ -8,7 +8,7 @@ import "@/styles/wormhole.css"
 
 
 //
-// Wormhole brought to you in part by: 
+// Wormhole brought to you in part by:
 // https://github.com/jesuisundev/acrossthemultiverse/
 //
 export default function WormholeHero() {
@@ -262,8 +262,7 @@ export default function WormholeHero() {
           height:          whiteDivHeight,
           top:             whiteDivTopPosition,
         }}
-      >
-      </motion.div>
+      />
       <motion.div
         id        = "wormholeFixedPositioner"
         className = "w-screen h-screen top-0 sticky"

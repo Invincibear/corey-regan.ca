@@ -52,11 +52,12 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
           <div className={`flex justify-${position === 'timeline-end' ? 'start' : 'end'} my-2`}>
             <Link href={`/images/timeline/${timelineEvent.logo.src}`}>
               <Image
-                src={`/images/timeline/${timelineEvent.logo.src}`}
-                alt={timelineEvent.logo.alt ?? ""}
-                width={timelineEvent.logo.width}
-                height={timelineEvent.logo.height}
-                loading="lazy"
+                src       = {`/images/timeline/${timelineEvent.logo.src}`}
+                alt       = {timelineEvent.logo.alt ?? ""}
+                width     = {timelineEvent.logo.width}
+                height    = {timelineEvent.logo.height}
+                loading   = "lazy"
+                className = "w-auto h-auto" // Maintains aspect ratio during Next.js dynamic resizing
               />
             </Link>
           </div>
@@ -68,11 +69,12 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
           <div className={`flex justify-${position === 'timeline-end' ? 'start' : 'end'} mt-4`}>
             <Link href={timelineEvent.image.link || `/images/timeline/${timelineEvent.image.src}`} target={timelineEvent.image.link && '_blank' || '_self'} rel="noopener noreferrer">
               <Image
-                src={`/images/timeline/${timelineEvent.image.src}`}
-                alt={timelineEvent.image.alt ?? ""}
-                width={timelineEvent.image.width}
-                height={timelineEvent.image.height}
-                loading="lazy"
+                src       = {`/images/timeline/${timelineEvent.image.src}`}
+                alt       = {timelineEvent.image.alt ?? ""}
+                width     = {timelineEvent.image.width}
+                height    = {timelineEvent.image.height}
+                loading   = "lazy"
+                className = "w-auto h-auto" // Maintains aspect ratio during Next.js dynamic resizing
               />
             </Link>
           </div>
