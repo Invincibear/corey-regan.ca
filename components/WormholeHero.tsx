@@ -76,7 +76,7 @@ export default function WormholeHero() {
 
   const wormholeDivOpacity = useTransform(
     scrollYProgress,
-     [
+    [
        0,
        0.0420,
        0.1,
@@ -94,11 +94,11 @@ export default function WormholeHero() {
 
   const whiteDivOpacity = useTransform(
     scrollYProgress,
-     [
+    scrollPoints.wormholeSectionEnd ? [
        (scrollPoints.wormholeSectionEnd - (scrollPoints.viewHeight / 2)) / scrollPoints.bodyHeight,
        (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 1.5)) / scrollPoints.bodyHeight,
        1,
-     ],
+     ] : [0, 0, 0],
     [
       0,
       1,

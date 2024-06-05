@@ -6,9 +6,11 @@
 - Incorporate mouse-tracked background highlight
   - https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx
 - Third pass at theme colors?
+- Footer console errors
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
+- ~~Bug: Warning: `NaN` is an invalid value for the `opacity` css style property.~~
 - ~~Bug: Mobile starfield hero issues~~
 - ~~Only auto-scroll once~~
 - ~~Framer-motion to scroll down from starfield into wormhole into work experience section~~
