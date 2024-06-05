@@ -9,8 +9,9 @@
 - Add bloom to wormhole camera
 - Add functionality to work experience tags
 - ~~Framer-motion to scroll down from starfield into wormhole into work experience section~~
-  - ~~wormhole: https://www.youtube.com/watch?v=Il_GKGFggWY~~
-  - Animate "Work Experience" header, should be centered with scale=0 and expand to scale=1
+  - ~~Wormhole: https://www.youtube.com/watch?v=Il_GKGFggWY~~
+  - ~~Better wormhole: https://www.jesuisundev.com/en/wormhole-in-javascript/~~
+  - ~~Animate "Work Experience" header, should be centered with scale=0 and expand to scale=1~~
 - ~~Second pass at theme colors~~
 - ~~Theme switcher~~
 - ~~Center starfield text~~
