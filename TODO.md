@@ -2,12 +2,12 @@
 - If scrolled past wormhole end, abort auto-scroll
 - Bug: can't navigate to blog, causes 404, perhaps wormhole destruction is failing? (console msg)
 - Blog tags prefetching returns 404s
-- Mobile starfield hero issues
 - Incorporate mouse-tracked background highlight
   - https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx
 - Third pass at theme colors?
 - Add bloom to wormhole camera
 - Add functionality to work experience tags
+- ~~Bug: Mobile starfield hero issues~~
 - ~~Framer-motion to scroll down from starfield into wormhole into work experience section~~
   - ~~Wormhole: https://www.youtube.com/watch?v=Il_GKGFggWY~~
   - ~~Better wormhole: https://www.jesuisundev.com/en/wormhole-in-javascript/~~
