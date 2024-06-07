@@ -1,4 +1,4 @@
-import { MDXContent }  from "@/components/blog/mdx-components"
+import { MDXContent }  from "@/components/blog/MDXContent"
 import SocialIcons     from "@/components/SocialIcons"
 import { Tag }         from "@/components/tag"
 import { BlogConfig }  from "@/config/blog"

@@ -1,7 +1,8 @@
 import rehypeAutolinkHeadings                from "rehype-autolink-headings"
-import remarkGfm                             from "remark-gfm"
 import rehypePrettyCode                      from "rehype-pretty-code"
 import rehypeSlug                            from "rehype-slug"
+import remarkGfm                             from "remark-gfm"
+import { visit }                             from "unist-util-visit"
 import { defineConfig, defineCollection, s } from "velite"
 
 
@@ -55,14 +56,28 @@ export default defineConfig({
   collections: { posts, authors },
   mdx: {
     rehypePlugins: [
+      () => (tree) => { // https://claritydev.net/blog/copy-to-clipboard-button-nextjs-mdx-rehype
+        visit(tree, (node) => {
+          if (node?.type === "element" && node?.tagName === "pre") {
+            const [codeEl] = node.children
+
+            if (codeEl.tagName !== "code") return
+
+            node.raw = codeEl.children?.[0].value
+          }
+        })
+      },
       rehypeSlug,
       [
         rehypePrettyCode,
         {
           theme: "github-dark",
+          // theme: {
+          //   dark:  "github-dark",
+          //   light: "github-light",
+          // },
           onVisitLine(node: any) {
-            // Prevent lines from collapsing in `display: grid` mode, and allow empty
-            // lines to be copy/pasted
+            // Prevents lines from collapsing in `display: grid` mode, and allows empty lines to be copy/pasted
             if (node.children.length === 0) {
               node.children = [{ type: "text", value: " " }]
             }
@@ -85,6 +100,21 @@ export default defineConfig({
           },
         },
       ],
+      () => (tree) => { // https://claritydev.net/blog/copy-to-clipboard-button-nextjs-mdx-rehype
+        visit(tree, (node) => {
+          if (node?.type === "element" && node?.tagName === "div") {
+            if (!("data-rehype-pretty-code-fragment" in node.properties)) {
+              return
+            }
+
+            for (const child of node.children) {
+              if (child.tagName === "pre") {
+                child.properties["raw"] = node.raw
+              }
+            }
+          }
+        })
+      },
     ],
     remarkPlugins: [remarkGfm],
   },

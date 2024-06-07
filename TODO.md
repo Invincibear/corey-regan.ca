@@ -1,6 +1,7 @@
 # TODO
-- Where is my missing copy button for /blog codeblocks?
+- Bug: Copy blog code button copies `undefined`
 - Bug: auto-scroll can still activate on mobile even when wormhole isn't shown
+- Blog light theme colors are terribad
 - If scrolled past wormhole end, abort auto-scroll
 - Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. 
   - This is really only for refreshes and my troubleshooting, but I shouldn't need to wait the full 12 seconds if I'm barely scrolled above the end of the wormhole sequence
@@ -8,11 +9,11 @@
   - `ESC` should cancel an active auto-scroller
 - Incorporate mouse-tracked background highlight
   - https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx
-- Third pass at theme colors?
 - Footer console errors
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
+- ~~Where is my missing copy button for /blog codeblocks?~~
 - ~~Add tags sorting functionality~~
 - ~~Uppercase window title of /blog/tags/[tag]~~
 - ~~Add functionality to blog tags~~

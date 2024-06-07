@@ -1,6 +1,8 @@
-import { Callout } from "@/components/callout"
-import { cn }      from "@/lib/utils"
-import Image       from "next/image"
+import { Callout }  from "@/components/Callout"
+import { Figure }   from "@/components/blog/Figure"
+import { Pre }      from "@/components/blog/Pre"
+import { cn }       from "@/lib/utils"
+import Image        from "next/image"
 import Link         from "next/link"
 import * as runtime from "react/jsx-runtime"
 
@@ -138,16 +140,9 @@ const components = {
       {...props}
     />
   ),
-  pre: ({ className, ...props }: { className?: React.HTMLAttributes<HTMLPreElement> }) => (
-    <pre
-      className={cn(
-        "mb-4 mt-1 overflow-x-auto rounded-lg border bg-black py-1",
-        className
-      )}
-      {...props}
-    />
-  ),
-  code: ({ className, ...props }: { className?: string }) => (
+  pre: Pre,
+  figure: Figure,
+  code: ({className, ...props}: { className?: string }) => (
     <code
       className={cn(
         "relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm",
