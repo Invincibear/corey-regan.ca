@@ -1,9 +1,9 @@
-import { posts }         from "#site/content"
-import { Tag }           from "@/components/tag"
-import { badgeVariants } from "@/components/ui/badge"
-import { BlogConfig }    from "@/config/blog"
-import { Metadata }      from "next"
-import Link              from "next/link"
+import { posts }       from "#site/content"
+import { Tag }         from "@/components/tag"
+import {badgeVariants} from "@/components/ui/badge"
+import {BlogConfig}    from "@/config/blog"
+import { Metadata }    from "next"
+import Link            from "next/link"
 import {
   getAllTags,
   sortTagsAlphabetically,
@@ -11,19 +11,25 @@ import {
 } from "@/lib/utils"
 
 
-
 export const metadata: Metadata = {
   title:       `${BlogConfig.name} Posts Sorted By Tags`,
   description: BlogConfig.description,
 }
 
-export default async function TagsPage() {
+interface TagSortingPageProps {
+  params: {
+    sortedBy: string
+  }
+}
+
+
+export default async function TagsPage({ params }: TagSortingPageProps) {
+  const { sortedBy } = params
+
   const tags = getAllTags(posts)
   const sortedTagsByCount = sortTagsByCount(tags)
   const sortedTagsAlphabetically = sortTagsAlphabetically(tags)
-  const sortedByTags = true
-
-  let sortedTags = sortedByTags
+  const sortedTags = sortedBy === "count"
     ? sortedTagsByCount
     : sortedTagsAlphabetically
 
@@ -39,7 +45,7 @@ export default async function TagsPage() {
         <Link
           href      = {"/blog/tags/sort/count"}
           className = {badgeVariants({
-            variant:   sortedByTags ? "default" : "secondary",
+            variant:   sortedBy === "count" ? "default" : "secondary",
             className: "no-underline rounded-none",
           })}
         >
@@ -48,7 +54,7 @@ export default async function TagsPage() {
         <Link
           href      = {"/blog/tags/sort/alphabetically"}
           className = {badgeVariants({
-            variant:   !sortedByTags ? "default" : "secondary",
+            variant:   sortedBy === "alphabetically" ? "default" : "secondary",
             className: "no-underline rounded-none",
           })}
         >
@@ -58,7 +64,7 @@ export default async function TagsPage() {
       <hr className="my-4"/>
       <div className="flex flex-wrap gap-2">
         {sortedTags?.map((tag) => (
-          <Tag tag={tag} count={tags[tag]} key={tag}/>
+          <Tag tag={tag} count={tags[tag]} key={tag} sortedBy={sortedBy}/>
         ))}
       </div>
     </div>

@@ -1,10 +1,10 @@
-import { posts }         from "#site/content"
-import { PostItem }      from "@/components/PostItem"
-import { Tag }           from "@/components/tag"
-import { badgeVariants } from "@/components/ui/badge"
-import { slug }          from "github-slugger"
-import { Metadata }      from "next"
-import Link              from "next/link"
+import { posts }       from "@/.velite"
+import { PostItem }    from "@/components/PostItem"
+import { Tag }         from "@/components/tag"
+import {badgeVariants} from "@/components/ui/badge"
+import { slug }        from "github-slugger"
+import { Metadata }    from "next"
+import Link            from "next/link"
 import {
   Card,
   CardContent,
@@ -14,6 +14,7 @@ import {
 import {
   getAllTags,
   getPostsByTagSlug,
+  sortTagsAlphabetically,
   sortTagsByCount,
   toTitleCase,
 } from "@/lib/utils"
@@ -28,7 +29,8 @@ export const generateStaticParams = () => {
 
 interface TagPageProps {
   params: {
-    tag: string
+    tag:      string,
+    sortedBy: string,
   }
 }
 
@@ -42,7 +44,7 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
 }
 
 export default function TagPage({ params }: TagPageProps) {
-  const { tag } = params
+  const { tag, sortedBy } = params
   const title = tag.split("-").join(" ")
 
   const allPosts = getPostsByTagSlug(posts, tag)
@@ -50,7 +52,11 @@ export default function TagPage({ params }: TagPageProps) {
 
   const currentTag = tag
   const tags = getAllTags(posts)
-  const sortedTags = sortTagsByCount(tags)
+  const sortedTagsByCount = sortTagsByCount(tags)
+  const sortedTagsAlphabetically = sortTagsAlphabetically(tags)
+  const sortedTags = sortedBy === "count"
+    ? sortedTagsByCount
+    : sortedTagsAlphabetically
 
   return (
     <div className="container max-w-6xl py-6 lg:py-10">
@@ -99,7 +105,7 @@ export default function TagPage({ params }: TagPageProps) {
                 href      = {"/blog/tags/[tag]/sort/count"}
                 as        = {`/blog/tags/${tag}/sort/count`}
                 className = {badgeVariants({
-                  variant:   "default",
+                  variant:   sortedBy === "count" ? "default" : "secondary",
                   className: "no-underline rounded-none",
                 })}
               >
@@ -109,7 +115,7 @@ export default function TagPage({ params }: TagPageProps) {
                 href      = {"/blog/tags/[tag]/sort/alphabetically"}
                 as        = {`/blog/tags/${tag}/sort/alphabetically`}
                 className = {badgeVariants({
-                  variant:   "secondary",
+                  variant:   sortedBy === "alphabetically" ? "default" : "secondary",
                   className: "no-underline rounded-none",
                 })}
               >

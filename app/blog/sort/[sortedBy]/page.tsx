@@ -1,11 +1,11 @@
-import { posts }                                    from "#site/content"
-import { PostItem }                                 from "@/components/blog/PostItem"
-import { QueryPagination }                          from "@/components/blog/QueryPagination"
-import { Tag }                                      from "@/components/tag"
-import {badgeVariants}                              from "@/components/ui/badge"
-import { BlogConfig }                               from "@/config/blog"
-import { Metadata }                                 from "next"
-import Link                                         from "next/link"
+import { posts }           from "#site/content"
+import { PostItem }        from "@/components/blog/PostItem"
+import { QueryPagination } from "@/components/blog/QueryPagination"
+import { Tag }             from "@/components/tag"
+import { badgeVariants }   from "@/components/ui/badge"
+import { BlogConfig }      from "@/config/blog"
+import { Metadata }        from "next"
+import Link                from "next/link"
 import {
   Card,
   CardContent,
@@ -15,6 +15,7 @@ import {
 import {
   getAllTags,
   sortPosts,
+  sortTagsAlphabetically,
   sortTagsByCount,
 } from "@/lib/utils"
 
@@ -29,12 +30,16 @@ const POSTS_PER_PAGE = BlogConfig.postPerPage
 
 
 interface BlogPageProps {
+  params: {
+    sortedBy: string
+  },
   searchParams: {
     page?: string
-  }
+  },
 }
 
-export default async function BlogPage({ searchParams }: BlogPageProps) {
+export default async function BlogPage({ params, searchParams }: BlogPageProps) {
+  const { sortedBy } = params
   const currentPage = Number(searchParams?.page) || 1
   const sortedPosts = sortPosts(posts.filter((post) => post.published))
   const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE)
@@ -45,7 +50,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   )
 
   const tags = getAllTags(posts)
-  const sortedTags = sortTagsByCount(tags)
+  const sortedTagsByCount = sortTagsByCount(tags)
+  const sortedTagsAlphabetically = sortTagsAlphabetically(tags)
+  const sortedTags = sortedBy === "count"
+    ? sortedTagsByCount
+    : sortedTagsAlphabetically
 
   return (
     <div className="container max-w-6xl py-6 lg:py-10 mb-40">
@@ -95,7 +104,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               <Link
                 href      = {`/blog/sort/count${currentPage != 1 ? '?page=' + currentPage : ''}`}
                 className = {badgeVariants({
-                  variant:   "default",
+                  variant:   sortedBy === "count" ? "default" : "secondary",
                   className: "no-underline rounded-none",
                 })}
               >
@@ -104,7 +113,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               <Link
                 href      = {`/blog/sort/alphabetically${currentPage != 1 ? '?page=' + currentPage : ''}`}
                 className = {badgeVariants({
-                  variant:   "secondary",
+                  variant:   sortedBy === "alphabetically" ? "default" : "secondary",
                   className: "no-underline rounded-none",
                 })}
               >
@@ -113,7 +122,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             </div>
             <hr className="my-4"/>
             {sortedTags?.map((tag) => (
-              <Tag tag={tag} key={tag} count={tags[tag]}/>
+              <Tag tag={tag} key={tag} count={tags[tag]} sortedBy={sortedBy}/>
             ))}
           </CardContent>
         </Card>

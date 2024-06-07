@@ -45,8 +45,12 @@ export function getAllTags(posts: Array<Post>) {
 }
 
 
-export function sortTagsByCount(tags: Record<string, number>) {
+export function sortTagsByCount(tags: Record<string, number>): string[] {
   return Object.keys(tags).sort((a, b) => tags[b] - tags[a])
+}
+
+export function sortTagsAlphabetically(tags: Record<string, number>): string[] {
+  return Object.keys(tags).toSorted((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
 }
 
 
@@ -60,4 +64,12 @@ export function getPostsByTagSlug(posts: Array<Post>, tag: string) {
 
       return slugifiedTags.includes(tag)
     })
+}
+
+export function toTitleCase(phrase: string) {
+  return phrase
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
 }

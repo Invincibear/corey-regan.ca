@@ -1,5 +1,5 @@
 # TODO
-- Uppercase window title of /blog/tags/[tag]
+- Where is my missing copy button for /blog codeblocks?
 - Bug: auto-scroll can still activate on mobile even when wormhole isn't shown
 - If scrolled past wormhole end, abort auto-scroll
 - Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. 
@@ -13,6 +13,8 @@
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
+- ~~Add tags sorting functionality~~
+- ~~Uppercase window title of /blog/tags/[tag]~~
 - ~~Add functionality to blog tags~~
 - ~~Replace paw-print icon with sparkles, keeping in-theme with space~~
 - ~~Bug: can't navigate to blog, causes 404, perhaps wormhole destruction is failing? (console msg)~~
