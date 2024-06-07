@@ -1,0 +1,92 @@
+---
+title: How To Import An Existing Azure Resource Into Terraform Cloud
+date: 2023-03-01
+description: Importing existing Azure resources into Terraform Cloud should be straight-forward, using the terraform CLI to import them is not, but using the new import {} code blocks is.
+published: true
+tags: ["Azure", "Cloud", "Terraform"]
+authors:
+  - corey
+---
+
+<Callout>This article was written before Terraform introduced `import {}` blocks and was centered around using the `terraform import` CLI command. This article has been updated to include examples of the simpler `import {}` code blocks. You can skip most of this post by simply adding `import {}` blocks to your code. You can leave them in once imported, or comment them out, or delete them.</Callout>
+
+There are times when you have written code to deploy a resource to Azure but that resource was already created. In this instance, TFC is unable to create the resource and tells you to instead import it into the TF state.
+The process is similar to manually editing Terraform Cloud state file, with the exception that you do not need to upload anything back to TFC once the resource is imported.
+
+In short, the procedure using the `terraform` CLI involves:
+1. Reconfiguring the TFC Workspace's `main.tf` on your local machine to use a `remote {}` backend instead of the `cloud {}` backend
+2. Initializing the TF code on your local machine
+3. Importing the resource into TF
+
+**Note:** This assumes you already have the TF CLI installed on your local machine. If you don't, [follow these instructions to set it up](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli).
+
+
+## Procedure Using Terraform import {} Blocks
+As of Terraform `1.5.0`, you can now [code an `import {}` block](https://developer.hashicorp.com/terraform/language/import) instead of running a `terraform import` command.
+  ``` terraform
+  import {
+    id = "/subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name"
+    to = azurerm_kubernetes_cluster.my_cluster_name
+  }
+  ```
+
+## Procedure Using Terraform's CLI
+* Ensure you have a copy of the TF code downloaded to your machine
+
+* In `main.tf`, comment out the `cloud {}` code block from the main `terraform {}` code block
+  ``` terraform
+  terraform {
+  #  cloud {
+  #    hostname = "app.terraform.io"
+  #    organization = "my_organization"
+  #    workspaces {
+  #      tags = ["my_app"]
+  #    }
+  #  }
+  }
+  ```
+
+* Still in `main.tf`, configure a backend `remote {}` code block inside the main `terraform {}` code block
+  ``` terraform
+  terraform {
+  #  cloud {
+  #    hostname = "app.terraform.io"
+  #    organization = "my_organization"
+  #    workspaces {
+  #      tags = ["my_app"]
+  #    }
+  #  }
+
+    backend "remote" {
+      hostname = "app.terraform.io"
+      organization = "my_organization"
+      workspaces {
+        name = "my_workspace_name"
+      }
+    }
+  }
+  ```
+* Execute on your machine: `terraform init -reconfigure`
+
+* Import the resource using `terraform import resource.resource_name_here /resource/id/here`
+  ``` terraform
+  terraform import azurerm_kubernetes_cluster.my_cluster_name /subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name
+  ```
+  As of Terraform `1.5.0`, you can now [code an `import {}` block](https://developer.hashicorp.com/terraform/language/import) instead of running a `terraform import` command.
+  ``` terraform title="Expressed as an import {} code block:"
+  import {
+    id = "/subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name"
+    to = azurerm_kubernetes_cluster.my_cluster_name
+  }
+  ```
+
+* If the resource lives inside a module, you **must include the module in the resource path**. For example, if the workspace calls on module `my_module` to spin up a k8s cluster, you would execute:
+  ``` terraform
+  terraform import module.my_module.azurerm_kubernetes_cluster.my_cluster_name /subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name
+  ```
+  ``` terraform title="Expressed as an import {} code block:"
+  import {
+    id = "/subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name"
+    to = azurerm_kubernetes_cluster.my_cluster_name
+  }
+  ```
