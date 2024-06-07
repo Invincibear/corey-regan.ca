@@ -14,7 +14,7 @@ There are times when you have written code to deploy a resource to Azure but tha
 The process is similar to manually editing Terraform Cloud state file, with the exception that you do not need to upload anything back to TFC once the resource is imported.
 
 In short, the procedure using the `terraform` CLI involves:
-1. Reconfiguring the TFC Workspace's `main.tf` on your local machine to use a `remote {}` backend instead of the `cloud {}` backend
+1. Reconfiguring the TFC Workspace's main `terraform {}` code block on your local machine to use the `backend "remote" {}` backend instead of the `cloud {}` backend
 2. Initializing the TF code on your local machine
 3. Importing the resource into TF
 
@@ -33,7 +33,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
 ## Procedure Using Terraform's CLI
 * Ensure you have a copy of the TF code downloaded to your machine
 
-* In `main.tf`, comment out the `cloud {}` code block from the main `terraform {}` code block
+* In your main terraform block (I like to use `providers.tf`), temporarily comment out the `cloud {}` code block
   ``` terraform
   terraform {
   #  cloud {
@@ -46,7 +46,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
   }
   ```
 
-* Still in `main.tf`, configure a backend `remote {}` code block inside the main `terraform {}` code block
+* Still in `providers.tf`, configure a `backend "remote" {}` code block inside the main `terraform {}` code block
   ``` terraform
   terraform {
   #  cloud {
@@ -69,7 +69,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
 * Execute on your machine: `terraform init -reconfigure`
 
 * Import the resource using `terraform import resource.resource_name_here /resource/id/here`
-  ``` terraform
+  ``` terraform title="Example importing an Azure AKS Kubernetes cluster:"
   terraform import azurerm_kubernetes_cluster.my_cluster_name /subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name
   ```
   ``` terraform title="Expressed as an import {} code block:"
@@ -87,5 +87,18 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
   import {
     id = "/subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name"
     to = azurerm_kubernetes_cluster.my_cluster_name
+  }
+  ```
+
+* Remove the temporary `backend "remote" {}` code block from `providers.tf` and uncomment the original `cloud {}` code block:
+  ``` terraform
+  terraform {
+    cloud {
+      hostname = "app.terraform.io"
+      organization = "my_organization"
+      workspaces {
+        tags = ["my_app"]
+      }
+    }
   }
   ```
