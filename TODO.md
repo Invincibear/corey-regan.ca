@@ -1,4 +1,5 @@
 # TODO
+- Uppercase window title of /blog/tags/[tag]
 - Bug: auto-scroll can still activate on mobile even when wormhole isn't shown
 - If scrolled past wormhole end, abort auto-scroll
 - Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. 

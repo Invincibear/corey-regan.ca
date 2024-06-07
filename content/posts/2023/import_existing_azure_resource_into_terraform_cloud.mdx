@@ -8,7 +8,7 @@ authors:
   - corey
 ---
 
-<Callout>This article was written before Terraform introduced `import {}` blocks and was centered around using the `terraform import` CLI command. This article has been updated to include examples of the simpler `import {}` code blocks. You can skip most of this post by simply adding `import {}` blocks to your code. You can leave them in once imported, or comment them out, or delete them.</Callout>
+<Callout>This article was written before Terraform introduced `import {}` blocks in `v1.5.0`, and was centered around using the `terraform import` CLI command. This article has been updated to include examples of the simpler `import {}` code blocks. You can skip most of this post by simply adding `import {}` blocks to your code. You can leave them in once imported, or comment them out, or delete them.</Callout>
 
 There are times when you have written code to deploy a resource to Azure but that resource was already created. In this instance, TFC is unable to create the resource and tells you to instead import it into the TF state.
 The process is similar to manually editing Terraform Cloud state file, with the exception that you do not need to upload anything back to TFC once the resource is imported.
@@ -72,7 +72,6 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
   ``` terraform
   terraform import azurerm_kubernetes_cluster.my_cluster_name /subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name
   ```
-  As of Terraform `1.5.0`, you can now [code an `import {}` block](https://developer.hashicorp.com/terraform/language/import) instead of running a `terraform import` command.
   ``` terraform title="Expressed as an import {} code block:"
   import {
     id = "/subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name"
