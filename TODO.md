@@ -12,6 +12,7 @@
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
+- ~~Add functionality to blog tags~~
 - ~~Replace paw-print icon with sparkles, keeping in-theme with space~~
 - ~~Bug: can't navigate to blog, causes 404, perhaps wormhole destruction is failing? (console msg)~~
   - ~~Blog tags prefetching returns 404s~~
