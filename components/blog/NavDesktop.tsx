@@ -3,7 +3,7 @@
 import { BlogConfig }  from "@/config/blog"
 import { SiteConfig }  from "@/config/site"
 import { cn }          from "@/lib/utils"
-import { PawPrint }    from "lucide-react"
+import { Sparkles }    from "lucide-react"
 import Link            from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -14,7 +14,7 @@ export function NavDesktop() {
   return (
     <nav className="flex items-center space-x-4 lg:space-x-6 text-black">
       <Link href={BlogConfig.url} className="mr-6 flex items-center space-x-2 hover:text-primary">
-        <PawPrint className="mr-2 size-6 text-foreground" />
+        <Sparkles className="mr-2 size-6 text-foreground" />
         <span className="font-bold text-accent-foreground">{BlogConfig.name}</span>
       </Link>
       <Link

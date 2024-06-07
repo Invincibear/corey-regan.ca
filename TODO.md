@@ -1,8 +1,8 @@
 # TODO
 - Bug: auto-scroll can still activate on mobile even when wormhole isn't shown
 - If scrolled past wormhole end, abort auto-scroll
-- Blog tags prefetching returns 404s
-- Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. This is really only for refreshes and my troubleshooting, but I shouldn't need to wait the full 12 seconds if I'm barely scrolled above the end of the wormhole sequence
+- Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. 
+  - This is really only for refreshes and my troubleshooting, but I shouldn't need to wait the full 12 seconds if I'm barely scrolled above the end of the wormhole sequence
 - mechanism to stop wormhole animation, separate from unmounting the containers
   - `ESC` should cancel an active auto-scroller
 - Incorporate mouse-tracked background highlight
@@ -12,7 +12,9 @@
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
+- ~~Replace paw-print icon with sparkles, keeping in-theme with space~~
 - ~~Bug: can't navigate to blog, causes 404, perhaps wormhole destruction is failing? (console msg)~~
+  - ~~Blog tags prefetching returns 404s~~
 - ~~Bug: Warning: `NaN` is an invalid value for the `opacity` css style property.~~
 - ~~Bug: Mobile starfield hero issues~~
 - ~~Only auto-scroll once~~
