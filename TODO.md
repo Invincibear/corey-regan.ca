@@ -1,5 +1,4 @@
 # TODO
-- Bug: Copy blog code button copies `undefined`
 - Bug: auto-scroll can still activate on mobile even when wormhole isn't shown
 - Blog light theme colors are terribad
 - If scrolled past wormhole end, abort auto-scroll
@@ -13,6 +12,7 @@
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
+- ~~Bug: Copy blog code button copies `undefined`~~
 - ~~Where is my missing copy button for /blog codeblocks?~~
 - ~~Add tags sorting functionality~~
 - ~~Uppercase window title of /blog/tags/[tag]~~

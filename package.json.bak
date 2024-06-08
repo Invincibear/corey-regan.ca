@@ -32,7 +32,6 @@
     "typed.js": "^2.1.0"
   },
   "devDependencies": {
-    "@rehype-pretty/transformers": "^0.13.2",
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20",
     "@types/react": "^18",
