@@ -59,7 +59,7 @@ const authors = defineCollection({
 
 const posts = defineCollection({
   name:    "Post",
-  pattern: "posts/**/*.mdx",
+  pattern: ["posts/2*/*.md", "posts/2*/*.mdx"],
   schema:  s
             .object({
               slug: s.path(),
@@ -76,6 +76,9 @@ const posts = defineCollection({
 const rehypePrettyCodeOptions: Options = {
   keepBackground: false,
   theme:          "github-dark-dimmed",
+  defaultLang: {
+    block: " " // Prevents <CodeBlockHeader> from rendering inline when code block language is undefined
+  },
   onVisitLine(node: any) {
     // Prevents lines from collapsing in `display: grid` mode, and allows empty lines to be copy/pasted
     if (node.children.length === 0) {
