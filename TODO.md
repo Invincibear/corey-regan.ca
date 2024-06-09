@@ -1,4 +1,5 @@
 # TODO
+- Arrival hero section needs a scroll-down icon in the bottom-center
 - Bug: auto-scroll can still activate on mobile even when wormhole isn't shown
 - Blog light theme colors are terribad
 - If scrolled past wormhole end, abort auto-scroll
