@@ -96,38 +96,40 @@ export default function TagPage({ params }: TagPageProps) {
           <CardContent className="flex flex-wrap gap-2">
             <div className="flex flex-wrap gap-2 text-xs">
               <Link
-                href      = {"/blog/tags/[tag]/sort/count"}
-                as        = {`/blog/tags/${tag}/sort/count`}
-                className = {badgeVariants({
-                  variant:   "default",
+                href={"/blog/tags/[tag]/sort/count"}
+                as={`/blog/tags/${tag}/sort/count`}
+                className={badgeVariants({
+                  variant: "default",
                   className: "no-underline rounded-none",
                 })}
               >
                 Sort by count
               </Link>
               <Link
-                href      = {"/blog/tags/[tag]/sort/alphabetically"}
-                as        = {`/blog/tags/${tag}/sort/alphabetically`}
-                className = {badgeVariants({
-                  variant:   "secondary",
+                href={"/blog/tags/[tag]/sort/alphabetically"}
+                as={`/blog/tags/${tag}/sort/alphabetically`}
+                className={badgeVariants({
+                  variant: "secondary",
                   className: "no-underline rounded-none",
                 })}
               >
                 Sort alphabetically
               </Link>
             </div>
-            <hr className="my-4"/>
-            {sortedTags?.map((tag) => (
-              <Tag
-                tag     = {tag}
-                current = {tag.toLowerCase() === currentTag.toLowerCase()}
-                key     = {tag}
-                count   = {tags[tag]}
-              />
-            ))}
+            <hr/>
+            <div className="flex flex-wrap gap-2">
+              {sortedTags?.map((tag) => (
+                <Tag
+                  tag={tag}
+                  current={tag.toLowerCase() === currentTag.toLowerCase()}
+                  key={tag}
+                  count={tags[tag]}
+                />
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+)
 }

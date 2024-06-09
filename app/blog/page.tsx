@@ -93,28 +93,30 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           <CardContent className="flex flex-wrap gap-2">
             <div className="flex flex-wrap gap-2 text-xs">
               <Link
-                href      = {`/blog/sort/count${currentPage != 1 ? '?page=' + currentPage : ''}`}
-                className = {badgeVariants({
-                  variant:   "default",
+                href={`/blog/sort/count${currentPage != 1 ? '?page=' + currentPage : ''}`}
+                className={badgeVariants({
+                  variant: "default",
                   className: "no-underline rounded-none",
                 })}
               >
                 Sort by count
               </Link>
               <Link
-                href      = {`/blog/sort/alphabetically${currentPage != 1 ? '?page=' + currentPage : ''}`}
-                className = {badgeVariants({
-                  variant:   "secondary",
+                href={`/blog/sort/alphabetically${currentPage != 1 ? '?page=' + currentPage : ''}`}
+                className={badgeVariants({
+                  variant: "secondary",
                   className: "no-underline rounded-none",
                 })}
               >
                 Sort alphabetically
               </Link>
             </div>
-            <hr className="my-4"/>
-            {sortedTags?.map((tag) => (
-              <Tag tag={tag} key={tag} count={tags[tag]}/>
-            ))}
+            <hr />
+            <div className="flex flex-wrap gap-2">
+              {sortedTags?.map((tag) => (
+                <Tag tag={tag} key={tag} count={tags[tag]}/>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>

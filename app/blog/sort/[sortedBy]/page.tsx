@@ -102,28 +102,30 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
           <CardContent className="flex flex-wrap gap-2">
             <div className="flex flex-wrap gap-2 text-xs">
               <Link
-                href      = {`/blog/sort/count${currentPage != 1 ? '?page=' + currentPage : ''}`}
-                className = {badgeVariants({
-                  variant:   sortedBy === "count" ? "default" : "secondary",
+                href={`/blog/sort/count${currentPage != 1 ? '?page=' + currentPage : ''}`}
+                className={badgeVariants({
+                  variant: sortedBy === "count" ? "default" : "secondary",
                   className: "no-underline rounded-none",
                 })}
               >
                 Sort by count
               </Link>
               <Link
-                href      = {`/blog/sort/alphabetically${currentPage != 1 ? '?page=' + currentPage : ''}`}
-                className = {badgeVariants({
-                  variant:   sortedBy === "alphabetically" ? "default" : "secondary",
+                href={`/blog/sort/alphabetically${currentPage != 1 ? '?page=' + currentPage : ''}`}
+                className={badgeVariants({
+                  variant: sortedBy === "alphabetically" ? "default" : "secondary",
                   className: "no-underline rounded-none",
                 })}
               >
                 Sort alphabetically
               </Link>
             </div>
-            <hr className="my-4"/>
-            {sortedTags?.map((tag) => (
-              <Tag tag={tag} key={tag} count={tags[tag]} sortedBy={sortedBy}/>
-            ))}
+            <hr/>
+            <div className="flex flex-wrap gap-2">
+              {sortedTags?.map((tag) => (
+                <Tag tag={tag} key={tag} count={tags[tag]} sortedBy={sortedBy}/>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
