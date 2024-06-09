@@ -8,7 +8,7 @@ interface RecentBlogPostsProps {
   maxPosts?: number
 }
 export default function RecentBlogPosts({ maxPosts = 3}: RecentBlogPostsProps) {
-  const sortedPosts = sortPosts(posts.filter((post) => post.published))
+  const sortedPosts = sortPosts(posts)
   const displayPosts = sortedPosts.slice(0, maxPosts)
 
   return (

@@ -11,33 +11,40 @@ import "@/styles/starfield.css"
 
 
 export default function StarfieldHero() {
-  const starfieldDivRef= useRef(null)
-  const sectionRef     = useRef(null)
-  const typedWordsRef  = useRef(null)
+  const starfieldDivRef     = useRef(null)
+  const starfieldSectionRef = useRef(null)
+  const typedWordsRef       = useRef(null)
 
   const [starfieldVisible, setStarfieldVisible] = useState(true)
 
   // Initialize Typed.js animated typing
   useEffect(() => {
     const typed = new Typed(typedWordsRef.current, {
-      strings:       ['Site Reliability', 'DevOps', 'Full-Stack', 'Azure Cloud', 'AWS Cloud'],
-      typeSpeed:     90,
-      backSpeed:     65,
+      strings: ['Site Reliability', 'DevOps', 'Full-Stack', 'Azure Cloud', 'AWS Cloud'],
+
+      autoInsertCss: true,
       backDelay:     2000 ,
+      backSpeed:     65,
+      contentType:   'html',
+      cursorChar:    '|',
       loop:          true,
       loopCount:     Infinity,
       showCursor:    true,
-      cursorChar:    '|',
-      autoInsertCss: true,
-      contentType:   'html',
+      typeSpeed:     90,
+
+      onBegin(self: Typed) {
+        if (!starfieldVisible) self.stop()
+      }
     })
+
+    if (starfieldVisible) typed.start()
 
     // Destroy Typed instance during component unmount to stop animation
     // This also prevents duplicate '|' cursor
     return () => {
       typed.destroy()
     }
-  }, [])
+  }, [starfieldVisible])
 
   const { scrollYProgress } = useScroll({})
   const opacity = useTransform(
@@ -60,8 +67,9 @@ export default function StarfieldHero() {
   return (
     <>
       <motion.section
+        id        = "starfieldHero"
         className = {`w-full h-screen bg-black overflow-hidden fixed top-0 ${!starfieldVisible ? "pointer-events-none" : ""}`}
-        ref       = {sectionRef}
+        ref       = {starfieldSectionRef}
         style     = {{
           opacity:         opacity,
           scale:           scale,
@@ -70,7 +78,6 @@ export default function StarfieldHero() {
       >
         <motion.div
           className = "w-full h-full bg-black"
-          id        = "starfieldhero"
           ref       = {starfieldDivRef}
           style     = {{
             position:        "relative",
@@ -82,16 +89,16 @@ export default function StarfieldHero() {
           <Starfield/>
           <div className="w-full h-screen flex items-center justify-center overflow-x-hidden">
             <div
-              id="hero-title"
+              id="starfieldHeroTitle"
               className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
               style={{transform: "translateZ(0)"}}
             >
               <motion.h1
                 className   = "hero-heading-rich-text text-center font-bold tracking-tighter text-8xl pb-4"
-                initial     = {{opacity:  0, scale: 0}}
-                whileInView = {{opacity:  1, scale: 1}}
-                transition  = {{duration: 3}}
-                viewport    = {{once:     true}}
+                initial     = {{ opacity:  0, scale: 0 }}
+                whileInView = {{ opacity:  1, scale: 1 }}
+                transition  = {{ duration: 3 }}
+                viewport    = {{ once:     true }}
               >
                 Corey
                 <br/>
@@ -121,7 +128,7 @@ export default function StarfieldHero() {
       />
       <motion.div
         id              = "starfieldHeroVisibilityTarget"
-        className       = "bg-white w-full h-1"
+        className       = "bg-black w-full h-0.5"
         onViewportEnter = {() => setStarfieldVisible(true)}
         onViewportLeave = {() => setStarfieldVisible(false)}
       />

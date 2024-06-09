@@ -1,0 +1,16 @@
+.gradient-text-title {
+    @apply bg-clip-text font-extrabold tracking-tight text-transparent;
+    @apply bg-gradient-to-br from-zinc-300 via-zinc-400 to-zinc-500;
+}
+
+#arrivalHero .typed-cursor {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip:         text;
+    background-image:        linear-gradient(115deg, #76b8ff 22.45%, #f086f2 45%, #fac37b 73%);
+    visibility: hidden;
+}
+
+.type-cursor-visible {
+    visibility: visible !important;
+}

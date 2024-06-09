@@ -1,5 +1,6 @@
 "use client"
 
+import ArrivalHero           from "@/components/ArrivalHero"
 import CertificationCarousel from "@/components/CertificationCarousel"
 import DaisyTimeline         from "@/components/DaisyTimeline"
 import RecentBlogPosts       from "@/components/RecentBlogPosts"
@@ -13,6 +14,7 @@ export default function Home() {
     <>
       <WormholeHero/>
       <StarfieldHero/>
+      <ArrivalHero/>
       <CertificationCarousel/>
       <DaisyTimeline timelineEvents={TimelineEvents}/>
       <RecentBlogPosts/>
