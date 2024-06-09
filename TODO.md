@@ -12,6 +12,8 @@
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
+- Wormhole should transition to a new hero section
+  - "Flying your infrastructure into the future"
 - ~~Bug: tags list on mobile display issues~~
 - ~~Bug: Copy blog code button copies `undefined`~~
 - ~~Where is my missing copy button for /blog codeblocks?~~
