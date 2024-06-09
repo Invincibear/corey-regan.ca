@@ -8,7 +8,7 @@ authors:
   - corey
 ---
 
-I was able to figure out a solution! There was originally a bunch of config settings that I ended up hardcoding in, but it works!
+Rehype-pretty-code is really amazing. What's not so amazing is how every other tutorial out there at the time of writing to add a copy code button does not work, all because Rehype obliterates custom properties. Fortunately, they've included a poorly-documented `transformer` feature that allows you to add these properties to tags, allowing us to then find what we need and send them to the user's clipboard.
 
 Here's my file structure. You can swap out `velite` for whatever you're using (like `contentlayer`, etc.), they all write the config the same way:
 ```bash
