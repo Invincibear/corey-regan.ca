@@ -67,11 +67,12 @@ export function getPostsByTagSlug(posts: Array<Post>, tag: string) {
     .filter(post => {
       if (!post.tags) return false
 
-      const slugifiedTags = post.tags.map(tag => slug(tag))
+      const sluggedTags = post.tags.map(tag => slug(tag))
 
-      return slugifiedTags.includes(tag)
+      return sluggedTags.includes(tag)
     })
 }
+
 
 export function toTitleCase(phrase: string) {
   return phrase
@@ -79,4 +80,11 @@ export function toTitleCase(phrase: string) {
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
+}
+
+
+export function isFilename(str: string): boolean {
+  const filenameRegex = /[^\/\\]+\.[a-zA-Z0-9]+$/
+
+  return filenameRegex.test(str)
 }

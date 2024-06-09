@@ -1,4 +1,3 @@
-import { CodeBlockHeader } from "@/components/blog/CodeBlockHeader"
 import {
   Children,
   HTMLAttributes,
@@ -20,6 +19,7 @@ export const Pre = ({
   ...props
 }: PreProps) => {
   let raw_code = ''
+
   Children.map(children, (child) => {
     if (raw_code == '' && isValidElement(child)) {
       raw_code = (child.props['data-raw-code'] != null) ? child.props['data-raw-code'] : ''
@@ -29,8 +29,8 @@ export const Pre = ({
   return (
     <pre
       {...props}
-      className="pt-0 overflow-x-auto rounded-t-xl">
-      <CodeBlockHeader textToCopy={raw_code} {...props} />
+      className="pt-0 overflow-x-auto rounded-b-xl">
+      {/*<CodeBlockHeader textToCopy={raw_code} {...props} />*/}
       {children}
     </pre>
   )

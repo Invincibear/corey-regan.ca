@@ -1,5 +1,5 @@
-import {BlogConfig}                          from "@/config/blog"
-import {DOMAIN}                              from "@/config/site"
+import { BlogConfig }                        from "@/config/blog"
+import { DOMAIN }                            from "@/config/site"
 import { copyButtonRawCodeInjector }         from "@/lib/copyButtonRawCodeInjector"
 import readingTime                           from "reading-time"
 import rehypeAutolinkHeadings                from "rehype-autolink-headings"
@@ -77,7 +77,7 @@ const rehypePrettyCodeOptions: Options = {
   keepBackground: false,
   theme:          "github-dark-dimmed",
   defaultLang: {
-    block: " " // Prevents <CodeBlockHeader> from rendering inline when code block language is undefined
+    block: "text" // Prevents inline rendering when code block language is undefined
   },
   onVisitLine(node: any) {
     // Prevents lines from collapsing in `display: grid` mode, and allows empty lines to be copy/pasted
@@ -95,7 +95,7 @@ const rehypePrettyCodeOptions: Options = {
     fn: "entity.name.function",
   },
   transformers: [
-    copyButtonRawCodeInjector(),
+    // copyButtonRawCodeInjector(),
   ]
 }
 

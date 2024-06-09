@@ -23,6 +23,7 @@ export default function WormholeHero() {
   const hasAutoScrolled = useRef(false)
 
   const [wormholeIsAnimated, setWormholeIsAnimated]   = useState(false)
+  const [abortAutoScroll, setAbortAutoScroll]   = useState(false)
   const [scrollPoints, setScrollPoints] = useState({
     viewHeight:           0,
     bodyHeight:           0,
@@ -171,6 +172,16 @@ export default function WormholeHero() {
     ],
   )
 
+  const endOfWormholeSequence = () => {
+    if (fullScreen && document.fullscreenElement) document.exitFullscreen().then()
+    if (hideCursor && sectionRef.current) sectionRef.current.classList.remove('cursor-none')
+    if (hideScrollbar) document.body.classList.remove('scrollbar-none')
+
+    isAutoScrolling.current = false   // Reset flag once scrolling is complete
+    hasAutoScrolled.current = true    // But note that we have scrolled
+    setWormholeIsAnimated(false) // Stop the wormhole for performance reasons
+  }
+
   const scrollToTarget = () => {
     if (hasAutoScrolled.current) return
 
@@ -181,6 +192,8 @@ export default function WormholeHero() {
     let start: number | null = null
 
     const step = (timestamp: number) => {
+      if (abortAutoScroll) return
+
       if (!start) start = timestamp
       const progress = timestamp - start
       const increment = Math.min(progress / duration, 1)
@@ -191,13 +204,7 @@ export default function WormholeHero() {
       } else {
         // We reached the end of our auto-scroll
 
-        if (fullScreen && document.fullscreenElement) document.exitFullscreen().then()
-        if (hideCursor && sectionRef.current) sectionRef.current.classList.remove('cursor-none')
-        if (hideScrollbar) document.body.classList.remove('scrollbar-none')
-
-        isAutoScrolling.current = false   // Reset flag once scrolling is complete
-        hasAutoScrolled.current = true    // But note that we have scrolled
-        setWormholeIsAnimated(false) // Stop the wormhole for performance reasons
+        endOfWormholeSequence()
       }
     }
 
@@ -236,10 +243,23 @@ export default function WormholeHero() {
         // Something else is up, should probably log this to console
       }
     }
-
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [scrollYProgress, scrollPoints])
+
+    const handleEsc = (event: KeyboardEvent) => {
+      console.debug({event: event})
+      if (event.key === 'Escape') {
+        console.debug('Escape pressed')
+        setAbortAutoScroll(true)
+        endOfWormholeSequence()
+      }
+    }
+    window.addEventListener("keydown", handleEsc)
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc)
+      window.removeEventListener("scroll",  handleScroll)
+    }
+  }, [scrollYProgress, scrollPoints, abortAutoScroll])
 
   return (
     <motion.section

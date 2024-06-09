@@ -1,6 +1,6 @@
 import { Callout }         from "@/components/Callout"
-import { CodeBlockHeader } from "@/components/blog/CodeBlockHeader"
 import { Figure }          from "@/components/blog/Figure"
+import { FigCaption }      from "@/components/blog/FigCaption"
 import { Pre }             from "@/components/blog/Pre"
 import { cn }              from "@/lib/utils"
 import Image               from "next/image"
@@ -147,13 +147,11 @@ const components = {
   ),
   pre: Pre,
   figure: Figure,
-  figcaption: ({ className, ...props }: { className?: HTMLAttributes<HTMLElement> }) => (
-    <></> // Prevent rehype-pretty-code from adding a <figcaption/> to code block titles
-  ),
+  figcaption: FigCaption,
   code: ({className, ...props}: { className?: string }) => (
     <code
       className={cn(
-        "relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm",
+        "relative rounded-b-xl px-[0.3rem] py-[0.2rem] font-mono text-sm",
         "not:prose",
         className
       )}
@@ -163,7 +161,6 @@ const components = {
   Image,
   Link,
   Callout,
-  CodeBlockHeader,
 }
 
 interface MdxProps {
