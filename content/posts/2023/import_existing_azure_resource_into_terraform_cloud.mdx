@@ -23,7 +23,7 @@ In short, the procedure using the `terraform` CLI involves:
 
 ## Procedure Using Terraform import {} Blocks
 As of Terraform `1.5.0`, you can now [code an `import {}` block](https://developer.hashicorp.com/terraform/language/import) instead of running a `terraform import` command.
-  ``` terraform
+  ```terraform title=" "
   import {
     id = "/subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name"
     to = azurerm_kubernetes_cluster.my_cluster_name
@@ -34,7 +34,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
 * Ensure you have a copy of the TF code downloaded to your machine
 
 * In your main terraform block (I like to use `providers.tf`), temporarily comment out the `cloud {}` code block
-  ``` terraform
+  ```terraform title=" "
   terraform {
   #  cloud {
   #    hostname = "app.terraform.io"
@@ -47,7 +47,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
   ```
 
 * Still in `providers.tf`, configure a `backend "remote" {}` code block inside the main `terraform {}` code block
-  ``` terraform
+  ```terraform title=" "
   terraform {
   #  cloud {
   #    hostname = "app.terraform.io"
@@ -69,10 +69,10 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
 * Execute on your machine: `terraform init -reconfigure`
 
 * Import the resource using `terraform import resource.resource_name_here /resource/id/here`
-  ``` terraform title="Example importing an Azure AKS Kubernetes cluster:"
+  ```terraform title="Example importing an Azure AKS Kubernetes cluster"
   terraform import azurerm_kubernetes_cluster.my_cluster_name /subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name
   ```
-  ``` terraform title="Expressed as an import {} code block:"
+  ```terraform title="Expressed as an import {} code block"
   import {
     id = "/subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name"
     to = azurerm_kubernetes_cluster.my_cluster_name
@@ -80,10 +80,10 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
   ```
 
 * If the resource lives inside a module, you **must include the module in the resource path**. For example, if the workspace calls on module `my_module` to spin up a k8s cluster, you would execute:
-  ``` terraform
+  ```terraform
   terraform import module.my_module.azurerm_kubernetes_cluster.my_cluster_name /subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name
   ```
-  ``` terraform title="Expressed as an import {} code block:"
+  ```terraform title="Expressed as an import {} code block"
   import {
     id = "/subscriptions/my_subscription_id/resourceGroups/my_resource_group_name/providers/Microsoft.ContainerService/managedClusters/my_cluster_name"
     to = azurerm_kubernetes_cluster.my_cluster_name
@@ -91,7 +91,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
   ```
 
 * Remove the temporary `backend "remote" {}` code block from `providers.tf` and uncomment the original `cloud {}` code block:
-  ``` terraform
+  ```terraform title=" "
   terraform {
     cloud {
       hostname = "app.terraform.io"

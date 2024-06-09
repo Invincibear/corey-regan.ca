@@ -11,7 +11,7 @@ authors:
 The VPS must be powered down to perform the necessary configuration changes.
 We will use VPS container `dockertest.corey-regan.ca` for the following instructions.
 
-``` bash title="Stop the running VPS"
+```bash title="Stop the running VPS"
 [root@virtuozzo ~]# vzctl stop dockertest.corey-regan.ca
 Stopping the Container ...
 
@@ -20,19 +20,19 @@ Unmount image: /vz/private/e54b18b7-1491-4861-8c7c-9b46ce30852d/root.hdd
 Container is unmounted
 ```
 
-``` bash title="Enable network bridging on the VPS"
+```bash title="Enable network bridging on the VPS"
 [root@virtuozzo ~]# prlctl set dockertest.corey-regan.ca --features bridge:on
 set features: bridge:on
 The CT has been successfully configured.
 ```
 
-``` bash title="Enable full access to netfilter features for the VPS"
+```bash title="Enable full access to netfilter features for the VPS"
 [root@virtuozzo ~]# prlctl set dockertest.corey-regan.ca --netfilter full
 Set netfilter: full
 The CT has been successfully configured.
 ```
 
-``` bash title="Restart the VPS"
+```bash title="Restart the VPS"
 [root@virtuozzo ~]# vzctl start dockertest.corey-regan.ca
 Starting Container ...
 Mount image: /vz/private/e54b18b7-1491-4861-8c7c-9b46ce30852d/root.hdd
@@ -49,23 +49,23 @@ File resolv.conf was modified
 Container start in progress...
 ```
 
-``` bash title="Install Docker on the VPS, assuming the repo is already configured"
+```bash title="Install Docker on the VPS, assuming the repo is already configured"
 [root@virtuozzo ~]# prlctl exec dockertest.corey-regan.ca yum install docker -y
 ```
 
-``` bash title="Enable the Docker service for automatic startup on system reboot, and start the Docker service on the VPS"
+```bash title="Enable the Docker service for automatic startup on system reboot, and start the Docker service on the VPS"
 [root@virtuozzo ~]# \
 prlctl exec dockertest.corey-regan.ca systemctl enable docker && \
 prlctl exec dockertest.corey-regan.ca systemctl start docker
 ```
 
-``` bash title="Verify the Docker service is running as expected on the VPS"
+```bash title="Verify the Docker service is running as expected on the VPS"
 [root@virtuozzo ~]# prlctl exec dockertest.corey-regan.ca systemctl status docker
 ? docker.service - Docker Application Container Engine
 Loaded: loaded (/usr/lib/systemd/system/docker.service; disabled; vendor preset: disabled)
 ```
 
-``` bash title="Verify Docker can run the included hello-world container"
+```bash title="Verify Docker can run the included hello-world container"
 [root@virtuozzo ~]# prlctl exec dockertest.corey-regan.ca docker run hello-world
 Hello from Docker!
 This message shows that your installation appears to be working correctly.

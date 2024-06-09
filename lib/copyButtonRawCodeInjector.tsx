@@ -2,7 +2,7 @@ import type { ShikiTransformer } from "shiki"
 
 
 /**
- * A transformer that adds raw <code> as a data-raw-code property
+ * A transformer that adds the raw <code> value as a data-raw-code property
  *
  * @returns A Shiki transformer
  */
@@ -16,6 +16,3 @@ export function copyButtonRawCodeInjector(): ShikiTransformer {
     },
   }
 }
-
-
-

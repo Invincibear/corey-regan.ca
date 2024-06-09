@@ -23,8 +23,12 @@ export const FigCaption = ({
 }: FigCaptionProps) => {
   // console.debug({props: props, textToCopy: textToCopy})
 
-  const codeBlockTitle = 'data-rehype-pretty-code-title' in props ? children : ''
-  const codeBlockLanguage = props["data-language"] ? `${props["data-language"]}:` : ''
+  const codeBlockTitle = 'data-rehype-pretty-code-title' in props
+    ? children
+    : ''
+  const codeBlockLanguage = props["data-language"]
+    ? `${props["data-language"]}${codeBlockTitle != ' ' ? ':' : ''}`
+    : ''
   const codeBlockTitleStyled = isFilename(`${codeBlockTitle}`)
     ? (
       <span className="relative px-1 font-mono text-sm not:prose">
@@ -37,7 +41,7 @@ export const FigCaption = ({
     <figcaption
       {...props}
       className                     = {className}
-      data-rehype-pretty-code-title = {codeBlockTitle}
+      // data-rehype-pretty-code-title = {codeBlockTitle}
       data-language                 = {props['data-language']}
       data-theme                    = {props['data-theme']}
       // data-raw-code                 = {textToCopy} // To avoid clicking copy/paste to verify it works

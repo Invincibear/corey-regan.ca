@@ -1,8 +1,8 @@
 import { Callout }         from "@/components/Callout"
 import { Figure }          from "@/components/blog/Figure"
 import { FigCaption }      from "@/components/blog/FigCaption"
-import { Pre }             from "@/components/blog/Pre"
 import { cn }              from "@/lib/utils"
+import {Flow_Rounded} from "next/dist/compiled/@next/font/dist/google"
 import Image               from "next/image"
 import Link                from "next/link"
 import * as runtime        from "react/jsx-runtime"
@@ -103,11 +103,7 @@ const components = {
       {...props}
     />
   ),
-  img: ({
-    className,
-    alt,
-    ...props
-  }: ImgHTMLAttributes<HTMLImageElement>) => (
+  img: ({ className, alt, ...props }: ImgHTMLAttributes<HTMLImageElement>) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img className={cn("rounded-md border", className)} alt={alt} {...props} />
   ),
@@ -145,19 +141,32 @@ const components = {
       {...props}
     />
   ),
-  pre: Pre,
-  figure: Figure,
-  figcaption: FigCaption,
-  code: ({className, ...props}: { className?: string }) => (
-    <code
+  pre: ({ className, ...props }: { className?: HTMLAttributes<HTMLTableCellElement> }) => (
+    <pre
       className={cn(
-        "relative rounded-b-xl px-[0.3rem] py-[0.2rem] font-mono text-sm",
-        "not:prose",
+        "pt-0 overflow-x-auto rounded-t-none rounded-b-xl",
         className
       )}
       {...props}
     />
   ),
+  figure: Figure,
+  figcaption: FigCaption,
+  code: ({className, ...props}: { className?: string }) => {
+    console.debug({props: props})
+    const rounded = ('data-language' in props) ? 'rounded-b-xl' : 'rounded-lg'
+
+    return (
+    <code
+      className={cn(
+        `relative px-[0.3rem] py-[0.2rem] font-mono text-sm`,
+        "not:prose",
+        rounded,
+        className
+      )}
+      {...props}
+    />
+  )},
   Image,
   Link,
   Callout,
