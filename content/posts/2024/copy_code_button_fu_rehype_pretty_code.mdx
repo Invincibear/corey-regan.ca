@@ -8,14 +8,23 @@ authors:
   - corey
 ---
 
-Rehype-pretty-code is really amazing. What's not so amazing is how every other tutorial out there at the time of writing to add a copy code button does not work, all because Rehype obliterates custom properties. Fortunately, they've included a poorly-documented `transformer` feature that allows you to add these properties to tags, allowing us to then find what we need and send them to the user's clipboard.
+<Link href="https://rehype-pretty.pages.dev" target="_blank">`rehype-pretty-code`</Link> is really amazing. But what's not so amazing is how every other tutorial out there (at the time of writing) teaching how to add a __copy code button__ doesn't work, all because <Link href="https://github.com/rehype-pretty/rehype-pretty-code/issues/69#issuecomment-1814395653" target="_blank">Rehype overwrites custom properties</Link>. Fortunately, they've included a <Link href="https://github.com/rehype-pretty/rehype-pretty-code/issues/208#issuecomment-2126751727" target="_blank">poorly-documented</Link> <Link href="https://rehype-pretty.pages.dev/#transformers" target="_blank">`transformer`</Link> feature that allows you to add these properties to tags, allowing us to then find what we need and send them to the user's clipboard.
 
-Here's my file structure. You can swap out `velite` for whatever you're using (like `contentlayer`, etc.), they all write the config the same way:
-```bash
+I will assume you've already got the basic skeleton of your website setup. I'm using Next.js 14, TailwindCSS, Velite, and rehype-pretty-code. If you're using a different tech stack I don't guarantee that this'll work, but hopefully it sparks an idea that puts you on the right path.
+
+I tried the following guides & plugins, none of which worked with Next.js 14, but all of which helped inch me closer to the final solution:
+* https://claritydev.net/blog/copy-to-clipboard-button-nextjs-mdx-rehype
+* https://www.tybarho.com/articles/adding-a-copy-button-mdx-code-snippets
+* https://github.com/benjamin-chavez/rehype-clipboard-prep-code/tree/master
+* https://jsr.io/@rehype-pretty/transformers@0.13.2/doc/~/transformerCopyButton
+* https://github.com/joshnuss/shiki-transformer-copy-button
+
+
+Here's my relevant file structure. You can swap out <Link href="https://velite.js.org" target="_blank">Velite</Link> for whichever MDX engine you're using (like <Link href="https://contentlayer.dev" target="_blank">Contentlayer</Link>, <Link href="https://docs.astro.build/en/guides/markdown-content/" target="_blank">Astro</Link>, etc.), they all write the config the same way (and the filename usually follows the `*.config.ts` or `*.config.js` convention).
+```
 .
 ├── components
 │   ├── blog
-│   │   ├── BlogHeader.tsx
 │   │   ├── CodeBlockHeader.tsx
 │   │   ├── CopyButton.tsx
 │   │   ├── MDXContent.tsx
@@ -27,8 +36,8 @@ Here's my file structure. You can swap out `velite` for whatever you're using (l
 
 
 The following will add a `data-raw-code=""` property to your `<code>` tag, which you can confirm by inspecting the `<code>` element in browser dev tools.
-`@/lib/copyButtonRawCodeInjector.tsx`:
-```tsx
+
+```tsx title="@/lib/copyButtonRawCodeInjector.tsx"
 import type { ShikiTransformer } from "shiki"
 
 
@@ -48,6 +57,7 @@ export function copyButtonRawCodeInjector(): ShikiTransformer {
   }
 }
 ```
+<Link href={"/images/blog/code_block_with_data_raw_code_property.png"}><Image src={"/images/blog/code_block_with_data_raw_code_property.png"} alt="A code block with our custom data-raw-code property" width="1763" height="438" className="max-w-2xl pr-4" /></Link>
 
 
 Direct Rehype to use the new `copyButtonRawCodeInjector()` function by adding this to your `rehypePrettyCode` options:
@@ -57,14 +67,35 @@ import copyButtonRawCodeInjector from "@/lib/copyButtonRawCodeInjector.tsx"
 import rehypePrettyCode          from "rehype-pretty-code"
 
 
+const rehypePrettyCodeOptions: Options = {
+  keepBackground: false,
+  theme:          "github-dark-dimmed",
+  defaultLang: {
+    block: " " // Prevents <CodeBlockHeader> from rendering inline when code block language is undefined
+  },
+  onVisitLine(node: any) {
+    // Prevents lines from collapsing in `display: grid` mode, and allows empty lines to be copy/pasted
+    if (node.children.length === 0) {
+      node.children = [{ type: "text", value: " " }]
+    }
+  },
+  onVisitHighlightedLine(node: any) {
+    node.properties.className.push("line--highlighted")
+  },
+  onVisitHighlightedChars(node: any) {
+    node.properties.className = ["word--highlighted"]
+  },
+  transformers: [
+    copyButtonRawCodeInjector(),
+  ]
+}
+
 export default defineConfig({
   mdx: {
     rehypePlugins: [
       [
         rehypePrettyCode,
-        transformers: [
-          copyButtonRawCodeInjector(),
-        ],
+        rehypePrettyCodeOptions,
       ],
     ],
   },
@@ -123,6 +154,7 @@ interface PreProps extends HTMLAttributes<HTMLPreElement> {
 }
 
 // https://claritydev.net/blog/copy-to-clipboard-button-nextjs-mdx-rehype
+// https://stackoverflow.com/a/70676928/1707636
 export const Pre = ({
   children,
   ...props
