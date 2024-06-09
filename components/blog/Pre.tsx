@@ -14,6 +14,7 @@ interface PreProps extends HTMLAttributes<HTMLPreElement> {
 }
 
 // https://claritydev.net/blog/copy-to-clipboard-button-nextjs-mdx-rehype
+// https://stackoverflow.com/a/70676928/1707636
 export const Pre = ({
   children,
   ...props
