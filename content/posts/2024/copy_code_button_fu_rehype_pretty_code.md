@@ -54,15 +54,12 @@ Direct Rehype to use the new `copyButtonRawCodeInjector()` function by adding th
 `@/velite.config.ts`:
 ```tsx
 import copyButtonRawCodeInjector from "@/lib/copyButtonRawCodeInjector.tsx"
+import rehypePrettyCode          from "rehype-pretty-code"
 
 
 export default defineConfig({
   mdx: {
-    remarkPlugins: [
-      remarkGfm,
-    ],
     rehypePlugins: [
-      rehypeSlug,
       [
         rehypePrettyCode,
         transformers: [
