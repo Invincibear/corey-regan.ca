@@ -36,7 +36,7 @@ interface BlogPageProps {
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const currentPage = Number(searchParams?.page) || 1
-  const sortedPosts = sortPosts(posts.filter((post) => post.published))
+  const sortedPosts = sortPosts(posts)
   const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE)
 
   const displayPosts = sortedPosts.slice(

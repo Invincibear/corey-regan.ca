@@ -1,7 +1,6 @@
 import {BlogConfig}                          from "@/config/blog"
 import {DOMAIN}                              from "@/config/site"
 import { copyButtonRawCodeInjector }         from "@/lib/copyButtonRawCodeInjector"
-
 import readingTime                           from "reading-time"
 import rehypeAutolinkHeadings                from "rehype-autolink-headings"
 import rehypePrettyCode, {Options}           from "rehype-pretty-code"
@@ -10,9 +9,9 @@ import rehypeStringify                       from "rehype-stringify"
 import remarkGfm                             from "remark-gfm"
 import { defineConfig, defineCollection, s } from "velite"
 
-import rehypeAttachRawStringsToCodeContainer from "remark-flexible-code-titles"
-import remarkCodeTitles                      from "remark-flexible-code-titles"
-import rehypeEnrichCodeContainerMetadata     from "remark-flexible-code-titles"
+// import rehypeAttachRawStringsToCodeContainer from "remark-flexible-code-titles"
+// import remarkCodeTitles                      from "remark-flexible-code-titles"
+// import rehypeEnrichCodeContainerMetadata     from "remark-flexible-code-titles"
 
 
 const computedFields = <T extends { slug: string }>(data: T) => ({

@@ -22,8 +22,11 @@ export function formatDate(input: string | number): string {
 
 
 export function sortPosts(posts: Array<Post>) {
+  posts = (process.env.NODE_ENV !== "development")
+    ? posts.filter(post => post.published)
+    : posts
+
   return posts
-    .filter(post => post.published)
     .sort((a, b) => {
     if (a.date > b.date) return -1
     if (a.date < b.date) return 1
@@ -34,8 +37,12 @@ export function sortPosts(posts: Array<Post>) {
 
 export function getAllTags(posts: Array<Post>) {
   const tags: Record<string, number> = {}
+
+  posts = (process.env.NODE_ENV !== "development")
+  ? posts.filter(post => post.published)
+  : posts
+
   posts
-    .filter(post => post.published)
     .flatMap(post => post.tags ?? [])
     .forEach(tag => {
       tags[tag] = (tags[tag] ?? 0) + 1

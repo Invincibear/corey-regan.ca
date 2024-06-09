@@ -1,7 +1,7 @@
 "use client"
 
 import { ClipboardCopy, ClipboardCheck } from "lucide-react"
-import {useState}                        from "react"
+import { useState }                      from "react"
 
 
 // https://claritydev.net/blog/copy-to-clipboard-button-nextjs-mdx-rehype
