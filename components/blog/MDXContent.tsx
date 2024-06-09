@@ -147,6 +147,9 @@ const components = {
   ),
   pre: Pre,
   figure: Figure,
+  figcaption: ({ className, ...props }: { className?: HTMLAttributes<HTMLElement> }) => (
+    <></> // Prevent rehype-pretty-code from adding a <figcaption/> to code block titles
+  ),
   code: ({className, ...props}: { className?: string }) => (
     <code
       className={cn(
