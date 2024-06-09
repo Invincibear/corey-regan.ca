@@ -14,6 +14,7 @@ function WormholeCurved({startAnimation = false}) {
 
   useEffect(() => {
     if (startAnimation && !wormholeIsAnimated) setWormholeIsAnimated(true)
+    if (wormholeIsAnimated && !startAnimation) setWormholeIsAnimated(false)
   }, [startAnimation])
 
   useEffect(() => {

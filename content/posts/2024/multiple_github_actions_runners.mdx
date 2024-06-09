@@ -19,7 +19,7 @@ Fortunately, there is an easy solution:
 <br clear="left"/>
 
 In this example, there are two runners on the machine, one which builds and deploys my portfolio website, and one for this blog:
-``` bash
+```bash title=" "
 /var/actions-runners# tree -L 1
 .
 ├── corey-regan.ca
@@ -32,7 +32,7 @@ In this example, there are two runners on the machine, one which builds and depl
 Choose where on your machine to store your runners, I chose `/var/actions-runners`.
 I'll create the subdirectories that will contain our two runners, `corey-regan.ca` and `corey-regan.ca-blog`, name them appropriately for your needs.
 We will then change its owner and apply a sticky bit to the group so that subsequently created folders and files are always owned by the `gh-runner` group.
-``` bash
+```bash title=" "
 mkdir -p \
     /var/actions-runners/corey-regan.ca \
     /var/actions-runners/corey-regan.ca-blog
@@ -43,7 +43,7 @@ mkdir -p \
 Create a new user and group for the runners, using the `-r` flag to create a system account will have no password set,
 no home directory, and its shell set to `/usr/sbin/nologin`, which should reduce their permissions to a minimal level necessary.
 This is important because the runner will be exposed to the internet, so we should attempt to mitigate this potential attack vector.
-``` bash
+```bash title=" "
 sudo groupadd -r gh-runner
 sudo useradd -r -g gh-runner -s /sbin/nologin gh-runner
 ```
@@ -51,14 +51,14 @@ sudo useradd -r -g gh-runner -s /sbin/nologin gh-runner
 #### Apply directory permissions
 We'll make the `gh-runner` user & group the owner of the installation directory,
 and configure it so that subsequent files/folders are always owned by `gh-runner` by applying a [sticky bit to the group ownership](https://www.redhat.com/sysadmin/suid-sgid-sticky-bit).
-``` bash /chmod g+s/
+```bash title=" " /chmod g+s/
 chown -R gh-runner:gh-runner /var/actions-runners
 chmod g+s /var/actions-runner
 cd /var/actions-runners
 ```
 
 You can see the sticky bit applied to the directory, look for the "`S`" in the listed permissions of the current directory.
-``` bash /drwxr-Sr-x/
+```bash title=" " /drwxr-Sr-x/
 /var/actions-runners$ ls -lsah
 total 16K
 4.0K drwxr-Sr-x  4 gh-runner gh-runner 4.0K May  5 12:29 .
@@ -86,7 +86,7 @@ At this point, you should have:
 
 #### Runner-as-a-service
 We can configure the runner as a service to survive reboots and always start with the machine, configured to run as `gh-runner`:
-``` bash
+```bash title=" "
 sudo ./svc.sh install gh-runner
 
 Creating launch runner in /etc/systemd/system/actions.runner.Invincibear-corey-regan.ca-blog.corey-regan.ca-blog.service
@@ -97,7 +97,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/actions.runner.Invin
 ```
 
 We also need to start the service for the first time:
-``` bash
+```bash title=" "
 sudo ./svc.sh start
 
 /etc/systemd/system/actions.runner.Invincibear-corey-regan.ca-blog.corey-regan.ca-blog.service
@@ -116,7 +116,7 @@ We can verify the new runner connected to GitHub by refreshing the Runners page:
 <Link href={"/images/blog/new_gh_runner_connected.png"}><Image src={"/images/blog/new_gh_runner_connected.png"} alt="New self-hosted GitHub runner connected to repository" width="1567" height="443" className="max-w-2xl pr-4" /></Link>
 
 And we can also confirm this by querying the status of the runner's service:
-``` bash
+```bash title=" "
 sudo ./svc.sh status
 
 /etc/systemd/system/actions.runner.Invincibear-corey-regan.ca-blog.corey-regan.ca-blog.service
@@ -146,7 +146,7 @@ Your runner can execute other scripts on your machine, enabling complex tasks no
 
 Fortunately, it only takes one line to add to your YAML to instruct GitHub to use your self-hosted runner:
 **`runs-on: self-hosted`**
-``` yaml
+```yaml title=".github/workflows/my_workflow.yml"
 name: Deploy blog
 
 on:

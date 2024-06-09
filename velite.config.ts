@@ -1,5 +1,5 @@
-import {BlogConfig}                          from "@/config/blog"
-import {DOMAIN}                              from "@/config/site"
+import { BlogConfig }                        from "@/config/blog"
+import { DOMAIN }                            from "@/config/site"
 import { copyButtonRawCodeInjector }         from "@/lib/copyButtonRawCodeInjector"
 import readingTime                           from "reading-time"
 import rehypeAutolinkHeadings                from "rehype-autolink-headings"
@@ -10,7 +10,7 @@ import remarkGfm                             from "remark-gfm"
 import { defineConfig, defineCollection, s } from "velite"
 
 // import rehypeAttachRawStringsToCodeContainer from "remark-flexible-code-titles"
-// import remarkCodeTitles                      from "remark-flexible-code-titles"
+import remarkCodeTitles                      from "remark-flexible-code-titles"
 // import rehypeEnrichCodeContainerMetadata     from "remark-flexible-code-titles"
 
 
@@ -77,7 +77,8 @@ const rehypePrettyCodeOptions: Options = {
   keepBackground: false,
   theme:          "github-dark-dimmed",
   defaultLang: {
-    block: " " // Prevents <CodeBlockHeader> from rendering inline when code block language is undefined
+    block:  "plaintext",
+    inline: "",
   },
   onVisitLine(node: any) {
     // Prevents lines from collapsing in `display: grid` mode, and allows empty lines to be copy/pasted
@@ -113,6 +114,7 @@ export default defineConfig({
   mdx: {
     remarkPlugins: [
       remarkGfm,
+      remarkCodeTitles,
     ],
     rehypePlugins: [
       rehypeSlug,

@@ -17,12 +17,12 @@ This guide will show you how to migrate from Virtuozzo 4 to Virtuozzo 6.
 
 
 ## Virtuozzo 4 to Virtuozzo 6 Migration
-``` bash title="Get the ID of the VPS container to migrate"
+```bash title="Get the ID of the VPS container to migrate"
 [root@virtuozzo4 ~]# vzlist | grep $hostname
 ```
 
 To safeguard ourselves from oopsying the customer's original container, we will first copy their container to which we will perform the actual migration.
-``` bash title="Copy the container locally, incrementing the container ID +1" /4095065/
+```bash title="Copy the container locally, incrementing the container ID +1" /4095065/
 [root@virtuozzo4 ~]# vzmlocal -C 4095064:4095065
 ```
 
@@ -33,23 +33,23 @@ There are a few things to note:
 - `--readonly` leaves the files intact on the Virtuozzo 4 host after migration, but stops the container on the Virtuozzo 4 host after completing the transfer to the Virtuozzo 6 host.
 - `--online` keeps the container online, does a cut-over, and deletes it from the Virtuozzo 4 server. **This is destructive, this is why we migrate the copied container and not the original container**
 - You can't use `--online` && `--readonly` together, error: "`1534365354: Can't use --online option with --readonly option`"
-``` bash title="Migration dry-run with ploop disk conversion" /4095065/
+```bash title="Migration dry-run with ploop disk conversion" /4095065/
 [root@virtuozzo4 ~]# vzmigrate --remove-area no --nostart --keep-dst --readonly --convert-vzfs --verbose --dry-run root@virtuozzo6 4095065
 ```
-``` bash title="Actually LIVE migrate the container with ploop disk conversion" /4095065/
+```bash title="Actually LIVE migrate the container with ploop disk conversion" /4095065/
 [root@virtuozzo4 ~]# vzmigrate --remove-area no --nostart --keep-dst --convert-vzfs --verbose --online root@virtuozzo6 4095065
 ```
 
 
 ## Virtuozzo 6 to Virtuozzo 7/8 Migration
 At this time, you can optionally migrate the container to a Virtuozzo 7 host which is still capable of running Virtuozzo 6 containers. ChatGPT says Virtuozzo 8 can also support Virtuozzo 6 containers, but I have not tested this.
-``` bash title="Migrate the Virtuozzo 6 container to Virtuozzo 7/8"
+```bash title="Migrate the Virtuozzo 6 container to Virtuozzo 7/8"
 [root@virtuozzo6 ~]# pmigrate c 4095065 c root@virtuozzo7
 ```
 
 
 ## Troubleshooting
 You might get the following error when trying to start the container on the Virtuozzo 6 host: `vcmmd: failed to activate Container: VE not registered`. If you dig into the logs you'll likely find memory allocation entries. Simply ensure the host has adequate memory assigned.
-``` bash title="Assign more memory to the container"
+```bash title="Assign more memory to the container"
 [root@virtuozzo7 ~]# prlctl set 4095065 --memsize 4072M
 ```

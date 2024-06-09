@@ -13,28 +13,28 @@ Here are a few handy commands that help me get a new web server up and running, 
 
 
 ## Web Servers
-``` bash title="Restore default permissions to www folders/files"
+```bash title="Restore default permissions to www folders/files"
 chcon -Rv --user system_u --type httpd_sys_content_t /var/www/html/folder/or/file
 ```
 
-``` bash title="Make www folders/files writable"
+```bash title="Make www folders/files writable"
 chcon -R -t httpd_sys_rw_content_t /var/www/html/folder/or/file
 ```
 
 ## Postfix Mail Server
 To allow HTTPd to send mail via Postfix, there is a SELinux boolean to set.
-``` bash title="verify functionality is disabled"
+```bash title="verify functionality is disabled"
 getsebool httpd_can_sendmail
 ```
 
-``` bash title="If false (disabled), enable it. The -P flag denotes persistence (setting survives reboots)"
+```bash title="If false (disabled), enable it. The -P flag denotes persistence (setting survives reboots)"
 setsebool -P httpd_can_sendmail 1
 ```
 
-``` bash title="Can also restore SELinux context to main.cf"
+```bash title="Can also restore SELinux context to main.cf"
 restorecon -v /etc/postfix/main.cf
 ```
 
-``` bash title="Reset Postfix permissions"
+```bash title="Reset Postfix permissions"
 postfix set-permissions
 ```

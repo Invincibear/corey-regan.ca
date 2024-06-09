@@ -29,7 +29,7 @@ I will create three partitions on both drives (so they have mirrored structure).
 - If you want to allocate the remaining disk space to different mount points instead of allocating it all to `/`, you can create additional partitions and their additional RAID1 arrays.
 
 So to summarize, we will be creating:
-``` bash
+```bash title=" "
 NAME         SIZE  TYPE   MOUNTPOINTS
 nvme0n1      1T    disk
   nvme0n1p1  1G    part   /boot/efi
@@ -46,7 +46,7 @@ nvme1n1      1T    disk
 ```
 
 Let's set up the partitions, we'll set up the RAID arrays afterward. There is a more verbose version after this initial code block which explains things a bit better.
-``` bash
+```bash title=" "
 gdisk /dev/nvme0n1
 o
 y
@@ -73,7 +73,7 @@ w
 y
 ```
 Here are the same commands but more verbose:
-``` bash
+```bash title=" "
 gdisk /dev/nvme0n1
 
 # Create a New GPT Table (if necessary, this will erase all data on the disk):
@@ -117,7 +117,7 @@ No worries, that's as easy as opening a Terminal window and running `apt install
 
 Once MDADM is installed, we can go ahead and create the two RAID1 arrays, where `/dev/md0` will be mounted to `/boot/efi`, and `dev/md1` will be mounted to `/`.
 
-``` bash
+```bash title=" "
 sudo mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 /dev/nvme0n1p2 /dev/nvme1n1p2
 sudo mdadm --create --verbose /dev/md1 --level=1 --raid-devices=2 /dev/nvme0n1p3 /dev/nvme1n1p3
 ```
@@ -125,13 +125,13 @@ sudo mdadm --create --verbose /dev/md1 --level=1 --raid-devices=2 /dev/nvme0n1p3
 
 ## Format the partitions
 Format the EFI partitions on each disk:
-``` bash
+```bash title=" "
 mkfs.vfat /dev/nvme0n1p1
 mkfs.vfat /dev/nvme1n1p1
 ```
 
 Format the RAID partitions, you can use XFS or another filesystem if you prefer:
-``` bash
+```bash title=" "
 mkfs.ext4 /dev/md0  # for /boot
 mkfs.ext4 /dev/md1  # for /
 ```
@@ -151,43 +151,43 @@ Install Ubuntu as much as you can until it **probably** fails.
 ## Configure GRUB
 I lost track of the steps in the days of getting this all to work, you might need to reboot to the Ubuntu Live environment again, or not, and possibly reinstall `mdadm` again, and have it rescan for RAID arrays.
 
-``` bash
+```bash title=" "
 sudo apt install mdadm
 sudo mdadm --assemble --scan
 ```
 
 Create mount point:
-``` bash
+```bash title=" "
 mkdir /mnt/root
 ```
 
 Mount the root and boot partitions:
-``` bash
+```bash title=" "
 mount /dev/md1 /mnt/root
 mount /dev/md0 /mnt/root/boot
 ```
 
 Mount the EFI system partition:
-``` bash
+```bash title=" "
 mount /dev/nvmd0n1p1 /mnt/root/boot/efi
 ```
 
-Chroot into the mounted install:
-``` bash
+Chroot into the mounted installation:
+```bash title=" "
 for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /mnt/root$i; done
 sudo mount -t efivarfs efivarfs /sys/firmware/efi/efivars
 chroot /mnt/root
 ```
 
 Update GRUB and initramfs:
-``` bash
+```bash title=" "
 echo raid1 >> /etc/modules
 update-initramfs -u
 update-grub2
 ```
 
 Install GRUB to both disks:
-``` bash
+```bash title=" "
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Ubuntu
 umount /boot/efi
 mount /dev/nvme1n1p1 /boot/efi
@@ -195,7 +195,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Ubunt
 ```
 
 Verify boot options:
-``` bash
+```bash title=" "
 efibootmgr
 
 # If you need to change the default, use
@@ -204,7 +204,7 @@ sudo efibootmgr -o xxxx,yyyy
 ```
 
 Exit from chroot, unmount everything, and reboot:
-``` bash
+```bash title=" "
 exit
 for i in /sys /proc /dev/pts /dev /run; do sudo umount /mnt/root$i; done
 sudo umount /mnt/root/boot/efi
@@ -216,14 +216,13 @@ sudo reboot
 You should now be able to boot into a fresh install of Ubuntu. I noticed though that GRUB takes 30 seconds to auto-boot into Ubuntu, which we can fix.
 The config already has the correct values, but they are overridden by GRUB-installed configs in `/etc/grub.d/`, so we just need to add a couple of settings into a custom GRUB config and rebuild GRUB:
 
-`/etc/grub.d/99_custom`:
-``` bash
+```bash title="/etc/grub.d/99_custom"
 cat << EOF
 set timeout=0
 set timeout_style=hidden
 EOF
 ```
-``` bash
+```bash title=" "
 sudo chmod +x /etc/grub.d/99_custom
 sudo update-grub2
 sudo reboot
@@ -242,13 +241,13 @@ The rough steps are:
 
 In my case, Ubuntu auto-mounted the root RAID1 partition to `/media/$USERNAME/$UUID` (where `$USERNAME` is the username supplied during the Ubuntu install, and `$UUID` is the UUID of the root RAID1 array),
 so I simply mounted the other two partitions following that path
-``` bash
+```bash title=" "
 mount /dev/md126 /media/$USERNAME/$UUID/boot
 mount /dev/nvme0n1p1 /media/$USERNAME/$UUID/boot/efi
 ```
 
 Backup the `/etc` folder of the RAID1 root partition, just in case:
-``` bash
+```bash title=" "
 cp -r /media/$USERNAME/$UUID/etc{,.bak}
 ```
 
@@ -256,7 +255,7 @@ You should remove old versions of initramfs from `/boot` before running the `rsy
 I suggest keeping the two most recent versions.
 
 Copy files from old Ubuntu instance to new RAID1 instance. You'll notice `/etc` isn't excluded:
-``` bash
+```bash title=" "
 sudo rsync \
     -aAXHv \
     --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} \
@@ -264,18 +263,18 @@ sudo rsync \
 ```
 
 Chroot into the new instance:
-``` bash
+```bash title=" "
 for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /media/$USERNAME/$UUID$i; done
 sudo chroot /media/$USERNAME/$UUID
 ```
 
 Restore `/etc/fstab` from `/etc.bak/fstab`
-``` bash
+```bash title=" "
 cp /etc.bak/fstab /etc/fstab
 ```
 
 Re-install GRUB to both disks:
-``` bash
+```bash title=" "
 sudo mount -t efivarfs efivarfs /sys/firmware/efi/efivars
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Ubuntu
 update-grub2
@@ -286,7 +285,7 @@ update-grub2
 ```
 
 Exit chroot, unmount everything, reboot to new Ubuntu RAID1 instance:
-``` bash
+```bash title=" "
 exit
 for i in /run /sys /proc /dev/pts /dev; do sudo umount /mnt$i; done
 sudo umount /mnt/boot/efi /mnt/boot /mnt
