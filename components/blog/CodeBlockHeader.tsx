@@ -1,4 +1,4 @@
-import { CopyButton}      from "@/components/blog/CopyButton"
+import { CodeBlockCopyButton}      from "@/components/blog/CodeBlockCopyButton"
 import { HTMLAttributes } from "react"
 
 
@@ -12,7 +12,7 @@ export const CodeBlockHeader = ({ textToCopy, ...props}: CodeBlockHeaderProps) =
     <div className="relative flex w-full justify-between rounded-t-xl bg-gray-300 py-2 px-5 text-sm text-gray-900 dark:bg-slate-900 dark:text-slate-400">
       {props["data-language"]}
       <span className="truncate">{props.title}</span>
-      <CopyButton textToCopy={textToCopy}/>
+      <CodeBlockCopyButton textToCopy={textToCopy}/>
     </div>
   )
 }

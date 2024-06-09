@@ -5,7 +5,7 @@ import { useState }                      from "react"
 
 
 // https://claritydev.net/blog/copy-to-clipboard-button-nextjs-mdx-rehype
-export const CopyButton = ({ textToCopy }: { textToCopy?: string }) => {
+export const CodeBlockCopyButton = ({ textToCopy }: { textToCopy?: string }) => {
   const [isCopied, setIsCopied] = useState(false)
 
   const copy = async () => {

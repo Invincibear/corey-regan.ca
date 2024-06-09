@@ -26,7 +26,7 @@ Here's my relevant file structure. You can swap out <Link href="https://velite.j
 ├── components
 │   ├── blog
 │   │   ├── CodeBlockHeader.tsx
-│   │   ├── CopyButton.tsx
+│   │   ├── CodeBlockCopyButton.tsx
 │   │   ├── MDXContent.tsx
 │   │   ├── Pre.tsx
 ├── lib
@@ -35,8 +35,7 @@ Here's my relevant file structure. You can swap out <Link href="https://velite.j
 ```
 
 
-The following will add a `data-raw-code=""` property to your `<code>` tag, which you can confirm by inspecting the `<code>` element in browser dev tools.
-
+The following will add a `data-raw-code=""` property to your `<code>` element, which you can confirm by inspecting the `<code>` element in browser dev tools.
 ```tsx title="@/lib/copyButtonRawCodeInjector.tsx"
 import type { ShikiTransformer } from "shiki"
 
@@ -61,8 +60,7 @@ export function copyButtonRawCodeInjector(): ShikiTransformer {
 
 
 Direct Rehype to use the new `copyButtonRawCodeInjector()` function by adding this to your `rehypePrettyCode` options:
-`@/velite.config.ts`:
-```tsx
+```tsx title="@/velite.config.ts"
 import copyButtonRawCodeInjector from "@/lib/copyButtonRawCodeInjector.tsx"
 import rehypePrettyCode          from "rehype-pretty-code"
 
@@ -104,8 +102,7 @@ export default defineConfig({
 
 
 In my `MDXContents.tsx` file (might be named something different for you), I changed the `<pre>` tag in the list of HTML elements contained in `const components = {}` to point to a dedicated file. I included the other code for you to figure out what the file is on your end, only the `pre: Pre` is needed, in my case my copy button exists in a custom `<CodeBlockHeader>` component, so I'll include it here in my example, tweak it to suit your site.
-`@/components/blog/MDXContents.tsx`:
-```tsx
+```tsx title="@/components/blog/MDXContents.tsx"
 import { CodeBlockHeader } from "@/components/blog/CodeBlockHeader"
 import { Pre }             from "@/components/blog/Pre"
 
@@ -136,8 +133,7 @@ export function MDXContent({ code }: MdxProps) {
 }
 ```
 
-`@/components/blog/Pre.tsx`:
-```tsx
+```tsx title="@/components/blog/Pre.tsx"
 import { CodeBlockHeader } from "@/components/blog/CodeBlockHeader"
 import {
   Children,
@@ -177,10 +173,9 @@ export const Pre = ({
 }
 ```
 
-`@/components/blog/CodeBlockHeader.tsx`:
-```tsx
-import { CopyButton}      from "@/components/blog/CopyButton"
-import { HTMLAttributes } from "react"
+```tsx title="@/components/blog/CodeBlockHeader.tsx"
+import { CodeBlockCopyButton} from "@/components/blog/CodeBlockCopyButton"
+import { HTMLAttributes }     from "react"
 
 
 interface CodeBlockHeaderProps extends HTMLAttributes<HTMLPreElement> {
@@ -193,7 +188,7 @@ export const CodeBlockHeader = ({ textToCopy, ...props}: CodeBlockHeaderProps) =
     <div className="relative flex w-full justify-between rounded-t-xl bg-gray-300 py-2 px-5 text-sm text-gray-900 dark:bg-slate-900 dark:text-slate-400">
       {props["data-language"]}
       <span className="truncate">{props.title}</span>
-      <CopyButton textToCopy={textToCopy}/>
+      <CodeBlockCopyButton textToCopy={textToCopy}/>
     </div>
   )
 }
@@ -201,8 +196,7 @@ export const CodeBlockHeader = ({ textToCopy, ...props}: CodeBlockHeaderProps) =
 
 
 And finally, the copy button itself.
-`@/components/blog/CopyButton.tsx`:
-```tsx
+```tsx title="@/components/blog/CodeBlockCopyButton.tsx"
 "use client"
 
 import { ClipboardCopy, ClipboardCheck } from "lucide-react"
@@ -210,7 +204,7 @@ import { useState }                      from "react"
 
 
 // https://claritydev.net/blog/copy-to-clipboard-button-nextjs-mdx-rehype
-export const CopyButton = ({ textToCopy }: { textToCopy?: string }) => {
+export const CodeBlockCopyButton = ({ textToCopy }: { textToCopy?: string }) => {
   const [isCopied, setIsCopied] = useState(false)
 
   const copy = async () => {
