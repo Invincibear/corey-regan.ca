@@ -10,15 +10,15 @@ authors:
 
 <Callout>This article was written before Terraform introduced `import {}` blocks in `v1.5.0`, and was centered around using the `terraform import` CLI command. This article has been updated to include examples of the simpler `import {}` code blocks. You can skip most of this post by simply adding `import {}` blocks to your code. You can leave them in once imported, or comment them out, or delete them.</Callout>
 
-There are times when you have written code to deploy a resource to Azure but that resource was already created. In this instance, TFC is unable to create the resource and tells you to instead import it into the TF state.
-The process is similar to manually editing Terraform Cloud state file, with the exception that you do not need to upload anything back to TFC once the resource is imported.
+There are times when you have written code to deploy a resource to Azure but that resource was already created. In this instance, Terraform Cloud is unable to create the resource and tells you to instead import it into the Terraform state.
+The process is similar to manually editing Terraform Cloud state file, with the exception that you do not need to upload anything back to Terraform Cloud once the resource is imported.
 
 In short, the procedure using the `terraform` CLI involves:
-1. Reconfiguring the TFC Workspace's main `terraform {}` code block on your local machine to use the `backend "remote" {}` backend instead of the `cloud {}` backend
-2. Initializing the TF code on your local machine
-3. Importing the resource into TF
+1. Reconfiguring the Terraform Cloud Workspace's main `terraform {}` code block on your local machine to use the `backend "remote" {}` backend instead of the `cloud {}` backend
+2. Initializing the Terraform code on your local machine
+3. Importing the resource into Terraform
 
-**Note:** This assumes you already have the TF CLI installed on your local machine. If you don't, [follow these instructions to set it up](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli).
+**Note:** This assumes you already have the Terraform CLI installed on your local machine. If you don't, [follow these instructions to set it up](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli).
 
 
 ## Procedure Using Terraform import {} Blocks
@@ -31,7 +31,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
   ```
 
 ## Procedure Using Terraform's CLI
-* Ensure you have a copy of the TF code downloaded to your machine
+* Ensure you have a copy of the Terraform code downloaded to your machine
 
 * In your main terraform block (I like to use `providers.tf`), temporarily comment out the `cloud {}` code block
   ```terraform title="providers.tf"
@@ -103,3 +103,5 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
     }
   }
   ```
+
+* Execute on your machine: `terraform init -reconfigure`
