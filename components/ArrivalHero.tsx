@@ -2,6 +2,7 @@
 
 import { motion, useScroll }           from "framer-motion"
 import { CircleChevronDown }           from "lucide-react"
+import Link                            from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { isMobile }                    from "react-device-detect"
 import Typed                           from "typed.js"
@@ -11,6 +12,7 @@ import "@/styles/arrival.css"
 
 
 export default function ArrivalHero() {
+  const arrivalSectionRef = useRef<HTMLElement | null>(null)
   const typedWordsRef = useRef(null)
   const arrivalScrollDownRef = useRef(null)
 
@@ -56,7 +58,11 @@ export default function ArrivalHero() {
   }, [arrivalHeroVisible])
 
   return (
-    <section id="arrivalHero" className="w-full h-screen bg-black">
+    <section
+      id        = "arrivalHero"
+      className = "w-full h-screen bg-black"
+      ref       = {arrivalSectionRef}
+    >
       <div className="w-full h-screen flex items-center justify-center overflow-x-hidden">
         <div
           id="arrivalHeroTitle"
@@ -81,7 +87,6 @@ export default function ArrivalHero() {
             <strong ref={typedWordsRef} className="typed-words font-medium"></strong>
           </h2>
         </div>
-        <div className="scroll"></div>
       </div>
       <motion.div
         id          = "arrivalScrollDown"
@@ -89,7 +94,20 @@ export default function ArrivalHero() {
         ref         = { arrivalScrollDownRef }
         style       = {{ opacity: scrollYProgress }}
       >
-        <CircleChevronDown width={48} height={48} className="text-accent-foreground animate-bounce" />
+          <CircleChevronDown
+            width     = {48}
+            height    = {48}
+            className = "text-accent-foreground animate-bounce hover:cursor-pointer"
+            onClick   = {() => {
+              if (!arrivalSectionRef.current) return
+
+              window.scrollTo({
+                left:     0,
+                top:      (window.scrollY + arrivalSectionRef.current.getBoundingClientRect().bottom),
+                behavior: "smooth"
+              })
+            }}
+          />
       </motion.div>
     </section>
   )
