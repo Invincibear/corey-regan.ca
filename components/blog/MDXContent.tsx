@@ -153,7 +153,6 @@ const components = {
   figure: Figure,
   figcaption: FigCaption,
   code: ({className, ...props}: { className?: string }) => {
-    console.debug({props: props})
     const rounded = ('data-language' in props) ? 'rounded-b-xl' : 'rounded-lg'
 
     return (

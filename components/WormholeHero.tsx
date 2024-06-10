@@ -246,9 +246,9 @@ export default function WormholeHero() {
     window.addEventListener("scroll", handleScroll)
 
     const handleEsc = (event: KeyboardEvent) => {
-      console.debug({event: event})
+      // console.debug({event: event})
       if (event.key === 'Escape') {
-        console.debug('Escape pressed')
+        // console.debug('Escape pressed')
         setAbortAutoScroll(true)
         endOfWormholeSequence()
       }
