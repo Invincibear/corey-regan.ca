@@ -31,7 +31,7 @@ export default function ArrivalHero() {
       loop:          false,
       loopCount:     Infinity,
       showCursor:    true,
-      startDelay:    (isMobile) ? 0 : 2000,
+      startDelay:    (isMobile) ? 750 : 2000,
       typeSpeed:     90,
 
       onBegin(self: Typed) {
