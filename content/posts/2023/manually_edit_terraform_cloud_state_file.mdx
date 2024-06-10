@@ -20,12 +20,13 @@ Unfortunately, Terraform Cloud does not offer a native mechanism to edit state f
 
 #### In short, the procedure involves:
 1. Downloading the newest Terraform Cloud state file to your local machine
-2. Locally manipulating the downloaded Terraform Cloud state file
+2. Locally manipulating the downloaded Terraform Cloud `.tfstate` file
 3. Reconfiguring the Terraform Cloud Workspace's `main.tf` on your local machine to use the `backend "remote" {}` backend instead of the `cloud {}` backend
 4. Initializing the Terraform code on your local machine
 5. Pushing the manipulated Terraform Cloud state file back to Terraform Cloud
+6. Restoring your original backend and re-initializing it, locally
 
-<Callout>**Note**: Do not save the Terraform Cloud state file to `.terraform/terraform.tfstate` because `terraform state push` will treat it as a normal state file and will fail to upload due to Terraform Cloud using state version `4` whereas the Terraform CLI only supporting state version \<= `3`</Callout>
+<Callout>**Note**: Do not save the Terraform Cloud state file to `.terraform/terraform.tfstate` because `terraform state push` will treat it as a normal state file and will fail to upload due to Terraform Cloud using state version `4` whereas the Terraform CLI only supports state versions \<= `3`</Callout>
 
 <Callout>**Note**: This assumes you already have the Terraform CLI installed on your local machine. If you don't, follow these instructions to set it up: https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli</Callout>
 

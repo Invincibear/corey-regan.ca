@@ -16,7 +16,8 @@ The process is similar to manually editing Terraform Cloud state file, with the 
 In short, the procedure using the `terraform` CLI involves:
 1. Reconfiguring the Terraform Cloud Workspace's main `terraform {}` code block on your local machine to use the `backend "remote" {}` backend instead of the `cloud {}` backend
 2. Initializing the Terraform code on your local machine
-3. Importing the resource into Terraform
+3. Importing the resource into Terraform Cloud
+4. Restoring your original backend and re-initializing it, locally
 
 **Note:** This assumes you already have the Terraform CLI installed on your local machine. If you don't, [follow these instructions to set it up](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli).
 
