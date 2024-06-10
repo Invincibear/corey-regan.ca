@@ -1,6 +1,6 @@
 # TODO:
-- Convert `...` to a new Typed.js instance to animate it
-- Blog light theme colors are terribad
+- New blog post: Terraform CLI multiple environments one `.tfvars`
+- Light theme colors are terribad, make base font darker
 - If scrolled past wormhole end, abort auto-scroll
 - Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. 
   - This is really only for refreshes and my troubleshooting, but I shouldn't need to wait the full 12 seconds if I'm barely scrolled above the end of the wormhole sequence
@@ -29,6 +29,7 @@
 
 
 ## Done:
+- ~~Add ... to end of arrival hero section, only showing cursor once text is typed~~
 - ~~Bug: blog images not loading in prod~~
 - ~~Bug: auto-scroll can still activate on mobile even when wormhole isn't shown~~
 - ~~Incorporate mouse-tracked background highlight~~

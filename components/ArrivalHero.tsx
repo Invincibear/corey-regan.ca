@@ -23,11 +23,11 @@ export default function ArrivalHero() {
   // Initialize Typed.js animated typing
   useEffect(() => {
     const typed = new Typed(typedWordsRef.current, {
-      strings: ['into the future'],
+      strings: ['into the future..'],
 
       autoInsertCss: true,
       contentType:   'html',
-      cursorChar:    '...',
+      cursorChar:    '.',
       loop:          false,
       loopCount:     Infinity,
       showCursor:    true,
@@ -39,6 +39,10 @@ export default function ArrivalHero() {
       },
       onStringTyped(arrayPos: number, self: Typed) {
         self.cursor.classList.add('type-cursor-visible')
+        self.cursor.classList.add('font-medium')
+        self.cursor.classList.add('text-2xl')
+        self.cursor.classList.add('sm:text-5xl')
+        self.cursor.classList.add('lg:text-6xl')
       },
     })
 
@@ -60,7 +64,7 @@ export default function ArrivalHero() {
           style={{transform: "translateZ(0)"}}
         >
           <motion.h1
-            className       = "w-full hero-heading-rich-text text-center font-bold text-secondary text-6xl pb-4"
+            className       = "w-full hero-heading-rich-text text-center font-bold text-secondary text-2xl sm:text-5xl lg:text-6xl pb-4"
             initial         = {{ opacity: 0, scale: 2 }}
             whileInView     = {{ opacity: 1, scale: 1 }}
             transition      = {{ duration: 3 }}
@@ -69,12 +73,12 @@ export default function ArrivalHero() {
             onViewportLeave = {() => setArrivalHeroVisible(false)}
           >
             <strong>Bringing your infrastructure</strong>
-            <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
+            <strong className="typed-words font-bold"></strong>
           </motion.h1>
           <h2
             className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-2xl sm:text-5xl lg:text-6xl"
           >
-            <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
+            <strong ref={typedWordsRef} className="typed-words font-medium"></strong>
           </h2>
         </div>
         <div className="scroll"></div>
