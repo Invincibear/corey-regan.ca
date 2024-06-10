@@ -1,8 +1,9 @@
 "use client"
 
-import {motion, useScroll, useTransform} from "framer-motion"
+import { motion, useScroll }           from "framer-motion"
 import { CircleChevronDown }           from "lucide-react"
 import { useEffect, useRef, useState } from "react"
+import { isMobile }                    from "react-device-detect"
 import Typed                           from "typed.js"
 
 import "@/styles/shimmer.css"
@@ -30,7 +31,7 @@ export default function ArrivalHero() {
       loop:          false,
       loopCount:     Infinity,
       showCursor:    true,
-      startDelay:    2000,
+      startDelay:    (isMobile) ? 0 : 2000,
       typeSpeed:     90,
 
       onBegin(self: Typed) {

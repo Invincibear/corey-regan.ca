@@ -1,4 +1,5 @@
 # TODO:
+- Convert `...` to a new Typed.js instance to animate it
 - Blog light theme colors are terribad
 - If scrolled past wormhole end, abort auto-scroll
 - Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. 
