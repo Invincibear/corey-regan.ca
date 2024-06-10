@@ -1,5 +1,5 @@
 # TODO
-- Arrival hero section needs a scroll-down icon in the bottom-center
+- Bug: blog images not loading in prod
 - Bug: auto-scroll can still activate on mobile even when wormhole isn't shown
 - Blog light theme colors are terribad
 - If scrolled past wormhole end, abort auto-scroll
@@ -26,6 +26,8 @@
     - 
 - ~~Wormhole should transition to a new hero section~~
   - ~~"Flying your infrastructure into the future"~~
+  - ~~Animated scroll-down icon in the bottom-center~~
+    - ~~adjust center alignment to compensate for width of icon~~
 - ~~Bug: tags list on mobile display issues~~
 - ~~Bug: Copy blog code button copies `undefined`~~
 - ~~Where is my missing copy button for /blog codeblocks?~~

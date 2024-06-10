@@ -1,16 +1,16 @@
 "use client"
 
-import { motion }                    from "framer-motion"
-import {useEffect, useRef, useState} from "react"
-import Typed                         from "typed.js"
+import { motion }                      from "framer-motion"
+import {CircleChevronDown }            from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import Typed                           from "typed.js"
 
 import "@/styles/shimmer.css"
 import "@/styles/arrival.css"
 
 
 export default function ArrivalHero() {
-  const sectionRef     = useRef(null)
-  const typedWordsRef  = useRef(null)
+  const typedWordsRef = useRef(null)
 
   const [arrivalHeroVisible, setArrivalHeroVisible] = useState(false)
 
@@ -39,39 +39,43 @@ export default function ArrivalHero() {
     if (arrivalHeroVisible) typed.start()
 
     // Destroy Typed instance during component unmount to stop animation
-    // This also prevents duplicate '|' cursor
+    // This also prevents duplicate '...' cursor
     return () => {
       typed.destroy()
     }
   }, [arrivalHeroVisible])
 
   return (
-      <section id="arrivalHero" className="w-full h-screen bg-black">
-        <div className="w-full h-screen flex items-center justify-center overflow-x-hidden">
-          <div
-            id="arrivalHeroTitle"
-            className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
-            style={{transform: "translateZ(0)"}}
+    <section id="arrivalHero" className="w-full h-screen bg-black">
+      <div className="w-full h-screen flex items-center justify-center overflow-x-hidden">
+        <div
+          id="arrivalHeroTitle"
+          className="flex flex-col gap-2 self-auto justify-self-end text-center sm:gap-4"
+          style={{transform: "translateZ(0)"}}
+        >
+          <motion.h1
+            className       = "w-full hero-heading-rich-text text-center font-bold text-secondary text-6xl pb-4"
+            initial         = {{ opacity: 0, scale: 2 }}
+            whileInView     = {{ opacity: 1, scale: 1 }}
+            transition      = {{ duration: 3 }}
+            viewport        = {{ once: true }}
+            onViewportEnter = {() => setArrivalHeroVisible(true)}
+            onViewportLeave = {() => setArrivalHeroVisible(false)}
           >
-            <motion.h1
-              className   = "w-full hero-heading-rich-text text-center font-bold text-secondary text-6xl pb-4"
-              initial     = {{ opacity: 0, scale: 2 }}
-              whileInView = {{ opacity: 1, scale: 1 }}
-              transition  = {{ duration: 3 }}
-              viewport    = {{ once: true }}
-              onViewportEnter = {() => setArrivalHeroVisible(true)}
-              onViewportLeave = {() => setArrivalHeroVisible(false)}
-            >
-              <strong>Bringing your infrastructure</strong>
-              <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
-            </motion.h1>
-            <h2
-              className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-2xl sm:text-5xl lg:text-6xl"
-            >
-              <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
-            </h2>
-          </div>
+            <strong>Bringing your infrastructure</strong>
+            <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
+          </motion.h1>
+          <h2
+            className="hero-heading-rich-text w-richtext font-bold tracking-tight text-secondary text-2xl sm:text-5xl lg:text-6xl"
+          >
+            <strong ref={typedWordsRef} className="typed-words font-bold"></strong>
+          </h2>
         </div>
+        <div className="scroll"></div>
+      </div>
+      <div id="arrivalScrollDown" className="relative size-12 bottom-20 left-1/2 transform -translate-x-6">
+        <CircleChevronDown width={48} height={48} className="text-accent-foreground/25 animate-bounce" />
+      </div>
     </section>
   )
 }

@@ -14,3 +14,32 @@
 .type-cursor-visible {
     visibility: visible !important;
 }
+
+
+#arrivalScrollDown {
+    /*animation: scrollDown 1.5s infinite;*/
+    /*-webkit-animation: scrollDown 1.5s infinite;*/
+}
+@keyframes scrollDown {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translateY(15px);
+    }
+    40% {
+        transform: translate(0);
+    }
+}
+
+@-webkit-keyframes scrollDown {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translateY(15px);
+    }
+    40% {
+        transform: translate(0);
+    }
+}
