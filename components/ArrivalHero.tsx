@@ -1,7 +1,7 @@
 "use client"
 
-import { motion }                      from "framer-motion"
-import {CircleChevronDown }            from "lucide-react"
+import {motion, useScroll, useTransform} from "framer-motion"
+import { CircleChevronDown }           from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import Typed                           from "typed.js"
 
@@ -11,8 +11,13 @@ import "@/styles/arrival.css"
 
 export default function ArrivalHero() {
   const typedWordsRef = useRef(null)
+  const arrivalScrollDownRef = useRef(null)
 
   const [arrivalHeroVisible, setArrivalHeroVisible] = useState(false)
+
+  const { scrollYProgress } = useScroll({
+    target: arrivalScrollDownRef,
+  })
 
   // Initialize Typed.js animated typing
   useEffect(() => {
@@ -73,9 +78,14 @@ export default function ArrivalHero() {
         </div>
         <div className="scroll"></div>
       </div>
-      <div id="arrivalScrollDown" className="relative size-12 bottom-20 left-1/2 transform -translate-x-6">
-        <CircleChevronDown width={48} height={48} className="text-accent-foreground/25 animate-bounce" />
-      </div>
+      <motion.div
+        id          = "arrivalScrollDown"
+        className   = "relative size-12 bottom-20 left-1/2 transform -translate-x-6"
+        ref         = { arrivalScrollDownRef }
+        style       = {{ opacity: scrollYProgress }}
+      >
+        <CircleChevronDown width={48} height={48} className="text-accent-foreground animate-bounce" />
+      </motion.div>
     </section>
   )
 }

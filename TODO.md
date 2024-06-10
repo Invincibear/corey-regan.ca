@@ -1,6 +1,5 @@
 # TODO
 - Bug: blog images not loading in prod
-- Bug: auto-scroll can still activate on mobile even when wormhole isn't shown
 - Blog light theme colors are terribad
 - If scrolled past wormhole end, abort auto-scroll
 - Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. 
@@ -22,6 +21,7 @@
     - 
   - When lang, title, and caption are provided:
     - 
+- ~~Bug: auto-scroll can still activate on mobile even when wormhole isn't shown~~
 - ~~Incorporate mouse-tracked background highlight~~
   - ~~https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx~~
 - ~~Wormhole should transition to a new hero section~~
