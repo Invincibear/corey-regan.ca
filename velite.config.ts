@@ -105,7 +105,7 @@ export default defineConfig({
   root:   "content",
   output: {
     assets: "public/images/blog/",
-    base:   "/images/blog/",
+    base:   "/static/",
     clean:  true,
     data:   ".velite",
     name:   "[name]-[hash:6].[ext]",

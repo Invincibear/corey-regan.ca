@@ -7,8 +7,6 @@
   - This is really only for refreshes and my troubleshooting, but I shouldn't need to wait the full 12 seconds if I'm barely scrolled above the end of the wormhole sequence
 - mechanism to stop wormhole animation, separate from unmounting the containers
   - `ESC` should cancel an active auto-scroller
-- Incorporate mouse-tracked background highlight
-  - https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx
 - Footer console errors
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
@@ -24,6 +22,8 @@
     - 
   - When lang, title, and caption are provided:
     - 
+- ~~Incorporate mouse-tracked background highlight~~
+  - ~~https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx~~
 - ~~Wormhole should transition to a new hero section~~
   - ~~"Flying your infrastructure into the future"~~
   - ~~Animated scroll-down icon in the bottom-center~~
