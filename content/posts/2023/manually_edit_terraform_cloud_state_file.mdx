@@ -1,0 +1,87 @@
+---
+title: How To Manually Edit A Terraform Cloud State File
+date: 2023-02-01
+description: Sometimes it's just easier to edit the Terraform state file, here's how you can do it and save the changes back to Terraform Cloud
+published: true
+tags: ["Azure", "Cloud", "Terraform"]
+authors:
+  - corey
+---
+
+There are rare occasions where you will be required to manually edit a Terraform state file.
+One such scenario would be if you manually delete Azure resources through the Azure GUI and subsequent tf apply commands also attempt to delete the already-deleted resources (and fails).
+
+In this case, a Terraform Cloud state refresh will not pick up that the "missing" resources have already been deleted, and future `tf apply` commands will continue to fail.
+
+Your options are to either execute `terraform state rm resource.name`, or manually remove the resource from the Terraform state file.
+
+Unfortunately, Terraform Cloud does not offer a native mechanism to edit state files, but we can still do it manually.
+
+
+#### In short, the procedure involves:
+1. Downloading the newest Terraform Cloud state file to your local machine
+2. Locally manipulating the downloaded Terraform Cloud state file
+3. Reconfiguring the Terraform Cloud Workspace's `main.tf` on your local machine to use the `backend "remote" {}` backend instead of the `cloud {}` backend
+4. Initializing the Terraform code on your local machine
+5. Pushing the manipulated Terraform Cloud state file back to Terraform Cloud
+
+<Callout>**Note**: Do not save the Terraform Cloud state file to `.terraform/terraform.tfstate` because tf state push will treat it as a normal state file and will fail to upload due to Terraform Cloud using state version 4 whereas the Terraform CLI only supporting state version \<= `3`</Callout>
+
+<Callout>**Note**: This assumes you already have the Terraform CLI installed on your local machine. If you don't, follow these instructions to set it up: https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli</Callout>
+
+
+## Procedure
+* Ensure you have a copy of the Terraform code downloaded to your machine
+
+* On your workstation, delete the `.terraform/` and `terraform.tfstate.d/` folders if they exist (they will only exist if you've previously run `terraform` commands in the stack)
+
+* In your main terraform block (I like to use `providers.tf`), temporarily comment out the `cloud {}` code block
+  ```terraform title="providers.tf"
+  terraform {
+  #  cloud {
+  #    hostname = "app.terraform.io"
+  #    organization = "my_organization"
+  #    workspaces {
+  #      tags = ["my_app"]
+  #    }
+  #  }
+  }
+  ```
+
+
+## Manually editing Terraform Cloud state file
+
+* Still in `providers.tf`, configure a `backend "remote" {}` code block inside the main `terraform {}` code block
+  ```terraform title="providers.tf"
+  terraform {
+  #  cloud {
+  #    hostname = "app.terraform.io"
+  #    organization = "my_organization"
+  #    workspaces {
+  #      tags = ["my_app"]
+  #    }
+  #  }
+
+    backend "remote" {
+      hostname = "app.terraform.io"
+      organization = "my_organization"
+      workspaces {
+        name = "my_workspace_name"
+      }
+    }
+  }
+  ```
+
+* Execute on your machine: `terraform init -reconfigure`
+
+* In Terraform Cloud, go to your Workspace -> State -> Download the latest state file and save it to `/local/path/to/repo/`
+
+* Manipulate the downloaded state file as needed
+
+* Upload the modified state file to Terraform Cloud by executing: `terraform state push /local/path/to/repo/ filename.tfstate`
+  <Callout>**Troubleshooting**: If you get the error "Failed to write state: cannot overwrite existing state with serial # with a different state that has the same serial", simply increment the "serial" number at the top of the downloaded state file and retry the tf state push command.</Callout>
+
+### References
+* https://support.hashicorp.com/hc/en-us/articles/360001151948
+* https://developer.hashicorp.com/terraform/language/settings/backends/remote
+

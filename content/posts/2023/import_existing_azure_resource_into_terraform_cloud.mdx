@@ -34,7 +34,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
 * Ensure you have a copy of the TF code downloaded to your machine
 
 * In your main terraform block (I like to use `providers.tf`), temporarily comment out the `cloud {}` code block
-  ```terraform title=" "
+  ```terraform title="providers.tf"
   terraform {
   #  cloud {
   #    hostname = "app.terraform.io"
@@ -47,7 +47,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
   ```
 
 * Still in `providers.tf`, configure a `backend "remote" {}` code block inside the main `terraform {}` code block
-  ```terraform title=" "
+  ```terraform title="providers.tf"
   terraform {
   #  cloud {
   #    hostname = "app.terraform.io"
@@ -66,6 +66,7 @@ As of Terraform `1.5.0`, you can now [code an `import {}` block](https://develop
     }
   }
   ```
+
 * Execute on your machine: `terraform init -reconfigure`
 
 * Import the resource using `terraform import resource.resource_name_here /resource/id/here`
