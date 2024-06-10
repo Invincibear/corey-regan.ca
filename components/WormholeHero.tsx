@@ -3,6 +3,7 @@
 import WormholeCurved                      from "@/components/WormholeCurved"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useEffect, useRef, useState }     from "react"
+import { isMobile }                        from "react-device-detect"
 
 import "@/styles/wormhole.css"
 
@@ -184,6 +185,7 @@ export default function WormholeHero() {
 
   const scrollToTarget = () => {
     if (hasAutoScrolled.current) return
+    if (isMobile) return
 
     const targetPosition = (scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight) ?? 0
     const startPosition = window.scrollY
@@ -213,6 +215,8 @@ export default function WormholeHero() {
 
   useEffect(() => {
     const handleScroll = () => {
+      if (isMobile) return
+
       if (
         !isAutoScrolling.current &&
         !hasAutoScrolled.current &&
