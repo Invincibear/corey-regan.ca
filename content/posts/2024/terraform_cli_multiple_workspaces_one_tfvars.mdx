@@ -1,0 +1,108 @@
+---
+title: Multiple Terraform CLI Workspaces Using Only One TFVars File
+date: 2024-06-10
+description: Terraform Cloud has wonderful behaviour where you can set a base variable and override it by each environment's variables, unfortunately you need to get creative to do something similar with Terraform's CLI.
+published: false
+tags: ["Terraform"]
+authors:
+  - corey
+---
+
+## The Gold Standard: Terraform Cloud Workspaces
+Terraform Cloud Workspaces are wonderful. You can create variables in your Terraform code, and set default values for each environment.
+
+`var.server_name` in the `dev` Terraform Cloud Workspace can be set to `dev.my-server.my-company.com`, and to `prod.my-server.my-company.com` in the `prod` Terraform Cloud Workspace.
+
+It makes sense, right? Each environment overrides `var.server_name` as you would expect.
+
+## Terraform CLI Workspaces
+Confusingly, Terraform CLI Workspaces **behave nothing like Terraform Cloud Workspaces**. The only thing they do is change a `terraform.workspace` variable to reflect the current workspace, and output to a different state file.
+
+That's it.
+
+### Ugly Setups Of "One Workspace Per Environment"
+
+Now Terraform will tell you to create separate `*.tfvars` files named by environment, so you can add the `-var-file=` flag to every command issued, yuck!
+```bash title="Multiple *.tfvars files suck"
+.
+├──
+│   main.tf
+│   outputs.tf
+│   providers.tf
+│   terraform.dev.tfvars
+│   terraform.prod.tfvars
+│   terraform.stg.tfvars
+│   variables.tf
+
+$ terraform apply -var-file=terraform.prod.tfvars
+```
+
+Or even worse, you could copy your `*.tf` files into a separate folder for each environment where you have a duplicate or triplicate of everything, meaning one change has to be replicated to the other environments, good luck keeping that perfectly synchronized. Each `providers.tf` would have a different remote Terraform state file configured.
+```bash title="Multiple environment folders also sucks"
+.
+├── dev
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── providers.tf
+│   ├── terraform.tfvars
+│   ├── variables.tf
+├── prod
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── providers.tf
+│   ├── terraform.tfvars
+│   ├── variables.tf
+├── stg
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── providers.tf
+│   ├── terraform.tfvars
+│   ├── variables.tf
+
+$ cd prod
+$ terraform apply prod
+```
+
+There has to be a simple solution, right?
+
+
+## Terraform CLI, A Workspace Per Environment, One TFVars File
+Ideally, you should have one copy of your code with each environment's variables overriding defaults. With this scheme, the remote Terraform state file will have the environment appended to it.
+```bash title="This is desired outcome"
+.
+├──
+│   main.tf
+│   outputs.tf
+│   providers.tf
+│   terraform.tfvars
+│   variables.tf
+
+$ terraform workspace select prod
+$ terraform apply
+```
+
+At first-glance you might be thinking
+> well hang on, issuing just one `terraform apply -var-file=terraform.prod.tfvars` command is quicker than issuing two commands, `terraform workspace select prod` and `terraform apply`
+
+And, well, you're kind of right, **if, and only if you plan to apply once**. Let's contrast the two:
+```bash title="Using -var-file="
+$ terraform plan  -var-file=terraform.prod.tfvars
+$ terraform apply -var-file=terraform.prod.tfvars
+$ terraform plan  -var-file=terraform.prod.tfvars
+$ terraform apply -var-file=terraform.prod.tfvars
+$ terraform apply -var-file=terraform.prod.tfvars
+```
+```bash title="Using workspace select"
+$ terraform workspace select dev
+$ terraform plan
+$ terraform apply
+$ terraform plan
+$ terraform apply
+$ terraform apply
+```
+
+As you can see, in a practical example where you make changes, test their plan, `apply` approved changes, realize you need to tweak something, `plan` again, `apply` again, it fails to `apply`, and a second `apply` passes. Yeah, it's faster to type a simple `terraform plan` or `terraform apply` command.
+
+
+## variables.tf
+This is where the magic happens.
