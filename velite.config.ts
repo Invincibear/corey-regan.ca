@@ -59,7 +59,7 @@ const authors = defineCollection({
 
 const posts = defineCollection({
   name:    "Post",
-  pattern: ["posts/2*/*.md", "posts/2*/*.mdx"],
+  pattern: ["posts/**/*.md", "posts/**/*.mdx"],
   schema:  s
             .object({
               slug: s.path(),
@@ -104,7 +104,7 @@ const rehypePrettyCodeOptions: Options = {
 export default defineConfig({
   root:   "content",
   output: {
-    assets: "public/images/blog/",
+    assets: "public/static/",
     base:   "/static/",
     clean:  true,
     data:   ".velite",

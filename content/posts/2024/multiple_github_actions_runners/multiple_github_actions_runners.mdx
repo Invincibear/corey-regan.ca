@@ -13,7 +13,7 @@ You have a free GitHub account and want to use the same machine (like a VPS, or 
 Unfortunately, unless you pay GitHub and create an Organization you won't be able to configure one runner on multiple repos.
 
 
-<Image src={"/images/blog/good_news_everyone.jpg"} alt="Good news everyone!" width="500" height="500" align="left" style={{width: "100px"}} className="mt-0 mr-4" />
+<Image src="good_news_everyone.jpg" alt="Good news everyone!" width="500" height="500" align="left" style={{width: "100px"}} className="mt-0 mr-4" />
 Fortunately, there is an easy solution:
 <br />**You can install multiple runners on the same machine by installing each runner in its own folder**
 <br clear="left"/>
@@ -68,7 +68,7 @@ total 16K
 ```
 
 #### Personalized instructions from GitHub
-<Link href={"/images/blog/new_gh_runner_instructions.png"}><Image src={"/images/blog/new_gh_runner_instructions.png"} alt="GitHub instructions to install a new self-hosted runner" width="2854" height="1918" align="right" className="max-w-2xl ml-4" /></Link>
+<Link href="new_gh_runner_instructions.png"><Image src="new_gh_runner_instructions.png" alt="GitHub instructions to install a new self-hosted runner" width="2854" height="1918" align="right" className="max-w-2xl ml-4" /></Link>
 You can get personalized installation instructions from GitHub which includes a download link for the latest version of the runner software, as well as a secret token to securely connect the runner to GitHub.
 
 Visit your GitHub repository and click on `Settings`. In the left nav bar, expand `Actions` and click on `Runners`.
@@ -113,7 +113,7 @@ sudo ./svc.sh start
 ```
 
 We can verify the new runner connected to GitHub by refreshing the Runners page:
-<Link href={"/images/blog/new_gh_runner_connected.png"}><Image src={"/images/blog/new_gh_runner_connected.png"} alt="New self-hosted GitHub runner connected to repository" width="1567" height="443" className="max-w-2xl pr-4" /></Link>
+<Link href="/new_gh_runner_connected.png"><Image src="new_gh_runner_connected.png" alt="New self-hosted GitHub runner connected to repository" width="1567" height="443" className="max-w-2xl pr-4" /></Link>
 
 And we can also confirm this by querying the status of the runner's service:
 ```bash title=" "

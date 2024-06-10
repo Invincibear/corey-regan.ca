@@ -1,4 +1,4 @@
-# TODO
+# TODO:
 - Bug: blog images not loading in prod
 - Blog light theme colors are terribad
 - If scrolled past wormhole end, abort auto-scroll
@@ -10,6 +10,11 @@
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
+- Reading time estimate
+  - https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/contentlayer.config.js
+
+
+## Wishlist:
 - Properly handle remark + rehype
   - When neither lang nor title nor caption are provided:
     - <pre><code></code></pre>
@@ -20,7 +25,10 @@
   - When only caption is provided:
     - 
   - When lang, title, and caption are provided:
-    - 
+    -
+
+
+## Done: 
 - ~~Bug: auto-scroll can still activate on mobile even when wormhole isn't shown~~
 - ~~Incorporate mouse-tracked background highlight~~
   - ~~https://github.com/frontendfyi/scroll-animations-with-framer-motion-codesandbox-projects/blob/main/src/pages/gradientssss.tsx~~
