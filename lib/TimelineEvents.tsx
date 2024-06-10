@@ -75,7 +75,7 @@ const TimelineEvents: TimelineEvent[] = [
     },
   },
   {
-    date:        "2022 - 2024",
+    date:        "2022 - present",
     id:          "syncmycalendars",
     headline:    "SyncMyCalendars.app",
     description: "I architected, programmed, and deployed a SaaS app to selectively synchronize calendar events between Google and O365 calendar accounts and apply filters and transformations to copied events.",
