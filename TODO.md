@@ -1,5 +1,5 @@
 # TODO:
-- New blog post: Terraform CLI multiple environments one `.tfvars`
+- Bug: If refreshing the page already past the wormhole, links become unresponsive
 - Light theme colors are terribad, make base font darker
 - If scrolled past wormhole end, abort auto-scroll
 - Add math to calculate wormhole auto-scroll time based on how close to the end the user has already scrolled. 
@@ -12,6 +12,7 @@
 - Add functionality to work experience tags
 - Reading time estimate
   - https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/contentlayer.config.js
+  - https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/src/app/blog/%5Bslug%5D/page.tsx
 
 
 ## Wishlist:
@@ -29,6 +30,7 @@
 
 
 ## Done:
+- ~~New blog post: Terraform CLI multiple environments one `.tfvars`~~
 - ~~Add ... to end of arrival hero section, only showing cursor once text is typed~~
 - ~~Bug: blog images not loading in prod~~
 - ~~Bug: auto-scroll can still activate on mobile even when wormhole isn't shown~~
