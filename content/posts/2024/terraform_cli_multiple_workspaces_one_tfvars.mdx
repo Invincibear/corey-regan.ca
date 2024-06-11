@@ -2,7 +2,7 @@
 title: Multiple Terraform CLI Workspaces Using Only One TFVars File
 date: 2024-06-10
 description: Terraform Cloud has wonderful behaviour where you can set a base variable and override it by each environment's variables, unfortunately you need to get creative to do something similar with Terraform's CLI.
-published: false
+published: true
 tags: ["Terraform"]
 authors:
   - corey
@@ -101,8 +101,148 @@ $ terraform apply
 $ terraform apply
 ```
 
-As you can see, in a practical example where you make changes, test their plan, `apply` approved changes, realize you need to tweak something, `plan` again, `apply` again, it fails to `apply`, and a second `apply` passes. Yeah, it's faster to type a simple `terraform plan` or `terraform apply` command.
+As you can see, in a practical example where you make changes, test their plan, `apply` approved changes, realize you need to tweak something, `plan` again, `apply` again, it fails to `apply`, and a second `apply` passes.
+So yeah, in the real world it's faster to type a simple `terraform plan` or `terraform apply` command than it is to use `-var-file=`.
 
 
-## variables.tf
-This is where the magic happens.
+## Multiple Environments In Only terraform.tfvars
+Normally, you would define a simple variable like so:
+```terraform title="variables.prod.tf"
+variable "database_name" {
+  type        = string
+  description = "The name of the database"
+  default     = "my_production_db_name"
+}
+```
+
+To support multiple environments, we consolidate all environment variables into one `terraform.tfvars`:
+```terraform title="variables.tf"
+variable "database_name" {
+  type        = map(string)
+  description = "The name of the database"
+  default = {
+    prod = "my_production_db_name"
+    stg = "my_staging_db_name"
+    dev = "my_development_db_name"
+  }
+}
+```
+
+Accessing the correct variable is easy, simply pass in the current Terraform Workspace name as the map's key:
+```terraform title="main.tf"
+resource "azurerm_postgresql_flexible_server" "test_db" {
+  name = var.database_name[terraform.workspace]
+}
+```
+
+You can of course target a specific value if needed, like calling `var.database_name["prod"]` or `var.database_name.prod`
+
+### Limiting resource creation to specific environments
+Let's say you only want to create a resource in `production`, like a Container Registry, where other environments will share that same resource.
+You can take advantage of `count` and testing the value of `terraform.workspace`:
+```terraform title="main.tf"
+resource "azurerm_postgresql_flexible_server" "test_database" {
+  count = terraform.workspace == "prod" ? 1 : 0
+  name  = var.database_name[terraform.workspace]
+}
+```
+
+Now, you'll need to access the correct index of `azurerm_postgresql_flexible_server.test_db`, which will always be `[0]` with this method
+```terraform title="outputs.tf"
+output "database_id" {
+  value = azurerm_postgresql_flexible_server.test_database[0].id
+}
+```
+
+Another advantage is if you have a variable that requires iterating through with a `for_each` loop, you can simply leave some environments blank.
+```terraform title="Using for_each loops to iterate environments"
+variable "database_names" {
+  type = map(list(object({
+    name     = string
+    location = string
+    sku      = string
+  })))
+  description = "The name of the database"
+  default = {
+    prod = [
+      {
+        name     = "prod-primary_db-psql"
+        location = "eastus"
+        sku      = "Standard"
+      },
+      {
+        name     = "prod-secondary_db-psql"
+        location = "westus"
+        sku      = "Standard"
+      }
+    ]
+    stg = [] # No DB needed in Staging
+    dev = [
+      {
+        name     = "dev-primary_db-psql"
+        location = "westeurope"
+        sku      = "Standard"
+      },
+    ]
+  }
+}
+
+resource "azurerm_postgresql_flexible_server" "test_database" {
+  for_each = toset(var.database_name[terraform.workspace])
+  name     = each.value.name
+
+  location            = each.value.location
+  resource_group_name = "${terraform.workspace}-rg" # prod-rg, stg-rg, dev-rg
+}
+```
+
+Instead of using a `list` of `object`, we can use a `map` to give each database an easy-to-reuse key.
+This makes it easier to precisely extract a specific piece of data from a potentially complicated dataset.
+Here is the same example, slightly tweaked:
+```terraform title="Using for_each loops to iterate environments"
+variable "database_names" {
+  type = map(map(object({
+    name     = string
+    location = string
+    sku      = string
+  })))
+  description = "The name of the database"
+  default = {
+    prod = { # Use curly braces
+      primary = {
+        name     = "prod-primary_db-psql"
+        location = "eastus"
+        sku      = "Standard"
+      } # Commas not needed
+      secondary_db = {
+        name     = "prod-secondary_db-psql"
+        location = "westus"
+        sku      = "Standard"
+      }
+    }
+    stg = {} # No DB needed in Staging
+    dev = {
+      primary = {
+        name     = "dev-primary_db-psql"
+        location = "westeurope"
+        sku      = "Standard"
+      }
+    }
+  }
+}
+
+resource "azurerm_postgresql_flexible_server" "test_database" {
+  for_each = { for k, v in var.database_name[terraform.workspace] : k => v }
+  name     = each.value.name
+
+  location            = each.value.location
+  resource_group_name = "${terraform.workspace}-rg" # prod-rg, stg-rg, dev-rg
+}
+
+output "prod_primary_db_id" {
+  value = azurerm_postgresql_flexible_server.test_database["primary"].id
+}
+output "prod_db_name" {
+  value = var.database_names["prod"]["primary"].name
+}
+```
