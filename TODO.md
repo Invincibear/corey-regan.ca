@@ -27,6 +27,7 @@
 
 
 ## Done:
+- ~~return meta at /og~~
 - ~~Reading time estimate~~
   - ~~https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/contentlayer.config.js~~
   - ~~https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/src/app/blog/%5Bslug%5D/page.tsx~~
