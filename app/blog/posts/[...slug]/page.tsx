@@ -3,6 +3,7 @@ import SocialIcons     from "@/components/SocialIcons"
 import { Tag }         from "@/components/tag"
 import { BlogConfig }  from "@/config/blog"
 import { SocialLinks } from "@/config/links"
+import { DOMAIN }      from "@/config/site"
 import { formatDate }  from "@/lib/utils"
 import { posts }       from "#site/content"
 import { Metadata }    from "next"
@@ -18,6 +19,8 @@ interface PostPageProps {
     slug: string[]
   }
 }
+
+
 async function getPostFromParams(params: PostPageProps["params"]) {
   const slug = params?.slug?.join("/")
 
@@ -35,6 +38,8 @@ export async function generateMetadata({
   const ogSearchParams = new URLSearchParams()
   ogSearchParams.set("title", post.title)
 
+  const image = `https://${DOMAIN}/api/og?${ogSearchParams.toString()}`
+
   return {
     title:       post.title,
     description: post.description,
@@ -46,7 +51,7 @@ export async function generateMetadata({
       url:         post.slug,
       images:      [
         {
-          url:    `/api/og?${ogSearchParams.toString()}`,
+          url:    image,
           width:  1200,
           height: 630,
           alt:    post.title,
@@ -57,14 +62,13 @@ export async function generateMetadata({
       card:        "summary_large_image",
       title:       post.title,
       description: post.description,
-      images:      [`/api/og?${ogSearchParams.toString()}`],
+      images:      [image],
     },
   }
 }
 
-export async function generateStaticParams(): Promise<
-  PostPageProps["params"][]
-> {
+
+export async function generateStaticParams(): Promise<PostPageProps["params"][]> {
   return posts.map((post) => ({ slug: post.slugAsParams.split("/") }))
 }
 
@@ -72,9 +76,7 @@ export async function generateStaticParams(): Promise<
 export default async function PostPage({ params }: PostPageProps) {
   const post = await getPostFromParams(params)
 
-  if (!post || (process.env.NODE_ENV !== "development" && !post.published)) {
-    notFound()
-  }
+  if (!post || (process.env.NODE_ENV !== "development" && !post.published)) notFound()
 
   return (
     <article className="container prose dark:prose-invert py-6 max-w-6xl mx-auto mb-40">
@@ -99,17 +101,30 @@ export default async function PostPage({ params }: PostPageProps) {
           />
         </Link>
         <div className="flex-1 text-left leading-tight">
+          <div className="font-medium text-lg my-0 flex">
+            Authored by&nbsp;<Link href={SocialLinks.twitter} className="underline hover:text-muted-foreground">Corey
+            Regan</Link>
+            <div className="flex ml-2">
+              <SocialIcons
+                className     = "text-xs mt-0 mr-2 size-4"
+                linkClassName = "text-muted-foreground hover:text-foreground"
+              />
+            </div>
+          </div>
           <p className="font-medium text-lg my-0">
-            Authored by <Link href={SocialLinks.twitter} className="underline">Corey Regan</Link> on {formatDate(post.date)}
+            Published on {formatDate(post.date)}
+          </p>
+          <p className="font-medium text-lg my-0">
+            {post.readingTime.text}
           </p>
           <div className="text-xs text-muted-foreground mt-0 flex">
-            <SocialIcons className="mr-2 size-4" />
+
           </div>
         </div>
       </div>
-      <hr className="my-4" />
+      <hr className="my-4"/>
 
-      <MDXContent code={post.body} />
+      <MDXContent code={post.body}/>
 
     </article>
   )

@@ -10,9 +10,6 @@
 - Add bloom to wormhole camera
   - https://github.com/jesuisundev/acrossthemultiverse/blob/main/src/postprocessing/PostProcessor.js
 - Add functionality to work experience tags
-- Reading time estimate
-  - https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/contentlayer.config.js
-  - https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/src/app/blog/%5Bslug%5D/page.tsx
 
 
 ## Wishlist:
@@ -30,6 +27,9 @@
 
 
 ## Done:
+- ~~Reading time estimate~~
+  - ~~https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/contentlayer.config.js~~
+  - ~~https://github.com/benjamin-chavez/benjamin-chavez.com/blob/master/src/app/blog/%5Bslug%5D/page.tsx~~
 - ~~New blog post: Terraform CLI multiple environments one `.tfvars`~~
 - ~~Add ... to end of arrival hero section, only showing cursor once text is typed~~
 - ~~Bug: blog images not loading in prod~~

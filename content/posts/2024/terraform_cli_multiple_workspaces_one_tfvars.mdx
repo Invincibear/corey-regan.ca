@@ -1,14 +1,14 @@
 ---
 title: Multiple Terraform CLI Workspaces Using Only One TFVars File
 date: 2024-06-10
-description: Terraform Cloud has wonderful behaviour where you can set a base variable and override it by each environment's variables, unfortunately you need to get creative to do something similar with Terraform's CLI.
+description: Terraform Cloud offers an excellent feature that allows you to set variables and override them with environment-specific variables. Unfortunately, replicating this behavior with the Terraform CLI requires some creativity.
 published: true
 tags: ["Terraform"]
 authors:
   - corey
 ---
 
-## The Gold Standard: Terraform Cloud Workspaces
+## Mimic The Gold Standard: Terraform Cloud Workspaces
 Terraform Cloud Workspaces are wonderful. You can create variables in your Terraform code, and set default values for each environment.
 
 `var.server_name` in the `dev` Terraform Cloud Workspace can be set to `dev.my-server.my-company.com`, and to `prod.my-server.my-company.com` in the `prod` Terraform Cloud Workspace.

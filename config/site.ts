@@ -1,4 +1,7 @@
-export const DOMAIN = 'corey-regan.ca'
+export const DOMAIN = process.env.NODE_ENV === 'development'
+  ? 'localhost'
+  : 'corey-regan.ca'
+
 export const SiteConfig = {
   author:      "Corey Regan",
   avatar:      "/images/avatars/corey.png",

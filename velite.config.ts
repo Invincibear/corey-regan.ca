@@ -10,15 +10,22 @@ import remarkGfm                             from "remark-gfm"
 import { defineConfig, defineCollection, s } from "velite"
 
 // import rehypeAttachRawStringsToCodeContainer from "remark-flexible-code-titles"
-import remarkCodeTitles                      from "remark-flexible-code-titles"
+// import remarkCodeTitles                      from "remark-flexible-code-titles"
 // import rehypeEnrichCodeContainerMetadata     from "remark-flexible-code-titles"
 
 
-const computedFields = <T extends { slug: string }>(data: T) => ({
+const computedFields = <dataType extends { slug: string }>(
+  data: dataType,
+  { meta }: { meta: any }
+) => ({
   ...data,
   readingTime: {
     type:    'json',
-    resolve: (doc: any) => readingTime(doc.body.raw),
+    resolve: (doc: any) => readingTime(doc),
+  },
+  testing: {
+    type:  'string',
+    value: 'something',
   },
   slugAsParams: data.slug.split("/").slice(1).join("/"),
   structuredData: {
@@ -27,16 +34,16 @@ const computedFields = <T extends { slug: string }>(data: T) => ({
       '@context':    'https://schema.org',
       '@type':       'BlogPosting',
       headline:      doc.title,
-      datePublished: doc.publishedAt,
-      dateModified:  doc.publishedAt,
+      datePublished: doc.date, // Make sure this matches your field
+      dateModified:  doc.date,  // Make sure this matches your field
       description:   doc.description,
-      url:           `https://${DOMAIN}/blog/${doc._raw.flattenedPath}`,
+      url:           `https://${DOMAIN}/blog/${data.slug}`,
       image: doc.image
         ? `https://${DOMAIN}${doc.image}`
-        : `https://${DOMAIN}/og?title=${doc.title}`,
+        : `https://${DOMAIN}/og?title=${encodeURIComponent(doc.title)}`,
       author: {
         '@type': 'Person',
-        name: BlogConfig.author,
+        name:    BlogConfig.author,
       },
     }),
   },
@@ -61,16 +68,24 @@ const posts = defineCollection({
   name:    "Post",
   pattern: ["posts/**/*.md", "posts/**/*.mdx"],
   schema:  s
-            .object({
-              slug: s.path(),
-              title: s.string().max(99),
-              description: s.string().max(999).optional(),
-              date: s.isodate(),
-              published: s.boolean().default(true),
-              tags: s.array(s.string()).optional(),
-              body: s.mdx(),
-            })
-            .transform(computedFields),
+    .object({
+      slug:        s.path(),
+      title:       s.string().max(99),
+      description: s.string().max(999).optional(),
+      date:        s.isodate(),
+      published:   s.boolean().default(true),
+      tags:        s.array(s.string()).optional(),
+      body:        s.mdx(),
+    })
+    .transform((data, { meta }) => {
+      const transformedData = computedFields(data, { meta })
+
+      return {
+        ...transformedData,
+        readingTime:    transformedData.readingTime.resolve(meta.data.content),
+        structuredData: transformedData.structuredData.resolve(meta.data.data),
+      }
+    }),
 })
 
 const rehypePrettyCodeOptions: Options = {
@@ -114,7 +129,7 @@ export default defineConfig({
   mdx: {
     remarkPlugins: [
       remarkGfm,
-      remarkCodeTitles,
+      // remarkCodeTitles,
     ],
     rehypePlugins: [
       rehypeSlug,
@@ -122,7 +137,7 @@ export default defineConfig({
       [
         rehypeAutolinkHeadings,
         {
-          behavior: "wrap",
+          behavior:   "wrap",
           properties: {
             className: ["subheading-anchor"],
             ariaLabel: "Link to section",
