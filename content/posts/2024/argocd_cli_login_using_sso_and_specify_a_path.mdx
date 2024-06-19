@@ -1,0 +1,26 @@
+---
+title: When You Need To Log Into Argo CD Using The CLI But There Is A Path In The URL
+date: 2024-06-19
+description: I wish --help made this more obvious, the flag you're looking for is --grpc-web-root-path
+published: true
+tags: ["Argo CD"]
+authors:
+- corey
+---
+
+**Scenario**: you need to use the `argocd` CLI, but you must first log in, and Argo CD isn't being served from the root path, e.g. https://argocd.mydomain.tld/argocd
+
+
+The following are instructions for Ubuntu. You might need to look up instructions for your OS.
+```bash title="Install the argocd CLI"
+# Download the version of Argo CD CLI matching your current deployment
+export $VERSION=v2.10.4
+curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64
+sudo install -m 555 argocd /usr/local/bin/argocd
+```
+
+Now log into Argo CD. It will open a new page in your browser to complete the authentication. If you don't use SSO, remove the `--sso` flag.
+```bash title="Log into argocd.domain.tld/argocd"
+# Login using SSO and grpc-web
+argocd login argocd.mydomain.tld --sso --grpc-web --grpc-web-root-path "/argocd"
+```
