@@ -9,11 +9,11 @@ authors:
 ---
 
 Argo CD is a wonderful git-ops tool. When performing big changes, like upgrading or converting to an HA deployment, you should first back up your config.
-We'll build upon the steps outlined in the [Disaster Recovery](https://argo-cd.readthedocs.io/en/latest/operator-manual/disaster_recovery/) page of their documentation.
+We'll build upon the steps outlined in the [Disaster Recovery page of their documentation](https://argo-cd.readthedocs.io/en/latest/operator-manual/disaster_recovery/).
 
 
 ## Backing Up Using argocd admin
-We will use Docker to mount the Argo CD image of the same version of Argo CD we are backing up, mount our `.kube` folder containing our `kubectl` `config` file, and run `argocd admin export` to dump all Argo CD configs to a single YAML file.
+We will use Docker to mount the Argo CD image of the same version of Argo CD we are backing up, mount our `.kube` folder containing our `kubectl` `config` file as a Docker Volume, and run `argocd admin export` to dump all Argo CD configs to a single YAML file.
 ```bash title="Export Argo CD configs using argocd admin export"
 export $VERSION=2.10.4
 sudo docker run -v /home/$USER/.kube:/home/argocd/.kube --rm quay.io/argoproj/argocd:$VERSION argocd admin export > argocd_backup_from_argocd_admin_cli.$(date +%F).yaml
