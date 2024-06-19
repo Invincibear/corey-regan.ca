@@ -1,0 +1,52 @@
+---
+title: Back Up Your Argo CD Config Before Upgrading
+date: 2024-06-19
+description: Here are two methods of backing up your Argo CD configuration, do this before you upgrade or make critical changes
+published: true
+tags: ["Kubernetes", "Argo CD"]
+authors:
+- corey
+---
+
+Argo CD is a wonderful git-ops tool. When performing big changes, like upgrading or converting to an HA deployment, you should first back up your config.
+We'll build upon the steps outlined in the [Disaster Recovery](https://argo-cd.readthedocs.io/en/latest/operator-manual/disaster_recovery/) page of their documentation.
+
+
+## Backing Up Using argocd admin
+We will use Docker to mount the Argo CD image of the same version of Argo CD we are backing up, mount our `.kube` folder containing our `kubectl` `config` file, and run `argocd admin export` to dump all Argo CD configs to a single YAML file.
+```bash title="Export Argo CD configs using argocd admin export"
+export $VERSION=2.10.4
+sudo docker run -v /home/$USER/.kube:/home/argocd/.kube --rm quay.io/argoproj/argocd:$VERSION argocd admin export > argocd_backup_from_argocd_admin_cli.$(date +%F).yaml
+less argocd_backup_from_argocd_admin_cli.$(date +%F).yaml
+```
+
+
+## Backing Up Using kubectl
+I haven't personally tested that this exports everything needed, but it might still be useful. The generated backup YAML was ~50KB larger than when using `argocd admin export`
+```bash title="Export Argo CD configs using kubectl"
+kubectl get all -n argocd -o yaml > argocd_backup_from_kubectl.$(date +%F).yaml
+```
+
+
+## Troubleshooting
+### configmaps 'argocd-cm' not found
+```bash title="Error configmaps 'argocd-cm' not found"
+$ sudo docker run -v /home/corey/.kube:/home/argocd/.kube --rm quay.io/argoproj/argocd:$VERSION argocd admin export > argocd_backup_from_argocd_admin_cli.$(date +%F).yaml
+time="2024-06-19T21:39:11Z" level=fatal msg="configmaps \"argocd-cm\" not found"
+```
+This is because although you might be using the default `argocd` namespace on the cluster, you have to specify it in the current context:
+```bash title="Set the namespace of the current Kubernetes context"
+kubectl config set-context --current --namespace=argocd
+Context "dev-aks" modified.
+```
+
+### Error loading config file '/home/argocd/.kube/config': open /home/argocd/.kube/config: permission denied
+```bash title="Error loading config file '/home/argocd/.kube/config': open /home/argocd/.kube/config: permission denied"
+$ sudo docker run -v /home/$USER/.kube:/home/argocd/.kube --rm quay.io/argoproj/argocd:$VERSION argocd admin export > backup_from_argocd_admin.yaml
+time="2024-06-19T21:40:24Z" level=fatal msg="error loading config file \"/home/argocd/.kube/config\": open /home/argocd/.kube/config: permission denied"
+
+```
+If your user isn't in a group that grants access to Docker resources, you will need to set more permissive permissions on the Kubernetes config file:
+```bash title="Permit Docker to read your kube config"
+chmod 664 ~/.kube/config
+```
