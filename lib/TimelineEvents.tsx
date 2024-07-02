@@ -147,7 +147,7 @@ const TimelineEvents: TimelineEvent[] = [
     description: "I designed a Wordpress website and managed its deployment and updates.",
     icon:        <RefreshCcwDot />,
     link:        "https://redipump.com",
-    role:        "Front-End Engineer",
+    role:        "Wordpress Designer",
     tags:        ["Wordpress", "O365"],
     image:       {
       link:   "https://redipump.com",
@@ -186,10 +186,10 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2016 - 2021",
     id:          "geared",
     headline:    "Geared Digital Marketing",
-    description: "As a founder of Geared, I helped driving school and deck construction companies acquire more customers using digital marketing. I implemented a pay-per-call strategy, connecting prospective buyers with companies for a flat rate per call. With a one in three closing rate, the ROI for companies using my leads was worth the cost.",
+    description: "As a founder of Geared, I helped driving school and deck construction companies acquire more customers using digital marketing. I implemented a pay-per-call strategy, connecting prospective buyers with companies for a flat rate per call. With a one in three closing rate, the ROI for companies servicing my leads was worth the cost.",
     icon:        <Newspaper />,
     link:        "https://geared.ca",
-    role:        "Front-End Engineer",
+    role:        "Wordpress Engineer",
     tags:        ["Wordpress", "Marketing"],
     image:       {
       alt:    "Geared Digital Marketing homepage",
@@ -249,7 +249,7 @@ const TimelineEvents: TimelineEvent[] = [
     headline:    "Dell Canada",
     description: "At Dell I created a French Windows Vista website simulator to help phone support agents direct customers through the new UI. This was used by support agents in France and Canada.",
     icon:        <Laptop />,
-    role:        "Programmer",
+    role:        "Frontend Engineer",
     tags:        ["Hardware", "HTML", "JavaScript", "CSS", "Windows"],
     logo:        {
       alt:    "Windows Vista desktop",
