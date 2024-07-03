@@ -46,13 +46,17 @@ export default function DaisyTimeline({ timelineEvents }: TimelineComponentProps
         </motion.h3>
         <div id="timeline" className="pb-40 flex justify-center items-center overflow-x-hidden">
           <ul className="max-w-8xl timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
-            {timelineEvents.map(timelineEvent => {
-              position = (position === "timeline-end")
-                ? "timeline-start md:text-end"
-                : "timeline-end"
+            {
+              timelineEvents
+                .filter(timelineEvent => process.env.NODE_ENV === "development" || timelineEvent.visible !== false)
+                .map(timelineEvent => {
+                  position = (position === "timeline-end")
+                    ? "timeline-start md:text-end"
+                    : "timeline-end"
 
-              return <DaisyTimelineEvent key={timelineEvent.id} timelineEvent={timelineEvent} position={position}/>
-            })}
+                  return <DaisyTimelineEvent key={timelineEvent.id} timelineEvent={timelineEvent} position={position}/>
+              })
+            }
           </ul>
         </div>
       </section>

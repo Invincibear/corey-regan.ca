@@ -35,8 +35,31 @@ export type TimelineEvent = {
   link?:        string
   role:         string
   tags:         string[]
+  visible?:     boolean // default: true
 }
 const TimelineEvents: TimelineEvent[] = [
+  {
+    date:     "2024",
+    id:       "alteranRevelator",
+    icon:     <Landmark />,
+    link:     "https://revelator.com",
+    role:     "DevOps Lead Engineer",
+    tags:     ["Azure", "Kubernetes", "GitHub Actions"],
+    headline: "Alteran FTL Strategies Inc.",
+    visible:  false,
+    description: (
+      <>
+        <p>As the DevOps Lead Engineer, I was responsible for managing all infrastructure, supporting systems, and build pipelines.</p><br />
+        <p>When I first approached this project, I assessed the current state of the infrastructure & systems, then provided the recommendation to Terraform all infrastructure, use management and security groups to delegate permissions using the principles of least privilege, deploy fully-upgraded replacement Kubernetes clusters, containerize legacy VMs to run on Kubernetes, implement additional security measures, and use Argo CD, application sets, and Kustomize to deploy our apps.</p>
+      </>
+    ),
+    logo: {
+      src:    "Paddle.svg",
+      width:  200,
+      height: 69,
+      alt:    "Paddle",
+    },
+  },
   {
     date:     "2024",
     id:       "paddle-python-sdk",
