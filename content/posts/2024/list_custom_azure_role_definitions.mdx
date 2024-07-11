@@ -1,0 +1,51 @@
+---
+title: How To List Custom Role Definitions In Azure
+date: 2024-07-11
+description: I haven't found a reliable way to list them in the Azure Portal, but the CLI makes it easy
+published: true
+tags: ["Kubernetes"]
+authors:
+  - corey
+---
+
+Sometimes you need to write a custom role definition. Down the road you might need to reference it or make changes.
+Listing and describing your custom role definitions is easiest using the Azure CLI.
+```bash title="Using the Azure CLI, list custom role definitions"
+az role definition list --custom-role-only
+```
+
+```bash title="Listing a specific custom role definition by name"
+az role definition list --custom-role-only --output json | jq '.[] | select(.roleName == "Revelator - Public IP Linker")'
+
+{
+  "assignableScopes": [
+    "/subscriptions/$subscription_id/resourceGroups/prod-kubernetes-rg/providers/Microsoft.Network/publicIPAddresses/prod-kubernetes-pip",
+    "/subscriptions/$subscription_id/resourceGroups/stage-kubernetes-rg/providers/Microsoft.Network/publicIPAddresses/stage-kubernetes-pip",
+    "/subscriptions/$subscription_id/resourceGroups/dev-kubernetes-rg/providers/Microsoft.Network/publicIPAddresses/dev-kubernetes-pip"
+  ],
+  "createdBy": "$creator_user_principal_id",
+  "createdOn": "2024-07-11T22:44:35.607671+00:00",
+  "description": "Grants read and join access to Public IPs",
+  "id": "/subscriptions/$subscription_id/providers/Microsoft.Authorization/roleDefinitions/$role_definition_id",
+  "name": "$role_definition_id",
+  "permissions": [
+    {
+      "actions": [
+        "Microsoft.Network/publicIPAddresses/join/action",
+        "Microsoft.Network/publicIPAddresses/read"
+      ],
+      "condition": null,
+      "conditionVersion": null,
+      "dataActions": [],
+      "notActions": [],
+      "notDataActions": []
+    }
+  ],
+  "roleName": "Public IP Linker",
+  "roleType": "CustomRole",
+  "type": "Microsoft.Authorization/roleDefinitions",
+  "updatedBy": "$creator_user_principal_id",
+  "updatedOn": "2024-07-11T23:14:04.279704+00:00"
+}
+
+```
