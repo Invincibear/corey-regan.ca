@@ -1,0 +1,19 @@
+---
+title: How To Force-Complete A Kubernetes Finalizer
+date: 2024-07-11
+description: Sometimes deleting a namespace gets stuck due to finalizers breaking
+published: true
+tags: ["Kubernetes"]
+authors:
+  - corey
+---
+
+Sometimes you need to nuke a namespace, but doing so deletes resources a finalizer depends on, leaving the delete operation getting stuck.
+You can trick the finalizer into receiving a "`completed`" event by proxying a PUT request to kubectl.
+```bash title="Proxy requests to kubectl"
+kubectl proxy
+```
+In another shell window, send the payload to the finalizer
+```bash title="This example finalizes the olm namespace, change olm to your namespace/finalizer"
+curl -k -H "Content-Type: application/json" -X PUT --data-binary '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"olm"},"spec":{"finalizers":[]}}' http://127.0.0.1:8001/api/v1/namespaces/olm/finalize
+```
