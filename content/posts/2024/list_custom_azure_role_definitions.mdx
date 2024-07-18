@@ -15,7 +15,7 @@ az role definition list --custom-role-only
 ```
 
 ```bash title="Listing a specific custom role definition by name"
-az role definition list --custom-role-only --output json | jq '.[] | select(.roleName == "Revelator - Public IP Linker")'
+az role definition list --custom-role-only --output json | jq '.[] | select(.roleName == "Public IP Linker")'
 
 {
   "assignableScopes": [
