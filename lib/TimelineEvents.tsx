@@ -70,7 +70,7 @@ const TimelineEvents: TimelineEvent[] = [
     headline: <a href="https://github.com/PaddleHQ/paddle-python-sdk/commit/03d756dedec66a45a8a189ddbec92911fb39e64d" title="_blank">paddle-python-sdk</a>,
     description: (
       <>
-        <p>While working on <a href="https://syncmycalendars.app/" target="_blank">SyncMyCalendars.app</a>, I decided to implement Paddle, a payment processor that competes with PayPal and Stripe. I took it upon myself to translate the PHP SDK into Python, adopting Pythonic coding practices.</p><br />
+        <p>While working on <a href="https://syncmycalendars.app/" target="_blank">SyncMyCalendars.app</a>, I decided to implement Paddle, a payment processor that competes with PayPal and Stripe. I took it upon myself to translate the PHP SDK into Python, adopting Pythonic coding best practices.</p><br />
         <p>After Paddle noticed it, they purchased the SDK from me to use as their <a href="https://github.com/PaddleHQ/paddle-python-sdk/commit/e97b1d80811be941ede038634790eef7dd83baf1" target="_blank">official SDK</a>.</p><br />
         <p>It was incredibly rewarding and validating knowing my code passed a financial company&apos;s coding standards, considering the financial industry&apos;s strict regulatory environment.</p>
       </>
@@ -86,7 +86,7 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2022 - 2023",
     id:          "skytap",
     headline:    "SkyTap",
-    description: "I was responsible for writing Terraform code to port on-prem infra and apps to a cloud-native architecture, deployed to Azure using Terraform Cloud.",
+    description: "I architected, programmed, and deployed Terraform code to port on-prem infra to a cloud-native architecture, deployed to Azure using Terraform Cloud.",
     icon:        <CloudDownload />,
     role:        "Site Reliability Engineer",
     tags:        ["Azure", "Terraform", "Kubernetes", "Ansible", "GitHub Actions", "BASH"],
@@ -101,7 +101,7 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2022 - present",
     id:          "syncmycalendars",
     headline:    "SyncMyCalendars.app",
-    description: "I architected, programmed, and deployed a SaaS app to selectively synchronize calendar events between Google and O365 calendar accounts and apply filters and transformations to copied events.",
+    description: "I architected, programmed, and deployed a SaaS app to selectively synchronize calendar events between Google and O365 calendar accounts and optionally apply filters and transformations to copied events.",
     icon:        <CalendarCheck />,
     link:        "https://syncmycalendars.app",
     role:        "Full-Stack Engineer",
@@ -150,7 +150,7 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2019",
     id:          "warmap",
     headline:    "WarMapCalendar.com",
-    description: "Inspired by Sam Oven's War Map Calendar, I turned the basic Excel spreadsheet into a fully-fledged SaaS app.",
+    description: "Inspired by Sam Oven's War Map Calendar, I turned his basic Excel spreadsheet into a fully-fledged SaaS app. This app enables you to set long-term goals and break them down into daily actionable tasks.",
     icon:        <CalendarDays />,
     link:        "https://warmapcalendar.com",
     role:        "Full-Stack Engineer",
@@ -167,11 +167,11 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2018",
     id:          "redipump",
     headline:    "RediPump.com",
-    description: "I designed a Wordpress website and managed its deployment and updates.",
+    description: "I designed a WordPress website and managed its deployment and updates.",
     icon:        <RefreshCcwDot />,
     link:        "https://redipump.com",
-    role:        "Wordpress Designer",
-    tags:        ["Wordpress", "O365"],
+    role:        "WordPress Designer",
+    tags:        ["WordPress", "O365"],
     image:       {
       link:   "https://redipump.com",
       src:    "redipump.com.png",
@@ -184,10 +184,10 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2018 - 2021",
     id:          "dynamichosting",
     headline:    "Dynamic Hosting",
-    description: "As the primary engineer of a national web hosting company providing dedicated servers, co-located servers, virtual machines, virtual private servers, and shared web hosting in 3 coast-to-coast datacenters, I also provided L3 helpdesk support as-needed, programming support, and training for our team of junior systems administrators and helpdesk technicians.",
+    description: "As the primary engineer of a national web hosting company providing dedicated servers, co-located servers, virtual machines, virtual private servers, and shared web hosting in three coast-to-coast datacenters, I was responsible for the budget, architecture, deployment, and maintenance of all technical aspects of the company. I also provided L3 helpdesk support as-needed, programming support, and training for our team of junior systems administrators and helpdesk technicians.",
     icon:        <Rss />,
     role:        "Sr. Systems Engineer",
-    tags:        ["CentOS", "Virtuozzo", "Ansible", "BASH", "Plesk", "Wordpress", "PHP", "Cisco"],
+    tags:        ["CentOS", "Virtuozzo", "Ansible", "BASH", "Plesk", "WordPress", "PHP", "Cisco"],
     logo:        {
       src:    "dynamichosting-logo.png",
       width:  456,
@@ -198,22 +198,22 @@ const TimelineEvents: TimelineEvent[] = [
 /*  {
     date:        "2016",
     id:          "sundeckssurrey",
-    headline:    "SunDecksSurrey.ca: Front-End Engineer",
-    description: "",
+    headline:    "SunDecksSurrey.ca: WordPress Designer",
+    description: "I helped deck construction companies acquire more customers using digital marketing via Google and Craigslist ads. I implemented a pay-per-call strategy, connecting prospective buyers with intent to purchase to decking companies in their region, charging decking companies a flat per-lead rate. With a one in three closing rate, it was a no-brainer for decking companies.",
     icon:        <Home />,
     link:        "https://sundeckssurrey.ca",
     role:        "Front-End",
-    tags:        ["Wordpress", "Marketing"],
+    tags:        ["WordPress", "Marketing"],
   },*/
   {
     date:        "2016 - 2021",
     id:          "geared",
     headline:    "Geared Digital Marketing",
-    description: "As a founder of Geared, I helped driving school and deck construction companies acquire more customers using digital marketing. I implemented a pay-per-call strategy, connecting prospective buyers with companies for a flat rate per call. With a one in three closing rate, the ROI for companies servicing my leads was worth the cost.",
+    description: "As a founder of Geared, I helped driving school companies acquire more customers using digital marketing via Google ads, website modification, and custom marketing campaigns. My services increased their average ROI by ~$150/student.",
     icon:        <Newspaper />,
     link:        "https://geared.ca",
-    role:        "Wordpress Engineer",
-    tags:        ["Wordpress", "Marketing"],
+    role:        "WordPress Engineer",
+    tags:        ["WordPress", "Marketing"],
     image:       {
       alt:    "Geared Digital Marketing homepage",
       src:    "geared.ca.png",
