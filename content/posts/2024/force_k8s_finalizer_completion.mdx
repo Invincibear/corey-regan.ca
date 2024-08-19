@@ -14,6 +14,9 @@ You can trick the finalizer into receiving a "`completed`" event by proxying a P
 kubectl proxy
 ```
 In another shell window, send the payload to the finalizer
+```bash title="Generic example, replace $namespace with your namespace/finalizer"
+curl -k -H "Content-Type: application/json" -X PUT --data-binary '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"$namespace"},"spec":{"finalizers":[]}}' http://127.0.0.1:8001/api/v1/namespaces/$namespace/finalize
+```
 ```bash title="This example finalizes the olm namespace, change olm to your namespace/finalizer"
 curl -k -H "Content-Type: application/json" -X PUT --data-binary '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"olm"},"spec":{"finalizers":[]}}' http://127.0.0.1:8001/api/v1/namespaces/olm/finalize
 ```
