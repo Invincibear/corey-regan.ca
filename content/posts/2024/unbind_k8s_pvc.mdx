@@ -1,0 +1,13 @@
+---
+title: How To Unbind A Persistent Volume
+date: 2024-08-22
+description: PVs set with Retain reclaimPolicy can be released
+published: true
+tags: ["kubernetes", "storage"]
+authors:
+  - corey
+---
+
+```bash, title="Replace $pvName with the name of your Persistent Volume"
+kubectl patch pv $pvName -p '{"spec":{"claimRef": null}}'
+```
