@@ -11,20 +11,51 @@ authors:
 When you go to import an existing Azure Linux VM that was configured with an SSH key pair, Azure will give you a hint about the public key it expects, but it will fail when you copy/paste it.
 
 Terraform will tell you what it expects to receive when setting `admin_ssh_key`:
-```bash title="What Terraform expects"
-- admin_ssh_key { # forces replacement
-    - public_key = <<-EOT
-          ---- BEGIN SSH2 PUBLIC KEY ----
-          Comment: "description of ssh key here"
-          (redacted)
-          ---- END SSH2 PUBLIC KEY ----
-      EOT -> null
-    - username   = "my_admin_username" -> null
-  }
+```bash title="What Terraform expects for the admin_ssh_key block"
+$ terraform import azurerm_linux_virtual_machine.my_vm /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my_resource_group/providers/Microsoft.Compute/virtualMachines/my_vm
+
+Terraform will perform the following actions:
+
+  # azurerm_linux_virtual_machine.my_vm must be replaced
+  # (imported from "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my_resource_group/providers/Microsoft.Compute/virtualMachines/my_vm")
+  # Warning: this will destroy the imported resource
+-/+ resource "azurerm_linux_virtual_machine" "my_vm" {
+      name = "my_vm"
+
+      (redacted)
+
+    - admin_ssh_key { # forces replacement
+        - public_key = <<-EOT
+              ---- BEGIN SSH2 PUBLIC KEY ----
+              Comment: "description of ssh key here"
+              (redacted)
+              ---- END SSH2 PUBLIC KEY ----
+          EOT -> null
+      }
+    }
+
+Plan: 1 to import, 1 to add, 0 to change, 1 to destroy.
 ```
 
 But if you configure the `admin_ssh_key` block to the suggestion, it'll fail:
-```bash title="decoding admin_ssh_key.0.public_key for public key data"
+```terraform title="Try the suggested admin_ssh_key block"
+resource "azurerm_linux_virtual_machine" "my_vm" {
+  name = "my_vm"
+
+  (redacted)
+
+  admin_ssh_key {
+    public_key = <<-EOT
+                  ---- BEGIN SSH2 PUBLIC KEY ----
+                  Comment: "description of ssh key here"
+                  (redacted)
+                  ---- END SSH2 PUBLIC KEY ----
+                  EOT
+    username   = "my_admin_username"
+  }
+}
+```
+```bash title="Error: decoding admin_ssh_key.0.public_key for public key data"
 │ Error: decoding "admin_ssh_key.0.public_key" for public key data
 │
 │   with azurerm_linux_virtual_machine.my_vm,
@@ -34,11 +65,11 @@ But if you configure the `admin_ssh_key` block to the suggestion, it'll fail:
 
 ## The Solution
 The solution is rather simple: ignore the `admin_ssh_key`
-```terraform, title="Ignore the admin_ssh_key"
+```terraform title="Ignore the admin_ssh_key"
 resource "azurerm_linux_virtual_machine" "my_vm" {
   name = "my_vm"
 
-  ...
+  (redacted)
 
   lifecycle {
     ignore_changes = [
