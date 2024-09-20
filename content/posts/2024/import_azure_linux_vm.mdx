@@ -1,0 +1,51 @@
+---
+title: How To Import An Azure Linux VM Without Recreating It
+date: 2024-09-20
+description: The public_ssh property can be a real PITA to validate, forcing you to recreate the VM if you try to import it.
+published: true
+tags: ["azure", "terraform"]
+authors:
+  - corey
+---
+
+When you go to import an existing Azure Linux VM that was configured with an SSH key pair, Azure will give you a hint about the public key it expects, but it will fail when you copy/paste it.
+
+Terraform will tell you what it expects to receive when setting `admin_ssh_key`:
+```bash title="What Terraform expects"
+- admin_ssh_key { # forces replacement
+    - public_key = <<-EOT
+          ---- BEGIN SSH2 PUBLIC KEY ----
+          Comment: "description of ssh key here"
+          (redacted)
+          ---- END SSH2 PUBLIC KEY ----
+      EOT -> null
+    - username   = "my_admin_username" -> null
+  }
+```
+
+But if you configure the `admin_ssh_key` block to the suggestion, it'll fail:
+```bash title="decoding admin_ssh_key.0.public_key for public key data"
+│ Error: decoding "admin_ssh_key.0.public_key" for public key data
+│
+│   with azurerm_linux_virtual_machine.my_vm,
+│   on virtual_machines.tf line 39, in resource "azurerm_linux_virtual_machine" "my_vm":
+│   39: resource "azurerm_linux_virtual_machine" "my_vm" {
+```
+
+## The Solution
+The solution is rather simple: ignore the `admin_ssh_key`
+```terraform, title="Ignore the admin_ssh_key"
+resource "azurerm_linux_virtual_machine" "my_vm" {
+  name = "my_vm"
+
+  ...
+
+  lifecycle {
+    ignore_changes = [
+      admin_ssh_key, # Changing this forces VM replacement. Also needed to import the VM into Terraform
+    ]
+  }
+}
+```
+
+Terraform is useful for initial setup, but past standing up the VM you should really use another tool like Ansible, Puppet, or Chef to manage your SSH keys on a machine.
