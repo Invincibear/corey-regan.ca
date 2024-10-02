@@ -201,7 +201,7 @@ This makes it easier to precisely extract a specific piece of data from a potent
 Here is the same example, slightly tweaked:
 ```terraform title="Using for_each loops to iterate environments"
 variable "database_names" {
-  type = map(map(object({
+  type = map(map(map({
     name     = string
     location = string
     sku      = string
@@ -239,7 +239,7 @@ resource "azurerm_postgresql_flexible_server" "test_database" {
   resource_group_name = "${terraform.workspace}-rg" # prod-rg, stg-rg, dev-rg
 }
 
-output "prod_primary_db_id" {
+output "primary_db_id" {
   value = azurerm_postgresql_flexible_server.test_database["primary"].id
 }
 output "prod_db_name" {
