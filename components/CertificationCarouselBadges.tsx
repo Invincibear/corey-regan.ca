@@ -73,6 +73,14 @@ export default function CertificationCarouselBadges() {
 
       <li className="shrink-0">
         <CertificationBadge
+          title="Google IT Support Professional"
+          imageSrc={"/images/certifications/badge-GoogleCompTIA.png"}
+          proofUrl="https://www.credly.com/badges/bab9fc49-07d7-4979-ba3d-aa39448bfeed"
+        />
+      </li>
+
+      <li className="shrink-0">
+        <CertificationBadge
           title="CompTIA A+ ce"
           imageSrc={"/images/certifications/badge-comptia-a+.png"}
           proofUrl="https://www.credly.com/badges/d60b5598-2aa1-4f5a-985d-f960a8b42de8"
