@@ -43,15 +43,30 @@ const TimelineEvents: TimelineEvent[] = [
     date:     "2025",
     id:       "alteranRevelator",
     icon:     <Music />,
-    // link:     "https://revelator.com",
     role:     "Lead DevOps Engineer",
-    tags:     ["Azure", "Kubernetes", "Argo CD", "GitHub Actions"],
+    tags:     ["Azure", "Kubernetes", "Argo CD", "GitHub Actions", "Grafana", "Prometheus", "Alertmanager", "VPN", "Octopus Deploy", "Azure DevOps", "DNS", "Networking"],
     headline: "Alteran FTL Strategies Inc.",
     visible:  true,
     description: (
       <>
         <p>As the Lead DevOps Engineer, I was responsible for managing all infrastructure, supporting systems, and build pipelines.</p><br />
-        <p>When I first approached this project, I assessed the current state of the infrastructure & systems, then provided the recommendation to Terraform all infra, use management and security groups to delegate permissions using the principles of least privilege, deploy fully-upgraded replacement Kubernetes clusters, containerize legacy VMs to run on Kubernetes, implement additional security measures, and configure Argo CD to automatically deploy our apps. I replaced multiple VPNs with a single unified VPN, which required many VM migrations into non-overlapping VNETs from public to private IP spaces to peer with the new VPN. I rewrote many outdated & failing GitHub Actions pipelines and upgraded & reconfigured Azure DevOps/TeamCity/Octopus Deploy. I Upgraded and revamped out monitoring/alerting strategy, and deployed a customer-facing status page.</p>
+
+        <p>When I first approached this project, I assessed the current state of the infrastructure & systems, then provided the recommendation to;
+          <ul className="list-disc pl-8">
+            <li className="font-bold">Terraform all infra</li>
+            <li>Use management and security groups to delegate permissions with the principles of least privilege</li>
+            <li>Deploy fully-upgraded replacement Kubernetes clusters, enforcing IaC</li>
+            <li>Containerize most VM workloads to run on Kubernetes</li>
+            <li>Move app inter-communication over internal networks instead of public internet and utilize private DNS</li>
+            <li>Configure Argo CD to automatically deploy our apps</li>
+          </ul>
+        </p><br />
+
+        <p>I replaced multiple VPNs with a single unified VPN, which required many VM migrations to non-overlapping VNETs in private IP spaces to peer with the new VPN.</p><br />
+
+        <p>I rewrote many outdated & failing GitHub Actions pipelines and upgraded & reconfigured Azure DevOps/TeamCity/Octopus Deploy.</p><br />
+
+        <p>I Upgraded and revamped our monitoring & alerting strategy using Prometheus, Grafana, Alertmanager, and deployed a customer-facing status page.</p>
       </>
     ),
     logo: {
@@ -72,7 +87,9 @@ const TimelineEvents: TimelineEvent[] = [
     description: (
       <>
         <p>While working on <a href="https://syncmycalendars.app/" target="_blank">SyncMyCalendars.app</a>, I decided to implement Paddle, a payment processor that competes with PayPal and Stripe. I took it upon myself to translate the PHP SDK into Python, adopting Pythonic coding best practices.</p><br />
+
         <p>After Paddle noticed it, they purchased the SDK from me to use as their <a href="https://github.com/PaddleHQ/paddle-python-sdk/commit/e97b1d80811be941ede038634790eef7dd83baf1" target="_blank">official SDK</a>.</p><br />
+
         <p>It was incredibly rewarding and validating knowing my code passed a financial company&apos;s coding standards, considering the financial industry&apos;s strict regulatory environment.</p>
       </>
     ),
@@ -90,7 +107,7 @@ const TimelineEvents: TimelineEvent[] = [
     description: "I architected, programmed, and deployed Terraform code to port on-prem infra to a cloud-native architecture, deployed to Azure using Terraform Cloud.",
     icon:        <CloudDownload />,
     role:        "Site Reliability Engineer",
-    tags:        ["Azure", "Terraform", "Kubernetes", "Ansible", "GitHub Actions", "BASH"],
+    tags:        ["Azure", "Terraform", "Kubernetes", "Ansible", "GitHub Actions", "Bash"],
     logo:        {
       src:    "skytap.png",
       width:  227,
@@ -119,10 +136,14 @@ const TimelineEvents: TimelineEvent[] = [
     date:        "2021 - 2022",
     id:          "freelancer",
     headline:    "Freelancer.com",
-    description: "I was a member of a three-person team managing the AWS infra serving ~4 billion non-cached requests per week to ~55 million users worldwide. I was responsible for maintaining uptime, remediating outages, maintaining systems upgrades, upgrading a dozen Kubernetes clusters, and deploying robust scalable infrastructure.",
+    description: (
+      <>
+        <p>I was a member of a three-person team managing the AWS infra serving ~4 billion non-cached requests per week to ~55 million users worldwide. I was responsible for maintaining uptime, remediating outages, maintaining systems upgrades, upgrading a dozen Kubernetes clusters, and deploying robust scalable infrastructure.</p><br />
+      </>
+    ),
     icon:        <PencilLine />,
     role:        "Site Reliability Engineer",
-    tags:        ["AWS", "Terraform", "Puppet", "PHP", "Python", "Prometheus", "Elasticsearch", "RabbitMQ", "Varnish", "Redis", "BASH"],
+    tags:        ["AWS", "Terraform", "Puppet", "PHP", "Python", "Prometheus", "Elasticsearch", "RabbitMQ", "Varnish", "Redis", "Bash", "DNS"],
     logo:        {
       src:    "freelancer.svg",
       alt:    "Freelancer.com",
@@ -188,7 +209,7 @@ const TimelineEvents: TimelineEvent[] = [
     description: "As the primary engineer of a national web hosting company providing dedicated servers, co-located servers, virtual machines, virtual private servers, and shared web hosting in three coast-to-coast datacenters, I was responsible for the budget, architecture, deployment, and maintenance of all technical aspects of the company. I also provided L3 helpdesk support as-needed, programming support, and training for our team of junior systems administrators and helpdesk technicians.",
     icon:        <Rss />,
     role:        "Sr. Systems Engineer",
-    tags:        ["CentOS", "Virtuozzo", "Ansible", "BASH", "Plesk", "WordPress", "PHP", "Cisco"],
+    tags:        ["CentOS", "Virtuozzo", "Ansible", "Bash", "Plesk", "WordPress", "PHP", "Cisco", "Networking", "Datacenter", "Hardware", "DNS"],
     logo:        {
       src:    "dynamichosting-logo.png",
       width:  456,
@@ -228,11 +249,11 @@ const TimelineEvents: TimelineEvent[] = [
     headline:    "International Equipment Solutions",
     icon:        <ServerCog />,
     role:        "Systems Administrator",
-    tags:        ["Windows Server", "PowerShell"],
+    tags:        ["Windows Server", "PowerShell", "Datacenter", "Networking", "Hardware", "DNS"],
     description: (
       <>
-        <p>Primary engineer of 4 international sites (~150 users), also provided L3 helpdesk support. Part of a team supporting ~1000 users amongst ~20 sites.</p>
-        <br />
+        <p>Primary engineer of 4 international sites (~150 users), also provided L3 helpdesk support. Part of a team supporting ~1000 users amongst ~20 sites.</p><br />
+
         <p>Engineered company-wide systems imaging solution, automated ~2000 hours of help desk labor, integrated IT & HR systems, modernized various processes & assets, trained peers, documented existing and new systems.</p>
       </>
     ),
@@ -250,7 +271,7 @@ const TimelineEvents: TimelineEvent[] = [
     description: "Working in the NOC of a datacenter provided colocation, ISP, and web hosting services, I was responsible for maintaining every node of the network from our upstream connection to our POPs to our end-users.",
     icon:        <RadioTower />,
     role:        "Network Administrator",
-    tags:        ["Cisco", "Ubiquity", "Plesk", "PHP", "BASH", "CentOS"],
+    tags:        ["Cisco", "Ubiquity", "Plesk", "PHP", "Bash", "CentOS", "Networking", "Hardware", "Datacenter", "DNS"],
     logo:        {
       alt:    "Tera-Byte logo",
       src:    "tera-byte.gif",
@@ -265,7 +286,7 @@ const TimelineEvents: TimelineEvent[] = [
     description: "As a founder of a game server rental company, I was responsible for designing the website, custom order form, automating dedicated game server creation, and created a game server control panel for customers to manage their game servers.",
     icon:        <Gamepad2 />,
     role:        "Systems Engineer",
-    tags:        ["HTML", "JavaScript", "CSS", "Hardware", "Windows Server", "SUSE Linux", "Game Servers"],
+    tags:        ["HTML", "JavaScript", "CSS", "Hardware", "Windows Server", "SUSE Linux", "Game Servers", "Networking", "Datacenter", "DNS"],
   },
   {
     date:        "2007 - 2008",

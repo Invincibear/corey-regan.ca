@@ -82,7 +82,8 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
 
         <div className="mt-2 text-xs font-muted">
           {timelineEvent.tags
-            // .toSorted()
+            .filter(tag => tag.trim() !== "")
+            .toSorted()
             .map(tag => `#${tag}`)
             .toString()
             .replaceAll(',', ', ')
