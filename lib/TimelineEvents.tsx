@@ -51,7 +51,7 @@ const TimelineEvents: TimelineEvent[] = [
     description: (
       <>
         <p>As the Lead DevOps Engineer, I was responsible for managing all infrastructure, supporting systems, and build pipelines.</p><br />
-        <p>When I first approached this project, I assessed the current state of the infrastructure & systems, then provided the recommendation to Terraform all infrastructure, use management and security groups to delegate permissions using the principles of least privilege, deploy fully-upgraded replacement Kubernetes clusters, containerize legacy VMs to run on Kubernetes, implement additional security measures, and use Argo CD, application sets, and Kustomize to deploy our apps.</p>
+        <p>When I first approached this project, I assessed the current state of the infrastructure & systems, then provided the recommendation to Terraform all infra, use management and security groups to delegate permissions using the principles of least privilege, deploy fully-upgraded replacement Kubernetes clusters, containerize legacy VMs to run on Kubernetes, implement additional security measures, and configure Argo CD to automatically deploy our apps. I replaced multiple VPNs with a single unified VPN, which required many VM migrations into non-overlapping VNETs from public to private IP spaces to peer with the new VPN. I rewrote many outdated & failing GitHub Actions pipelines and upgraded & reconfigured Azure DevOps/TeamCity/Octopus Deploy. I Upgraded and revamped out monitoring/alerting strategy, and deployed a customer-facing status page.</p>
       </>
     ),
     logo: {
