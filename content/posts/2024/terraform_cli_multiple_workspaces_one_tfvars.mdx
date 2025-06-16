@@ -115,7 +115,7 @@ variable "database_name" {
 }
 ```
 
-To support multiple environments, we consolidate all environment variables into one `terraform.tfvars`:
+To support multiple environments, we consolidate all environment variables into one `variables.tf` (you can move `default = {}` values into `terraform.tfvars` instead):
 ```terraform title="variables.tf"
 variable "database_name" {
   type        = map(string)
@@ -135,13 +135,13 @@ resource "azurerm_postgresql_flexible_server" "test_db" {
 }
 ```
 
-You can of course target a specific value if needed, like calling `var.database_name["prod"]` or `var.database_name.prod`
+You can of course target a specific value if needed, like calling `var.database_name["prod"]` or `var.database_name.prod`.
 
 ### Limiting resource creation to specific environments
 Let's say you only want to create a resource in `production`, like a Container Registry, where other environments will share that same resource.
 You can take advantage of `count` and testing the value of `terraform.workspace`:
 ```terraform title="main.tf"
-resource "azurerm_postgresql_flexible_server" "test_database" {
+resource "azurerm_container_registry" "my_acr" {
   count = terraform.workspace == "prod" ? 1 : 0
   name  = var.database_name[terraform.workspace]
 }
@@ -150,14 +150,15 @@ resource "azurerm_postgresql_flexible_server" "test_database" {
 Now, you'll need to access the correct index of `azurerm_postgresql_flexible_server.test_db`, which will always be `[0]` with this method
 ```terraform title="outputs.tf"
 output "database_id" {
-  value = azurerm_postgresql_flexible_server.test_database[0].id
+  value = try(azurerm_container_registry.my_acr[0].id, null)
 }
 ```
+We use `try()` because if only one environment creates the resource and the other environments try to access the non-existing resource to output the value, it will error.
 
 Another advantage is if you have a variable that requires iterating through with a `for_each` loop, you can simply leave some environments blank.
 ```terraform title="Using for_each loops to iterate environments"
 variable "database_names" {
-  type = map(list(object({
+    type = map(list(object({
     name     = string
     location = string
     sku      = string
@@ -192,7 +193,7 @@ resource "azurerm_postgresql_flexible_server" "test_database" {
   name     = each.value.name
 
   location            = each.value.location
-  resource_group_name = "${terraform.workspace}-rg" # prod-rg, stg-rg, dev-rg
+  resource_group_name = "${terraform.workspace}-databases-rg" # prod-databases-rg, dev-databases-rg
 }
 ```
 
@@ -232,11 +233,11 @@ variable "database_names" {
 }
 
 resource "azurerm_postgresql_flexible_server" "test_database" {
-  for_each = { for k, v in var.database_name[terraform.workspace] : k => v }
+  for_each = var.database_name[terraform.workspace]
   name     = each.value.name
 
   location            = each.value.location
-  resource_group_name = "${terraform.workspace}-rg" # prod-rg, stg-rg, dev-rg
+  resource_group_name = "${terraform.workspace}-databases-rg" # prod-databases-rg, dev-databases-rg
 }
 
 output "primary_db_id" {
