@@ -153,7 +153,7 @@ output "database_id" {
   value = try(azurerm_container_registry.my_acr[0].id, null)
 }
 ```
-We use `try()` because if only one environment creates the resource and the other environments try to access the non-existing resource to output the value, it will error.
+We use `try()` because unless all environments create the resource, one or more environments will attempt to output a non-existing resource property, resulting in an error.
 
 Another advantage is if you have a variable that requires iterating through with a `for_each` loop, you can simply leave some environments blank.
 ```terraform title="Using for_each loops to iterate environments"
