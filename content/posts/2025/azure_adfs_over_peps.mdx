@@ -105,7 +105,7 @@ resource "azurerm_data_factory_managed_private_endpoint" "test_STORAGE_ACCOUNT" 
   count = terraform.workspace == "prod" ? 1 : 0
   name  = "${data.azurerm_storage_account.foundation.name}-pep"
 
-  data_factory_id    = azurerm_data_factory.etl[0].id
+  data_factory_id    = azurerm_data_factory.test.id
   subresource_name   = "blob"
   target_resource_id = data.azurerm_storage_account.foundation.id
 }
