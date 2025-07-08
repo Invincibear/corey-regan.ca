@@ -102,7 +102,6 @@ resource "azurerm_data_factory_credential_user_managed_identity" "test" {
 # You MUST manually approve the connection in the Azure Portal
 # Go to the resource -> Networking -> Private endpoint connections
 resource "azurerm_data_factory_managed_private_endpoint" "test_STORAGE_ACCOUNT" {
-  count = terraform.workspace == "prod" ? 1 : 0
   name  = "${data.azurerm_storage_account.foundation.name}-pep"
 
   data_factory_id    = azurerm_data_factory.test.id
@@ -111,11 +110,11 @@ resource "azurerm_data_factory_managed_private_endpoint" "test_STORAGE_ACCOUNT" 
 }
 
 resource "azurerm_data_factory_linked_service_azure_blob_storage" "test" {
+  name = "LS_test_SA"
   depends_on = [
     azurerm_data_factory_managed_private_endpoint.test_STORAGE_ACCOUNT,
     azurerm_role_assignment.test_storage_blob_data_contributor,
   ]
-  name = "LS_test_SA"
 
   connection_string        = data.azurerm_storage_account.test.primary_blob_connection_string
   data_factory_id          = azurerm_data_factory.test.id
