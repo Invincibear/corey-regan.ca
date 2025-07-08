@@ -45,6 +45,17 @@ Also, ADF-managed Private Endpoints don't automatically approve the requests.
 You either need to script using `az cli` or manually approve the connection request on the resource.
 For example, if you create a PEP for a Key Vault, you gotta go to that Key Vault -> Networking -> Private Endpoint Connections, and approve the request.
 
+And lastly, Key Vaults are an exception, they just work over PEPs without any other hassle. If only all other types of Azure resources worked that well....
+> The following services have native private endpoint support. They can be connected through private link from a Data Factory managed virtual network:
+>
+> - Azure Databricks
+> - Azure Functions (Premium plan)
+> - Azure Key Vault
+> - Azure Machine Learning
+> - Azure Private Link
+> - Microsoft Purview
+
+
 ```terraform
 # The user-managed ID is required for our VNET-intgrated runtime to auth to Azure services, like SQL
 # Our IRs don't use the ADF's managed ID, it isn't documented, but connections simply fail when we try
@@ -126,10 +137,12 @@ resource "azurerm_data_factory_linked_service_azure_blob_storage" "test" {
 ## Closing Thoughts
 What a poorly designed product and user experience.
   - You can't have a PEP for both the ADF and to access other Azure Resources
-  - You can't change the ADF to use an Azure-managed VNET from the UI (must use `az` CLI or Terraform)
+    - > You're unable to access each PaaS resource when both sides are exposed to Private Link and a private endpoint. This issue is a known limitation of Private Link and private endpoints.
+  - You can't change the ADF to use an Azure-managed VNET from the UI (must use [`az` CLI](https://learn.microsoft.com/en-ca/azure/data-factory/managed-virtual-network-private-endpoint#create-a-managed-virtual-network-via-azure-powershell) or [Terraform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory))
+    - > An existing global integration runtime can't switch to an integration runtime in a Data Factory managed virtual network and vice versa.
   - Additional Integrated Runtimes don't inherit the ADF's system-managed Identity
   - ADF-managed PEPs don't auto-approve connections to Azure resources within the same subscription
-    - This is actually a good security feature, though I'd like to see them auto-approve if I already have approval permission
+    - > A private endpoint connection is created in a Pending state when you create a managed private endpoint in Data Factory. An approval workflow is initiated. The private link resource owner is responsible for approving or rejecting the connection.
   - Terraformed ADF resources often don't show up in the UI
   - Terraformed ADF resources sometimes exist, 50/50 if it'll prevent you from creating them in the UI with the same name
   - You often need to edit your Linked Services in the UI to reference your resources from the drop-down lists before it'll actually use a PEP
