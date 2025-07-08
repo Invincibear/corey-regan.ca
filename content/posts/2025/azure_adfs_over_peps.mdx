@@ -1,0 +1,136 @@
+---
+title: Azure ADFs Communication Over Private Networking
+date: 2025-07-07
+description: Azure ADFs by default are accessed via public internet, and access other Azure resources over public internet. After many pitfalls, here is how an ADF can communicate with other Azure resources over private networking
+published: true
+tags: ["Azure", "Terraform"]
+authors:
+  - corey
+---
+
+## You Can Only Pick One
+This poorly-worded section at the [bottom of the ADF documentation](https://learn.microsoft.com/en-ca/azure/data-factory/managed-virtual-network-private-endpoint#limitations-and-known-issues)
+> Access constraints in managed virtual network with private endpoints
+>
+> You're unable to access each PaaS resource when both sides are exposed to Private Link and a private endpoint. This issue is a known limitation of Private Link and private endpoints.
+>
+> For example, you have a managed private endpoint for storage account A. You can also access storage account B through public network in the same managed virtual network. But when storage account B has a private endpoint connection from other managed virtual network or customer virtual network, then you can't access storage account B in your managed virtual network through public network.
+
+**Translation, either:**
+  - The Azure ADF itself can only be accessed by a Private Endpoint and the ADF accesses other Azure resources over public internet
+  - or,
+  - The Azure ADF itself is publicly accessible and the ADF accesses other Azure resources over Private Endpoints.
+
+## You Want ADF Talking To Azure Resources Privately
+You've received a mandate that all inter-communications within Azure need to happen privately. At worst, over the Azure backbone, but never over public internet.
+So you create Private Endpoints to Key Vault, Blob Storage, Azure SQL, etc. You look at your linked services and discover only Key Vault is accessed privately.
+What gives?
+
+**You need four things:**
+  1. The ADF must use an Azure-managed VNET
+  2. The ADF must also have a user-assigned Identity
+  3. You must use an Integrated Runtime connected to the Azure-managed VNET
+  4. You must configure your Linked Services to use the Integrated Runtime connected to the Azure-managed VNET, and use the user-assigned Identity
+
+You know what was really frustrating and definitely not documented? That your new Integrated Runtime does not inherit the same system-assigned Identity the ADF otherwise uses.
+So if you've already assigned Roles to the system-managed Identity to access Blob Storage, SQL, etc., it will fail with `ServicePrincipalAuthentication is invalid. One or two of servicePrincipalId/key/tenant is missing`
+The solution is to create a user-assigned Identity and assign it the same permissions previously assigned to the system-managed Identity.
+In the case of SQL, you'll also need to create a new SQL user for it.
+
+Since I'm already ranting, Terraformed ADF resources can take some time to update in the ADF UI. Often times, they never show up.
+I found a combination of Terraforming them, then creating them in the UI with the same name, publishing the ADF, and re-running `terraform apply` with the occasional `terraform import` got the job done.
+I hate it.
+
+Also, ADF-managed Private Endpoints don't automatically approve the requests.
+You either need to script using `az cli` or manually approve the connection request on the resource.
+For example, if you create a PEP for a Key Vault, you gotta go to that Key Vault -> Networking -> Private Endpoint Connections, and approve the request.
+
+```terraform
+# The user-managed ID is required for our VNET-intgrated runtime to auth to Azure services, like SQL
+# Our IRs don't use the ADF's managed ID, it isn't documented, but connections simply fail when we try
+resource "azurerm_user_assigned_identity" "test" {
+  name  = "dev-test-adf-id"
+
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  tags                = { ticket = "DownWithJira" }
+}
+
+resource "azurerm_role_assignment" "test_storage_blob_data_contributor" {
+  principal_id         = azurerm_user_assigned_identity.test.principal_id
+  role_definition_name = "Storage Blob Data Contributor"
+  scope                = data.azurerm_storage_account.test.id
+}
+
+
+resource "azurerm_data_factory" "test" {
+  name = "dev-test-adf"
+
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  tags                = { ticket = "DownWithJira" }
+
+  managed_virtual_network_enabled = true
+  public_network_enabled          = true
+
+  identity {
+    identity_ids = [azurerm_user_assigned_identity.test.id]
+    type         = "SystemAssigned, UserAssigned"
+  }
+}
+
+# Required to route connections over private networking
+resource "azurerm_data_factory_integration_runtime_azure" "test_vnet" {
+  name  = "testIntegratedRuntimeVNET" # Must be unique across all of Azure
+
+  data_factory_id         = azurerm_data_factory.test.id
+  location                = "NorthEurope"
+  virtual_network_enabled = true
+}
+
+resource "azurerm_data_factory_credential_user_managed_identity" "test" {
+  name = azurerm_user_assigned_identity.test.name
+
+  data_factory_id = azurerm_data_factory.test.id
+  description     = "Used by Integrated Runtime ${azurerm_data_factory_integration_runtime_azure.test_vnet.name} to access Azure SQL"
+  identity_id     = azurerm_user_assigned_identity.test.id
+}
+
+
+# Allows the ADF itself to access a resource over private networking
+# If you Terraform this first, it won't show in the UI right away, but it will EVENTUALLY
+# You MUST manually approve the connection in the Azure Portal
+# Go to the resource -> Networking -> Private endpoint connections
+resource "azurerm_data_factory_managed_private_endpoint" "test_STORAGE_ACCOUNT" {
+  count = terraform.workspace == "prod" ? 1 : 0
+  name  = "${data.azurerm_storage_account.foundation.name}-pep"
+
+  data_factory_id    = azurerm_data_factory.etl[0].id
+  subresource_name   = "blob"
+  target_resource_id = data.azurerm_storage_account.foundation.id
+}
+
+resource "azurerm_data_factory_linked_service_azure_blob_storage" "test" {
+  depends_on = [
+    azurerm_data_factory_managed_private_endpoint.test_STORAGE_ACCOUNT,
+    azurerm_role_assignment.test_storage_blob_data_contributor,
+  ]
+  name = "LS_test_SA"
+
+  connection_string        = data.azurerm_storage_account.test.primary_blob_connection_string
+  data_factory_id          = azurerm_data_factory.test.id
+  integration_runtime_name = azurerm_data_factory_integration_runtime_azure.test_vnet.name
+  use_managed_identity     = true
+}
+```
+
+## Closing Thoughts
+What a poorly designed product and user experience.
+  - You can't have a PEP for both the ADF and to access other Azure Resources
+  - You can't change the ADF to use an Azure-managed VNET from the UI (must use `az` CLI or Terraform)
+  - Additional Integrated Runtimes don't inherit the ADF's system-managed Identity
+  - ADF-managed PEPs don't auto-approve connections to Azure resources within the same subscription
+    - This is actually a good security feature, though I'd like to see them auto-approve if I already have approval permission
+  - Terraformed ADF resources often don't show up in the UI
+  - Terraformed ADF resources sometimes exist, 50/50 if it'll prevent you from creating them in the UI with the same name
+  - You often need to edit your Linked Services in the UI to reference your resources from the drop-down lists before it'll actually use a PEP
