@@ -23,6 +23,7 @@ class VeliteWebpackPlugin {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  logging:           true,
   output:            "standalone",
   transpilePackages: [
     'lucide-react'
