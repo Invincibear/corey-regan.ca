@@ -102,7 +102,7 @@ $ terraform apply
 ```
 
 As you can see, in a practical example where you make changes, test their plan, `apply` approved changes, realize you need to tweak something, `plan` again, `apply` again, it fails to `apply`, and a second `apply` passes.
-So yeah, in the real world it's faster to type a simple `terraform plan` or `terraform apply` command than it is to use `-var-file=`.
+So yeah, in the real world it's faster to type a simple `terraform plan` or `terraform apply` command than it is to use `-var-file=`, especially if you set up bash aliases like `alias tf='terraform'`, `alias tfp='tf plan'`, and `alias tfa='tf apply'`.
 
 
 ## Multiple Environments In Only terraform.tfvars
@@ -111,7 +111,8 @@ Normally, you would define a simple variable like so:
 variable "database_name" {
   type        = string
   description = "The name of the database"
-  default     = "my_production_db_name"
+
+  default = "my_production_db_name"
 }
 ```
 
@@ -120,10 +121,11 @@ To support multiple environments, we consolidate all environment variables into 
 variable "database_name" {
   type        = map(string)
   description = "The name of the database"
+
   default = {
     prod = "my_production_db_name"
-    stg = "my_staging_db_name"
-    dev = "my_development_db_name"
+    stg  = "my_staging_db_name"
+    dev  = "my_development_db_name"
   }
 }
 ```
@@ -158,12 +160,13 @@ We use `try()` because unless all environments create the resource, one or more 
 Another advantage is if you have a variable that requires iterating through with a `for_each` loop, you can simply leave some environments blank.
 ```terraform title="Using for_each loops to iterate environments"
 variable "database_names" {
-    type = map(list(object({
+  type = map(list(object({
     name     = string
     location = string
     sku      = string
   })))
   description = "The name of the database"
+
   default = {
     prod = [
       {
@@ -208,6 +211,7 @@ variable "database_names" {
     sku      = string
   })))
   description = "The name of the database"
+
   default = {
     prod = { # Use curly braces
       primary = {
