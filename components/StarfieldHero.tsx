@@ -77,7 +77,7 @@ export default function StarfieldHero() {
     <>
       <motion.section
         id        = "starfieldHero"
-        className = {`w-full h-screen bg-black overflow-hidden fixed top-0 ${(!starfieldVisible || starfieldHidden) ? "pointer-events-none invisible" : ""}`}
+        className = {`w-full h-screen bg-black overflow-hidden fixed top-0 ${starfieldHidden ? "pointer-events-none invisible" : ""}`}
         ref       = {starfieldSectionRef}
         style     = {{
           opacity:         opacity,
