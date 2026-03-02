@@ -187,7 +187,7 @@ export default function WormholeHero() {
     if (hasAutoScrolled.current) return
     if (isMobile) return
 
-    const targetPosition = (scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight) ?? 0
+    const targetPosition = scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight
     const startPosition = window.scrollY
     const distance = targetPosition - startPosition
     const duration = scrollDuration * 1000

@@ -21,14 +21,15 @@ const findRawCode = (children: ReactNode): string | undefined => {
   const traverse = (nodes: ReactNode) => {
     Children.forEach(nodes, (child) => {
       if (isValidElement(child)) {
-        if (child.props['data-raw-code']) {
-          rawCode = child.props['data-raw-code']
+        const props = child.props as Record<string, unknown>
+        if (props['data-raw-code']) {
+          rawCode = props['data-raw-code'] as string
 
           return
         }
 
-        if (child.props.children) {
-          traverse(child.props.children)
+        if (props.children) {
+          traverse(props.children as ReactNode)
         }
       }
     })
