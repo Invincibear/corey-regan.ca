@@ -189,7 +189,8 @@ export default function WormholeHero() {
 
     isAutoScrolling.current = false   // Reset flag once scrolling is complete
     hasAutoScrolled.current = true    // But note that we have scrolled
-    setWormholeIsAnimated(false) // Stop the wormhole for performance reasons
+    // Keep wormhole rendering so it's visible when scrolling back up
+    // (the wormholeDivOpacity transform handles fading it out naturally)
   }
 
   const scrollToTarget = () => {
