@@ -16,10 +16,13 @@
     color: theme("colors.zinc.800");
 }
 [data-theme="light"] #timeline time {
-    color: theme("colors.zinc.600");
+    color: theme("colors.zinc.500");
 }
 [data-theme="light"] #timeline h5 {
-    color: theme("colors.zinc.700");
+    color: theme("colors.zinc.600");
+}
+[data-theme="light"] #timeline h4 {
+    color: theme("colors.zinc.900");
 }
 [data-theme="light"] #timeline .text-xs {
     color: theme("colors.zinc.500");
