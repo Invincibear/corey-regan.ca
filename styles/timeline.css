@@ -9,3 +9,18 @@
 #timeline h4 a:hover {
     color: var(--color-text);
 }
+
+/* Ensure timeline text is readable in light mode */
+[data-theme="light"] #timeline,
+[data-theme="light"] #timelineSection {
+    color: theme("colors.zinc.800");
+}
+[data-theme="light"] #timeline time {
+    color: theme("colors.zinc.600");
+}
+[data-theme="light"] #timeline h5 {
+    color: theme("colors.zinc.700");
+}
+[data-theme="light"] #timeline .text-xs {
+    color: theme("colors.zinc.500");
+}
