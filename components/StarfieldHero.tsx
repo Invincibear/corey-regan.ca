@@ -3,7 +3,7 @@
 import Starfield from "@/components/Starfield"
 import Typed     from "typed.js"
 
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion"
 import { useEffect, useRef, useState }     from "react"
 
 import "@/styles/shimmer.css"
@@ -46,7 +46,7 @@ export default function StarfieldHero() {
     }
   }, [starfieldVisible])
 
-  const { scrollYProgress } = useScroll({})
+  const { scrollYProgress, scrollY } = useScroll({})
   const opacity = useTransform(
     scrollYProgress,
     [0, .069],
@@ -64,11 +64,20 @@ export default function StarfieldHero() {
     [1, 0],
   )
 
+  // Hide the fixed starfield section once scrolled well past its fade-out point
+  // to prevent blown-up text from showing through behind other sections
+  const [starfieldHidden, setStarfieldHidden] = useState(false)
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const maxScroll = document.body.scrollHeight - window.innerHeight
+    const fadeEnd = 0.069 * maxScroll
+    setStarfieldHidden(latest > fadeEnd)
+  })
+
   return (
     <>
       <motion.section
         id        = "starfieldHero"
-        className = {`w-full h-screen bg-black overflow-hidden fixed top-0 ${!starfieldVisible ? "pointer-events-none hidden" : ""}`}
+        className = {`w-full h-screen bg-black overflow-hidden fixed top-0 ${(!starfieldVisible || starfieldHidden) ? "pointer-events-none invisible" : ""}`}
         ref       = {starfieldSectionRef}
         style     = {{
           opacity:         opacity,
