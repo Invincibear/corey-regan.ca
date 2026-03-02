@@ -51,7 +51,7 @@ const TimelineEvents: TimelineEvent[] = [
       <>
         <p>As the Lead DevOps Engineer, I was responsible for managing all infrastructure, supporting systems, and build pipelines.</p><br />
 
-        <p>When I first approached this project, I assessed the current state of the infrastructure & systems, then provided the recommendation to;
+        <p>When I first approached this project, I assessed the current state of the infrastructure & systems, then provided the recommendation to;</p>
           <ul className="list-disc pl-8">
             <li className="font-bold">Terraform all infra</li>
             <li>Use management and security groups to delegate permissions with the principles of least privilege</li>
@@ -59,8 +59,7 @@ const TimelineEvents: TimelineEvent[] = [
             <li>Containerize most VM workloads to run on Kubernetes</li>
             <li>Move app inter-communication over internal networks instead of public internet and utilize private DNS</li>
             <li>Configure Argo CD to automatically deploy our apps</li>
-          </ul>
-        </p><br />
+          </ul><br />
 
         <p>I replaced multiple VPNs with a single unified VPN, which required many VM migrations to non-overlapping VNETs in private IP spaces to peer with the new VPN.</p><br />
 

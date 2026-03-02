@@ -4,7 +4,7 @@ import Link                from "next/link"
 import {
   SiGithub,
   SiInstagram,
-  SiTwitter
+  SiX
 } from "@icons-pack/react-simple-icons"
 
 
@@ -28,7 +28,7 @@ export default function SocialIcons({
       </Link>
       <Link target="_blank" rel="noreferrer" href={SocialLinks.twitter} title="Read my Twitter thoughts" className={linkClassName}>
         <span className="sr-only">Twitter</span>
-        <SiTwitter className={className} />
+        <SiX className={className} />
       </Link>
       <Link target="_blank" rel="noreferrer" href={SocialLinks.instagram} title="Check out my Insta" className={linkClassName}>
         <span className="sr-only">Instagram</span>
