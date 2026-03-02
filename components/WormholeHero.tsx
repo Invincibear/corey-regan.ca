@@ -70,11 +70,12 @@ export default function WormholeHero() {
     wormholeSectionStart: 0,
     wormholeSectionEnd:    0,
   }
-  // Helper: ensure useTransform input offsets are always monotonically non-decreasing
+  // Helper: ensure useTransform input offsets are finite, in [0,1], and monotonically non-decreasing
   const mono = (arr: number[]) => {
-    const result = [arr[0]]
-    for (let i = 1; i < arr.length; i++) {
-      result.push(Math.max(result[i - 1], arr[i]))
+    const clamped = arr.map(v => Math.min(1, Math.max(0, isFinite(v) ? v : 0)))
+    const result = [clamped[0]]
+    for (let i = 1; i < clamped.length; i++) {
+      result.push(Math.max(result[i - 1], clamped[i]))
     }
     return result
   }
