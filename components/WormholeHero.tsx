@@ -60,10 +60,13 @@ export default function WormholeHero() {
     offset: ["start start", "end end"],
   })
 
-  // Guard against division by zero when scroll points haven't been measured yet
-  const sp = {
-    ...scrollPoints,
-    bodyHeight: scrollPoints.bodyHeight || 1,
+  // Guard against non-finite / non-monotonic offsets before DOM measurements
+  const measured = scrollPoints.bodyHeight > 0
+  const sp = measured ? scrollPoints : {
+    viewHeight:           1000,
+    bodyHeight:           10000,
+    wormholeSectionStart: 2000,
+    wormholeSectionEnd:   8000,
   }
 
   const wormholeSectionOpacity = useTransform(
