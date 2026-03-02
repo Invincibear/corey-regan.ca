@@ -16,7 +16,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.34.4",
+    "framer-motion": "^11.18.2",
     "github-slugger": "^2.0.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.576.0",

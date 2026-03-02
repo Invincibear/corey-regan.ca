@@ -60,26 +60,6 @@ export default function WormholeHero() {
     offset: ["start start", "end end"],
   })
 
-  // Guard: scrollPoints start at 0 before DOM measurement.
-  // Framer Motion 12 requires finite, monotonically non-decreasing offsets.
-  // Use real values when available, safe defaults when not.
-  const ready = scrollPoints.bodyHeight > 0
-  const sp = ready ? scrollPoints : {
-    viewHeight:           1,
-    bodyHeight:            1,
-    wormholeSectionStart: 0,
-    wormholeSectionEnd:    0,
-  }
-  // Helper: ensure useTransform input offsets are finite, in [0,1], and monotonically non-decreasing
-  const mono = (arr: number[]) => {
-    const clamped = arr.map(v => Math.min(1, Math.max(0, isFinite(v) ? v : 0)))
-    const result = [clamped[0]]
-    for (let i = 1; i < clamped.length; i++) {
-      result.push(Math.max(result[i - 1], clamped[i]))
-    }
-    return result
-  }
-
   const wormholeSectionOpacity = useTransform(
     scrollYProgress,
      [
@@ -98,13 +78,13 @@ export default function WormholeHero() {
 
   const wormholeDivOpacity = useTransform(
     scrollYProgress,
-    mono([
+    [
        0,
        0.0420,
        0.1,
-       (sp.wormholeSectionEnd - sp.viewHeight)          / sp.bodyHeight,
-       (sp.wormholeSectionEnd + (sp.viewHeight * 1.25)) / sp.bodyHeight,
-     ]),
+       (scrollPoints.wormholeSectionEnd - scrollPoints.viewHeight)          / scrollPoints.bodyHeight,
+       (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight * 1.25)) / scrollPoints.bodyHeight,
+     ],
     [
       0,
       0,
@@ -116,11 +96,11 @@ export default function WormholeHero() {
 
   const whiteDivOpacity = useTransform(
     scrollYProgress,
-    mono(sp.wormholeSectionEnd ? [
-       (sp.wormholeSectionEnd - (sp.viewHeight / 2)) / sp.bodyHeight,
-       (sp.wormholeSectionEnd + (sp.viewHeight / 1.5)) / sp.bodyHeight,
+    scrollPoints.wormholeSectionEnd ? [
+       (scrollPoints.wormholeSectionEnd - (scrollPoints.viewHeight / 2)) / scrollPoints.bodyHeight,
+       (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 1.5)) / scrollPoints.bodyHeight,
        1,
-     ] : [0, 0.5, 1]),
+     ] : [0, 0, 0],
     [
       0,
       1,
@@ -129,11 +109,11 @@ export default function WormholeHero() {
   )
   const whiteDivScale = useTransform(
     scrollYProgress,
-     mono([
-       (sp.wormholeSectionEnd - (sp.viewHeight / 2)) / sp.bodyHeight,
-       (sp.wormholeSectionEnd + (sp.viewHeight / 5)) / sp.bodyHeight,
+     [
+       (scrollPoints.wormholeSectionEnd - (scrollPoints.viewHeight / 2)) / scrollPoints.bodyHeight,
+       (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 5)) / scrollPoints.bodyHeight,
        1,
-     ]),
+     ],
     [
       0,
       1,
@@ -142,11 +122,11 @@ export default function WormholeHero() {
   )
   const whiteDivBorderRadius = useTransform(
     scrollYProgress,
-    mono([
+    [
       0,
-       sp.wormholeSectionEnd                                  / sp.bodyHeight,
-      (sp.wormholeSectionEnd + (sp.viewHeight / 5)) / sp.bodyHeight,
-    ]),
+       scrollPoints.wormholeSectionEnd                                  / scrollPoints.bodyHeight,
+      (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 5)) / scrollPoints.bodyHeight,
+    ],
     [
       "100%",
       "100%",
@@ -155,11 +135,11 @@ export default function WormholeHero() {
   )
   const whiteDivWidth = useTransform(
     scrollYProgress,
-    mono([
+    [
       0,
-      (sp.wormholeSectionEnd - (sp.viewHeight / 2)) / sp.bodyHeight,
-      (sp.wormholeSectionEnd + (sp.viewHeight / 5)) / sp.bodyHeight,
-    ]),
+      (scrollPoints.wormholeSectionEnd - (scrollPoints.viewHeight / 2)) / scrollPoints.bodyHeight,
+      (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 5)) / scrollPoints.bodyHeight,
+    ],
     [
       "0%",
       "0%",
@@ -168,11 +148,11 @@ export default function WormholeHero() {
   )
   const whiteDivHeight = useTransform(
     scrollYProgress,
-    mono([
+    [
       0,
-      sp.wormholeSectionEnd                                   / sp.bodyHeight,
-      (sp.wormholeSectionEnd + (sp.viewHeight * 2)) / sp.bodyHeight,
-    ]),
+      scrollPoints.wormholeSectionEnd                                   / scrollPoints.bodyHeight,
+      (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight * 2)) / scrollPoints.bodyHeight,
+    ],
     [
       "0%",
       "0%",
@@ -181,11 +161,11 @@ export default function WormholeHero() {
   )
   const whiteDivTopPosition = useTransform(
     scrollYProgress,
-    mono([
+    [
       0,
-      sp.wormholeSectionEnd                                   / sp.bodyHeight,
-      (sp.wormholeSectionEnd + (sp.viewHeight / 5)) / sp.bodyHeight,
-    ]),
+      scrollPoints.wormholeSectionEnd                                   / scrollPoints.bodyHeight,
+      (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 5)) / scrollPoints.bodyHeight,
+    ],
     [
       "0%",
       "48%",
@@ -207,7 +187,7 @@ export default function WormholeHero() {
     if (hasAutoScrolled.current) return
     if (isMobile) return
 
-    const targetPosition = sp.wormholeSectionEnd + sp.viewHeight
+    const targetPosition = scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight
     const startPosition = window.scrollY
     const distance = targetPosition - startPosition
     const duration = scrollDuration * 1000
@@ -240,8 +220,8 @@ export default function WormholeHero() {
       if (
         !isAutoScrolling.current &&
         !hasAutoScrolled.current &&
-        window.scrollY > sp.viewHeight &&
-        window.scrollY <= sp.wormholeSectionEnd
+        window.scrollY > scrollPoints.viewHeight &&
+        window.scrollY <= scrollPoints.wormholeSectionEnd
       ) {
         // We should have scrolled past one view height but not past the entire wormhole <section>
         // Which means it's time to start auto-scrolling
@@ -260,7 +240,7 @@ export default function WormholeHero() {
         // Actively auto-scrolling
 
         // See if we're one viewport height away from completing scrolling, and if so, enlarge the wormhole radius
-        // if (window.scrollY >= sp.wormholeSectionEnd - (2 * sp.viewHeight)) setEnlargeTubeRadius(true)
+        // if (window.scrollY >= scrollPoints.wormholeSectionEnd - (2 * scrollPoints.viewHeight)) setEnlargeTubeRadius(true)
       } else if (hasAutoScrolled.current) {
         // Already auto-scrolled, not auto-scrolling again
       } else {
