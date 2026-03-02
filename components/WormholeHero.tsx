@@ -137,8 +137,8 @@ export default function WormholeHero() {
       wsEnd + (vh / 5),
     ],
     [
-      "0%",
-      "0%",
+      "50%",
+      "50%",
       "0%",
     ],
   )
