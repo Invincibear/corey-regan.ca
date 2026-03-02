@@ -295,8 +295,9 @@ export default function WormholeHero() {
           width:           whiteDivWidth,
           height:          whiteDivHeight,
           top:             whiteDivTopPosition,
-          left:            "50%",
-          translateX:      "-50%",
+          margin:          "0 auto",
+          left:            0,
+          right:           0,
         }}
       />
       <motion.div
