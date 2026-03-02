@@ -12,18 +12,24 @@
 
 /* Ensure timeline text is readable in light mode */
 [data-theme="light"] #timeline,
-[data-theme="light"] #timelineSection {
+[data-theme="light"] #timelineSection,
+.light #timeline,
+.light #timelineSection {
     color: #27272a; /* zinc-800 */
 }
-[data-theme="light"] #timeline time {
+[data-theme="light"] #timeline time,
+.light #timeline time {
     color: #71717a; /* zinc-500 */
 }
-[data-theme="light"] #timeline h5 {
+[data-theme="light"] #timeline h5,
+.light #timeline h5 {
     color: #52525b; /* zinc-600 */
 }
-[data-theme="light"] #timeline h4 {
+[data-theme="light"] #timeline h4,
+.light #timeline h4 {
     color: #18181b; /* zinc-900 */
 }
-[data-theme="light"] #timeline .text-xs {
+[data-theme="light"] #timeline .text-xs,
+.light #timeline .text-xs {
     color: #71717a; /* zinc-500 */
 }
