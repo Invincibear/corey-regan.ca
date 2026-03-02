@@ -66,7 +66,19 @@ export default function DaisyTimeline({ timelineEvents }: TimelineComponentProps
           background-attachment: fixed;
           background-image: radial-gradient(
             circle farthest-side at var(--x, 100px) var(--y, 100px),
-            #13131a 0%,
+            rgba(255, 255, 255, 0.03) 0%,
+            rgba(255, 255, 255, 0.015) 30%,
+            rgba(255, 255, 255, 0.005) 55%,
+            transparent 75%
+          );
+        }
+        :global(.light) #timelineSection,
+        :global([data-theme="light"]) #timelineSection {
+          background-image: radial-gradient(
+            circle farthest-side at var(--x, 100px) var(--y, 100px),
+            rgba(0, 0, 0, 0.04) 0%,
+            rgba(0, 0, 0, 0.02) 30%,
+            rgba(0, 0, 0, 0.007) 55%,
             transparent 75%
           );
         }
