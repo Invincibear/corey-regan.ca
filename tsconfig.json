@@ -29,7 +29,8 @@
       "#site/content": [
         "./.velite"
       ]
-    }
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",

@@ -17,14 +17,14 @@ export const metadata: Metadata = {
 }
 
 interface TagSortingPageProps {
-  params: {
+  params: Promise<{
     sortedBy: string
-  }
+  }>
 }
 
 
 export default async function TagsPage({ params }: TagSortingPageProps) {
-  const { sortedBy } = params
+  const { sortedBy } = await params
 
   const tags = getAllTags(posts)
   const sortedTagsByCount = sortTagsByCount(tags)

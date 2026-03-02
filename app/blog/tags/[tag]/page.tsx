@@ -27,13 +27,13 @@ export const generateStaticParams = () => {
 
 
 interface TagPageProps {
-  params: {
+  params: Promise<{
     tag: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
-  const { tag } = params
+  const { tag } = await params
 
   return {
     title:       `${toTitleCase(tag)} Blog Posts By Corey Regan`,
@@ -41,8 +41,8 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   }
 }
 
-export default function TagPage({ params }: TagPageProps) {
-  const { tag } = params
+export default async function TagPage({ params }: TagPageProps) {
+  const { tag } = await params
   const title = tag.split("-").join(" ")
 
   const allPosts = getPostsByTagSlug(posts, tag)

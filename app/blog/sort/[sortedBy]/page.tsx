@@ -30,17 +30,18 @@ const POSTS_PER_PAGE = BlogConfig.postPerPage
 
 
 interface BlogPageProps {
-  params: {
+  params: Promise<{
     sortedBy: string
-  },
-  searchParams: {
+  }>,
+  searchParams: Promise<{
     page?: string
-  },
+  }>,
 }
 
 export default async function BlogPage({ params, searchParams }: BlogPageProps) {
-  const { sortedBy } = params
-  const currentPage = Number(searchParams?.page) || 1
+  const { sortedBy } = await params
+  const resolvedSearchParams = await searchParams
+  const currentPage = Number(resolvedSearchParams?.page) || 1
   const sortedPosts = sortPosts(posts.filter((post) => post.published))
   const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE)
 
