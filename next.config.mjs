@@ -1,24 +1,9 @@
-import { build } from "velite"
-
-
-class VeliteWebpackPlugin {
-  static started = false;
-  constructor(/** @type {import('velite').Options} */ options = {}) {
-    this.options = options;
-  }
-  apply(/** @type {import('webpack').Compiler} */ compiler) {
-    // executed three times by Next.js !!!
-    // twice for the server (Node.js / edge runtime) and once for the client
-    compiler.hooks.beforeCompile.tapPromise("VeliteWebpackPlugin", async () => {
-      if (VeliteWebpackPlugin.started) return;
-
-      VeliteWebpackPlugin.started = true;
-      const dev = compiler.options.mode === "development";
-      this.options.watch = this.options.watch ?? dev;
-      this.options.clean = this.options.clean ?? !dev;
-      await build(this.options);  // Start Velite
-    });
-  }
+const isDev = process.argv.indexOf('dev') !== -1
+const isBuild = process.argv.indexOf('build') !== -1
+if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
+  process.env.VELITE_STARTED = '1'
+  const { build } = await import('velite')
+  await build({ watch: isDev, clean: !isDev })
 }
 
 /** @type {import('next').NextConfig} */
@@ -33,11 +18,7 @@ const nextConfig = {
   transpilePackages: [
     'lucide-react'
   ],
-  webpack: (config) => {
-    config.plugins.push(new VeliteWebpackPlugin())
-
-    return config
-  },
+  turbopack: {},
 }
 
 export default nextConfig
