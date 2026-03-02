@@ -9,3 +9,27 @@
 #timeline h4 a:hover {
     color: var(--color-text);
 }
+
+/* Ensure timeline text is readable in light mode */
+[data-theme="light"] #timeline,
+[data-theme="light"] #timelineSection,
+.light #timeline,
+.light #timelineSection {
+    color: #52525b; /* zinc-600 */
+}
+[data-theme="light"] #timeline time,
+.light #timeline time {
+    color: #71717a; /* zinc-500 */
+}
+[data-theme="light"] #timeline h5,
+.light #timeline h5 {
+    color: #52525b; /* zinc-600 */
+}
+[data-theme="light"] #timeline h4,
+.light #timeline h4 {
+    color: #3f3f46; /* zinc-700 */
+}
+[data-theme="light"] #timeline .text-xs,
+.light #timeline .text-xs {
+    color: #71717a; /* zinc-500 */
+}

@@ -137,8 +137,8 @@ export default function WormholeHero() {
       wsEnd + (vh / 5),
     ],
     [
-      "100%",
-      "100%",
+      "50%",
+      "50%",
       "0%",
     ],
   )
@@ -295,6 +295,9 @@ export default function WormholeHero() {
           width:           whiteDivWidth,
           height:          whiteDivHeight,
           top:             whiteDivTopPosition,
+          margin:          "0 auto",
+          left:            0,
+          right:           0,
         }}
       />
       <motion.div
