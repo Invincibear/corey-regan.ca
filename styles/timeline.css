@@ -13,17 +13,17 @@
 /* Ensure timeline text is readable in light mode */
 [data-theme="light"] #timeline,
 [data-theme="light"] #timelineSection {
-    color: theme("colors.zinc.800");
+    color: #27272a; /* zinc-800 */
 }
 [data-theme="light"] #timeline time {
-    color: theme("colors.zinc.500");
+    color: #71717a; /* zinc-500 */
 }
 [data-theme="light"] #timeline h5 {
-    color: theme("colors.zinc.600");
+    color: #52525b; /* zinc-600 */
 }
 [data-theme="light"] #timeline h4 {
-    color: theme("colors.zinc.900");
+    color: #18181b; /* zinc-900 */
 }
 [data-theme="light"] #timeline .text-xs {
-    color: theme("colors.zinc.500");
+    color: #71717a; /* zinc-500 */
 }
