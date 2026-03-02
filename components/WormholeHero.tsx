@@ -60,13 +60,23 @@ export default function WormholeHero() {
     offset: ["start start", "end end"],
   })
 
-  // Guard against non-finite / non-monotonic offsets before DOM measurements
-  const measured = scrollPoints.bodyHeight > 0
-  const sp = measured ? scrollPoints : {
-    viewHeight:           1000,
-    bodyHeight:           10000,
-    wormholeSectionStart: 2000,
-    wormholeSectionEnd:   8000,
+  // Guard: scrollPoints start at 0 before DOM measurement.
+  // Framer Motion 12 requires finite, monotonically non-decreasing offsets.
+  // Use real values when available, safe defaults when not.
+  const ready = scrollPoints.bodyHeight > 0
+  const sp = ready ? scrollPoints : {
+    viewHeight:           1,
+    bodyHeight:            1,
+    wormholeSectionStart: 0,
+    wormholeSectionEnd:    0,
+  }
+  // Helper: ensure useTransform input offsets are always monotonically non-decreasing
+  const mono = (arr: number[]) => {
+    const result = [arr[0]]
+    for (let i = 1; i < arr.length; i++) {
+      result.push(Math.max(result[i - 1], arr[i]))
+    }
+    return result
   }
 
   const wormholeSectionOpacity = useTransform(
@@ -87,13 +97,13 @@ export default function WormholeHero() {
 
   const wormholeDivOpacity = useTransform(
     scrollYProgress,
-    [
+    mono([
        0,
        0.0420,
        0.1,
        (sp.wormholeSectionEnd - sp.viewHeight)          / sp.bodyHeight,
        (sp.wormholeSectionEnd + (sp.viewHeight * 1.25)) / sp.bodyHeight,
-     ],
+     ]),
     [
       0,
       0,
@@ -105,11 +115,11 @@ export default function WormholeHero() {
 
   const whiteDivOpacity = useTransform(
     scrollYProgress,
-    sp.wormholeSectionEnd ? [
+    mono(sp.wormholeSectionEnd ? [
        (sp.wormholeSectionEnd - (sp.viewHeight / 2)) / sp.bodyHeight,
        (sp.wormholeSectionEnd + (sp.viewHeight / 1.5)) / sp.bodyHeight,
        1,
-     ] : [0, 0, 0],
+     ] : [0, 0.5, 1]),
     [
       0,
       1,
@@ -118,11 +128,11 @@ export default function WormholeHero() {
   )
   const whiteDivScale = useTransform(
     scrollYProgress,
-     [
+     mono([
        (sp.wormholeSectionEnd - (sp.viewHeight / 2)) / sp.bodyHeight,
        (sp.wormholeSectionEnd + (sp.viewHeight / 5)) / sp.bodyHeight,
        1,
-     ],
+     ]),
     [
       0,
       1,
@@ -131,11 +141,11 @@ export default function WormholeHero() {
   )
   const whiteDivBorderRadius = useTransform(
     scrollYProgress,
-    [
+    mono([
       0,
        sp.wormholeSectionEnd                                  / sp.bodyHeight,
       (sp.wormholeSectionEnd + (sp.viewHeight / 5)) / sp.bodyHeight,
-    ],
+    ]),
     [
       "100%",
       "100%",
@@ -144,11 +154,11 @@ export default function WormholeHero() {
   )
   const whiteDivWidth = useTransform(
     scrollYProgress,
-    [
+    mono([
       0,
       (sp.wormholeSectionEnd - (sp.viewHeight / 2)) / sp.bodyHeight,
       (sp.wormholeSectionEnd + (sp.viewHeight / 5)) / sp.bodyHeight,
-    ],
+    ]),
     [
       "0%",
       "0%",
@@ -157,11 +167,11 @@ export default function WormholeHero() {
   )
   const whiteDivHeight = useTransform(
     scrollYProgress,
-    [
+    mono([
       0,
       sp.wormholeSectionEnd                                   / sp.bodyHeight,
       (sp.wormholeSectionEnd + (sp.viewHeight * 2)) / sp.bodyHeight,
-    ],
+    ]),
     [
       "0%",
       "0%",
@@ -170,11 +180,11 @@ export default function WormholeHero() {
   )
   const whiteDivTopPosition = useTransform(
     scrollYProgress,
-    [
+    mono([
       0,
       sp.wormholeSectionEnd                                   / sp.bodyHeight,
       (sp.wormholeSectionEnd + (sp.viewHeight / 5)) / sp.bodyHeight,
-    ],
+    ]),
     [
       "0%",
       "48%",
