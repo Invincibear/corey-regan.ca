@@ -1,6 +1,6 @@
 import { ThemeProviders } from "@/components/ThemeProviders"
 import { Footer }         from "@/components/Footer"
-import { SiteConfig }     from "@/config/site"
+import { DOMAIN, SiteConfig } from "@/config/site"
 import { Inter }          from "next/font/google"
 
 import type { Metadata } from "next"
@@ -12,8 +12,9 @@ import "@/styles/theme.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title:       SiteConfig.name,
-  description: SiteConfig.description,
+  metadataBase: new URL(`https://${DOMAIN}`),
+  title:        SiteConfig.name,
+  description:  SiteConfig.description,
 }
 
 export default function RootLayout({
