@@ -29,7 +29,8 @@ export default function DaisyTimelineEvent({ timelineEvent, position = "timeline
       viewport    = {{ once: true }}
       transition  = {{
         duration: 0.5,
-        type:     "linear"
+        type:     "tween",
+        ease:     "linear"
       }}
     >
       <div className="timeline-middle px-4 mb-2">

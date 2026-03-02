@@ -3,7 +3,7 @@
 import Starfield from "@/components/Starfield"
 import Typed     from "typed.js"
 
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion"
 import { useEffect, useRef, useState }     from "react"
 
 import "@/styles/shimmer.css"
@@ -16,6 +16,16 @@ export default function StarfieldHero() {
   const typedWordsRef       = useRef(null)
 
   const [starfieldVisible, setStarfieldVisible] = useState(true)
+
+  // Hide the fixed starfield section once scrolled well past its fade-out point
+  // to prevent blown-up text from showing through behind other sections
+  const { scrollYProgress, scrollY } = useScroll({})
+  const [starfieldHidden, setStarfieldHidden] = useState(false)
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const maxScroll = document.body.scrollHeight - window.innerHeight
+    const fadeEnd = 0.069 * maxScroll
+    setStarfieldHidden(latest > fadeEnd)
+  })
 
   // Initialize Typed.js animated typing
   useEffect(() => {
@@ -33,20 +43,19 @@ export default function StarfieldHero() {
       typeSpeed:     90,
 
       onBegin(self: Typed) {
-        if (!starfieldVisible) self.stop()
+        if (starfieldHidden) self.stop()
       }
     })
 
-    if (starfieldVisible) typed.start()
+    if (!starfieldHidden) typed.start()
 
     // Destroy Typed instance during component unmount to stop animation
     // This also prevents duplicate '|' cursor
     return () => {
       typed.destroy()
     }
-  }, [starfieldVisible])
+  }, [starfieldHidden])
 
-  const { scrollYProgress } = useScroll({})
   const opacity = useTransform(
     scrollYProgress,
     [0, .069],
@@ -68,7 +77,7 @@ export default function StarfieldHero() {
     <>
       <motion.section
         id        = "starfieldHero"
-        className = {`w-full h-screen bg-black overflow-hidden fixed top-0 ${!starfieldVisible ? "pointer-events-none" : ""}`}
+        className = {`w-full h-screen bg-black overflow-hidden fixed top-0 ${starfieldHidden ? "pointer-events-none invisible" : ""}`}
         ref       = {starfieldSectionRef}
         style     = {{
           opacity:         opacity,

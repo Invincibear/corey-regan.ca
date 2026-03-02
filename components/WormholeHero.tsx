@@ -56,17 +56,26 @@ export default function WormholeHero() {
   //   console.debug(scrollPoints)
   // }, [scrollPoints])
 
-  const {scrollYProgress} = useScroll({
-    offset: ["start start", "end end"],
-  })
+  // Use scrollY (pixels) instead of scrollYProgress (0-1) because
+  // Framer Motion 12 requires useTransform offsets in [0,1] range,
+  // but our animations intentionally use scroll positions beyond
+  // the document height for exit transitions.
+  const { scrollY } = useScroll()
 
+  const { bodyHeight: bh, viewHeight: vh, wormholeSectionEnd: wsEnd } = scrollPoints
+
+  // Max scrollable distance (avoid division by zero for progress-based offsets)
+  const maxScroll = Math.max(bh - vh, 1)
+
+  // Convert the original progress-based offsets (0-1 of scrollYProgress)
+  // to pixel-based offsets (0 to maxScroll+extra for scrollY)
   const wormholeSectionOpacity = useTransform(
-    scrollYProgress,
+    scrollY,
      [
        0,
-       0.0420,
-       0.1,
-       1
+       0.0420 * maxScroll,
+       0.1    * maxScroll,
+       maxScroll
      ],
     [
       0,
@@ -77,13 +86,13 @@ export default function WormholeHero() {
   )
 
   const wormholeDivOpacity = useTransform(
-    scrollYProgress,
+    scrollY,
     [
        0,
-       0.0420,
-       0.1,
-       (scrollPoints.wormholeSectionEnd - scrollPoints.viewHeight)          / scrollPoints.bodyHeight,
-       (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight * 1.25)) / scrollPoints.bodyHeight,
+       0.0420 * maxScroll,
+       0.1    * maxScroll,
+       wsEnd - vh,
+       wsEnd + (vh * 1.25),
      ],
     [
       0,
@@ -95,12 +104,12 @@ export default function WormholeHero() {
   )
 
   const whiteDivOpacity = useTransform(
-    scrollYProgress,
-    scrollPoints.wormholeSectionEnd ? [
-       (scrollPoints.wormholeSectionEnd - (scrollPoints.viewHeight / 2)) / scrollPoints.bodyHeight,
-       (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 1.5)) / scrollPoints.bodyHeight,
-       1,
-     ] : [0, 0, 0],
+    scrollY,
+    wsEnd ? [
+       wsEnd - (vh / 2),
+       wsEnd + (vh / 1.5),
+       maxScroll,
+     ] : [0, 0.5, 1],
     [
       0,
       1,
@@ -108,11 +117,11 @@ export default function WormholeHero() {
     ],
   )
   const whiteDivScale = useTransform(
-    scrollYProgress,
+    scrollY,
      [
-       (scrollPoints.wormholeSectionEnd - (scrollPoints.viewHeight / 2)) / scrollPoints.bodyHeight,
-       (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 5)) / scrollPoints.bodyHeight,
-       1,
+       wsEnd - (vh / 2),
+       wsEnd + (vh / 5),
+       maxScroll,
      ],
     [
       0,
@@ -121,11 +130,11 @@ export default function WormholeHero() {
     ],
   )
   const whiteDivBorderRadius = useTransform(
-    scrollYProgress,
+    scrollY,
     [
       0,
-       scrollPoints.wormholeSectionEnd                                  / scrollPoints.bodyHeight,
-      (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 5)) / scrollPoints.bodyHeight,
+      wsEnd,
+      wsEnd + (vh / 5),
     ],
     [
       "100%",
@@ -134,11 +143,11 @@ export default function WormholeHero() {
     ],
   )
   const whiteDivWidth = useTransform(
-    scrollYProgress,
+    scrollY,
     [
       0,
-      (scrollPoints.wormholeSectionEnd - (scrollPoints.viewHeight / 2)) / scrollPoints.bodyHeight,
-      (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 5)) / scrollPoints.bodyHeight,
+      wsEnd - (vh / 2),
+      wsEnd + (vh / 5),
     ],
     [
       "0%",
@@ -147,11 +156,11 @@ export default function WormholeHero() {
     ],
   )
   const whiteDivHeight = useTransform(
-    scrollYProgress,
+    scrollY,
     [
       0,
-      scrollPoints.wormholeSectionEnd                                   / scrollPoints.bodyHeight,
-      (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight * 2)) / scrollPoints.bodyHeight,
+      wsEnd,
+      wsEnd + (vh * 2),
     ],
     [
       "0%",
@@ -160,11 +169,11 @@ export default function WormholeHero() {
     ],
   )
   const whiteDivTopPosition = useTransform(
-    scrollYProgress,
+    scrollY,
     [
       0,
-      scrollPoints.wormholeSectionEnd                                   / scrollPoints.bodyHeight,
-      (scrollPoints.wormholeSectionEnd + (scrollPoints.viewHeight / 5)) / scrollPoints.bodyHeight,
+      wsEnd,
+      wsEnd + (vh / 5),
     ],
     [
       "0%",
@@ -180,14 +189,15 @@ export default function WormholeHero() {
 
     isAutoScrolling.current = false   // Reset flag once scrolling is complete
     hasAutoScrolled.current = true    // But note that we have scrolled
-    setWormholeIsAnimated(false) // Stop the wormhole for performance reasons
+    // Keep wormhole rendering so it's visible when scrolling back up
+    // (the wormholeDivOpacity transform handles fading it out naturally)
   }
 
   const scrollToTarget = () => {
     if (hasAutoScrolled.current) return
     if (isMobile) return
 
-    const targetPosition = (scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight) ?? 0
+    const targetPosition = scrollPoints.wormholeSectionEnd + scrollPoints.viewHeight
     const startPosition = window.scrollY
     const distance = targetPosition - startPosition
     const duration = scrollDuration * 1000
@@ -263,7 +273,7 @@ export default function WormholeHero() {
       window.removeEventListener("keydown", handleEsc)
       window.removeEventListener("scroll",  handleScroll)
     }
-  }, [scrollYProgress, scrollPoints, abortAutoScroll])
+  }, [scrollY, scrollPoints, abortAutoScroll])
 
   return (
     <motion.section

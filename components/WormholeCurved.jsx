@@ -2,8 +2,8 @@
 
 import { gsap }       from 'gsap'
 import * as THREE     from 'three'
-import { Curves }     from 'three/examples/jsm/curves/CurveExtras'
-import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils'
+import { TorusKnot }                from 'three/examples/jsm/curves/CurveExtras'
+import { createMultiMaterialObject } from 'three/examples/jsm/utils/SceneUtils'
 
 import { useEffect, useRef, useState } from 'react'
 
@@ -71,7 +71,7 @@ function WormholeCurved({startAnimation = false}) {
 
     // Create the wormhole shape, assign textures to 5 different materials that we'll use
     // to stylize the wormhole
-    const shape = new Curves.TorusKnot(parameters.wormhole.tubeLength)
+    const shape = new TorusKnot(parameters.wormhole.tubeLength)
 
     library.textures.wormhole.galaxy[0].wrapS = THREE.RepeatWrapping
     library.textures.wormhole.galaxy[0].wrapT = THREE.MirroredRepeatWrapping
@@ -136,7 +136,7 @@ function WormholeCurved({startAnimation = false}) {
       parameters.wormhole.tubeSegments,
       true,
     )
-    const wormholeTubeMesh = SceneUtils.createMultiMaterialObject(wormholeGeometry, [
+    const wormholeTubeMesh = createMultiMaterialObject(wormholeGeometry, [
       infinityMirrorStarsSpeederMaterial,
       yellowAuraSpeederMaterial,
       nebulaSpeederMaterial,

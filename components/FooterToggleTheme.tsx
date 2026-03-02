@@ -3,17 +3,21 @@
 import { Button }             from "@/components/ui/button"
 import { Moon, Sun, SunMoon } from "lucide-react"
 import { useTheme }           from "next-themes"
+import { useEffect, useState } from "react"
 
 
 export function FooterToggleTheme() {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
   const buttonClassName = "w-10 px-0"
   const iconClassName = "size-6 transition-all"
   // const activeThemeClasses = " bg-accent-foreground text-background"
 
-  const systemVariant = (theme === "system") ? "ghostFooterActive" : "ghostFooter"
-  const darkVariant   = (theme === "dark")   ? "ghostFooterActive" : "ghostFooter"
-  const lightVariant  = (theme === "light")  ? "ghostFooterActive" : "ghostFooter"
+  const systemVariant = (mounted && theme === "system") ? "ghostFooterActive" : "ghostFooter"
+  const darkVariant   = (mounted && theme === "dark")   ? "ghostFooterActive" : "ghostFooter"
+  const lightVariant  = (mounted && theme === "light")  ? "ghostFooterActive" : "ghostFooter"
 
 
   return (
